@@ -45,12 +45,12 @@ class Game(object):
         self.initialize_board_with_pieces()
 
     def initialize_board_with_pieces(self):
-        all_pieces = self.pawns_w + self.pawns_b
-                + self.king_w + self.king_b 
-                + self.queen_w + self.queen_b
-                + self.rooks_w + self.rooks_b
-                + self.bishops_w + self.bishops_b
-                + self.knights_w + self.knights_b
+        all_pieces = self.pawns_w + self.pawns_b + \
+                     self.king_w + self.king_b + \
+                     self.queen_w + self.queen_b + \
+                     self.rooks_w + self.rooks_b + \
+                     self.bishops_w + self.bishops_b + \
+                     self.knights_w + self.knights_b
 
         for p in all_pieces:
             rowCoord = p.coordinates[0]
