@@ -11,17 +11,22 @@ class Pawn(object):
 
 class Game(object):
     grid = list()
-    pawn = Pawn('w', [1, 0])
+    pawns = list()
 
     def __init__(self):
         self.initialize_board()
+        self.initialize_pieces()
         self.initialize_board_with_pieces()
 
     def initialize_board_with_pieces(self):
-        rowCoord = self.pawn.coordinates[0]
-        colCoord = self.pawn.coordinates[1]
+        for k in range(len(self.pawns)):
+            rowCoord = self.pawns[k].coordinates[0]
+            colCoord = self.pawns[k].coordinates[1]
+            self.grid[rowCoord][colCoord] = self.pawns[k].kind
 
-        self.grid[rowCoord][colCoord] = self.pawn.kind
+    def initialize_pieces(self):
+        for k in range(8):
+            self.pawns.append(Pawn('w', [1, k]))
 
 
     def initialize_board(self):
