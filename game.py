@@ -19,10 +19,10 @@ class Game(object):
         self.initialize_board_with_pieces()
 
     def initialize_board_with_pieces(self):
-        for k in range(len(self.pawns)):
-            rowCoord = self.pawns[k].coordinates[0]
-            colCoord = self.pawns[k].coordinates[1]
-            self.grid[rowCoord][colCoord] = self.pawns[k].kind
+        for p in self.pawns:
+            rowCoord = p.coordinates[0]
+            colCoord = p.coordinates[1]
+            self.grid[rowCoord][colCoord] = p.kind
 
     def initialize_pieces(self):
         for k in range(8):
