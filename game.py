@@ -2,6 +2,10 @@ class Game(object):
     grid = list()
 
     def __init__(self):
+        self.initialize_board()
+
+
+    def initialize_board(self):
         for i in range(0,8):
             self.grid.append(list())
 
