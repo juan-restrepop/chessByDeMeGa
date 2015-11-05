@@ -1,13 +1,8 @@
-class Pawn(object):
-    kind = 'p'
-    coordinate = list()
+import pieces
 
+class Pawn(pieces.Piece):
     def __init__(self, color, coordinates):
-        self.initialize_pawn(color, coordinates)
-
-    def initialize_pawn(self, color, coordinates):
-        self.color = color
-        self.coordinates = coordinates
+        pieces.Piece.__init__(self, 'p', color, coordinates)
 
 class Game(object):
     grid = list()
