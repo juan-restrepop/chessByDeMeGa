@@ -16,6 +16,13 @@ class Knight(pieces.Piece):
     def __init__(self, color, coordinates):
         pieces.Piece.__init__(self, 'n', color, coordinates)
 
+class Queen(pieces.Piece):
+    def __init__(self, color, coordinates):
+        pieces.Piece.__init__(self, 'q', color, coordinates)
+
+class King(pieces.Piece):
+    def __init__(self, color, coordinates):
+        pieces.Piece.__init__(self, 'k', color, coordinates)
 
 class Game(object):
     grid = list()
@@ -27,6 +34,10 @@ class Game(object):
     bishops_b = list()
     knights_w = list()
     knights_b = list()
+    king_w = list()
+    king_b = list()
+    queen_w = list()
+    queen_b = list()
 
     def __init__(self):
         self.initialize_board()
@@ -34,10 +45,14 @@ class Game(object):
         self.initialize_board_with_pieces()
 
     def initialize_board_with_pieces(self):
-        for p in (self.pawns_w + self.pawns_b
+        all_pieces = self.pawns_w + self.pawns_b
+                + self.king_w + self.king_b 
+                + self.queen_w + self.queen_b
                 + self.rooks_w + self.rooks_b
                 + self.bishops_w + self.bishops_b
-                + self.knights_w + self.knights_b):
+                + self.knights_w + self.knights_b
+
+        for p in all_pieces:
             rowCoord = p.coordinates[0]
             colCoord = p.coordinates[1]
             self.grid[rowCoord][colCoord] = p.kind
@@ -65,6 +80,12 @@ class Game(object):
         self.knights_b.append(Knight('b',[7,1]))
         self.knights_b.append(Knight('b',[7,6]))
 
+
+        self.king_b.append(King('b', [7, 4]))
+        self.king_w.append(King('w', [0, 4]))
+
+        self.queen_b.append(Queen('b', [7, 3]))
+        self.queen_w.append(Queen('w', [0, 3]))
 
 
     def initialize_board(self):
