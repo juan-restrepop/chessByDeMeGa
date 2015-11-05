@@ -1,1 +1,1 @@
-By loops and pach
+By loops, pach and shin
