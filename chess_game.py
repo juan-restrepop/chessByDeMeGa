@@ -93,31 +93,17 @@ class ChessGame(object):
         if not self.is_user_move_valid(input_move):
             return True
 
-        all_cols = ['a','b','c','d','e','f','g','h']
-        all_lines = ['1','2','3','4','5','6','7','8']
-        out_str = ''
-
         # standard cases
 
         if self.is_pawn(input_move):
+            move_to_col, move_to_line = self.parse_pawn_coordinates(input_move)
 
-            if self.piece_eats(input_move):
-                move_to_col = input_move[2]
-                move_to_line = input_move[3]   
-            else:
-                move_to_col = input_move[0]
-                move_to_line = input_move[1]
+        if self.is_main_piece(input_move):
+            move_to_col, move_to_line = self.parse_main_pieces_coordinates(input_move)
 
-        elif self.is_main_piece(input_move):
-
-            if self.piece_eats(input_move):
-                move_to_col = input_move[2]
-                move_to_line = input_move[3] 
-            else: 
-                move_to_col = input_move[1]
-                move_to_line = input_move[2]
-        else:
-            return True
+        all_cols = ['a','b','c','d','e','f','g','h']
+        all_lines = ['1','2','3','4','5','6','7','8']
+        out_str = ''
 
         if (move_to_line not in all_lines) or (move_to_col not in all_cols):
             return True
@@ -130,6 +116,20 @@ class ChessGame(object):
         print("Your move is : "+input_move + '. '+ out_str)
 
         return True
+
+    def parse_pawn_coordinates(self, input_move):
+
+        if self.piece_eats(input_move):
+            return input_move[2], input_move[3]
+
+        return input_move[0],input_move[1]
+
+    def parse_main_pieces_coordinates(self, input_move):
+        
+        if self.piece_eats(input_move):
+            return input_move[2], input_move[3] 
+
+        return input_move[1],input_move[2]
 
     def print_move(self,is_pawn,is_captured,move_to_col,move_to_line):
         out_str  = ""
