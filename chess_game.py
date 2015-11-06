@@ -47,6 +47,40 @@ class ChessGame(object):
                 return False
         return True
 
+    def validate_normal_case(self, input_move):
+        if self.is_pawn(input_move):
+            if len(input_move) <= 1:
+                return False
+        elif self.is_main_piece(input_move):
+            if len(input_move)< 3:
+                return False
+        return True            
+
+    def is_user_move_valid(self, input_move):
+
+        if len(input_move) <= 1:
+            print 'wrong input try again'
+            return False
+
+        if self.is_special_case(input_move):
+            print 'special cases are not supported yet'
+            return False
+
+        if not self.validate_eat_case(input_move):
+            print 'eat case not valid try again'
+            return False
+
+        if not self.piece_eats(input_move):
+            if not self.validate_normal_case(input_move):
+                print 'case not valid try again'
+                return False
+
+        if not self.is_pawn(input_move) and not self.is_main_piece(input_move):
+            print 'case not valid, not a chess piece'
+            return False
+
+        return True
+
     def parse_user_move(self, input_move):
         # TODO: Handle ambiguities
         # TODO: Handle check, check-mate
@@ -56,20 +90,12 @@ class ChessGame(object):
         if self.has_quit(input_move):
             return False
 
-        if len(input_move) <= 1:
-            print 'wrong input try again'
+        if not self.is_user_move_valid(input_move):
             return True
 
         all_cols = ['a','b','c','d','e','f','g','h']
         all_lines = ['1','2','3','4','5','6','7','8']
         out_str = ''
-
-        if self.is_special_case(input_move):
-            return True
-
-        if not self.validate_eat_case(input_move):
-            print 'eat case not valid try again'
-            return True
 
         # standard cases
 
@@ -88,8 +114,6 @@ class ChessGame(object):
                 move_to_col = input_move[2]
                 move_to_line = input_move[3] 
             else: 
-                if len(input_move)< 3:
-                    return True
                 move_to_col = input_move[1]
                 move_to_line = input_move[2]
         else:
