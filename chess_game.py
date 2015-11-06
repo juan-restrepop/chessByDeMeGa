@@ -25,6 +25,12 @@ class ChessGame(object):
             print "Castling or End of game" 
         return res
 
+    def column_names(self):
+        return ['a','b','c','d','e','f','g','h']
+
+    def is_pawn(self, input_move):
+        return input_move[0] in self.column_names()
+
     def parse_user_move(self, input_move):
         # TODO: Handle ambiguities
         # TODO: Handle check, check-mate
@@ -32,7 +38,7 @@ class ChessGame(object):
         all_cols = ['a','b','c','d','e','f','g','h']
         all_lines = ['1','2','3','4','5','6','7','8']
 
-        if has_quit(input_move):
+        if self.has_quit(input_move):
             return False
         
         input_move = input_move.lstrip()
@@ -40,14 +46,13 @@ class ChessGame(object):
 
         if len(input_move) > 1:
 
-            if is_special_case(input_move):
+            if self.is_special_case(input_move):
                 return True
 
             # standard cases
             is_captured = False
 
-            if input_move[0] in all_cols:
-                is_pawn = True
+            if self.is_pawn(input_move):
 
                 if input_move[1] == 'x':
                     if len(input_move) < 4:
@@ -61,7 +66,6 @@ class ChessGame(object):
                     move_to_line = input_move[1]
 
             elif input_move[0] in ['K','Q','N','B','R']:
-                is_pawn = False
 
                 if input_move[1] == 'x':
                     if len(input_move) < 4:
@@ -82,6 +86,7 @@ class ChessGame(object):
                 return True
 
             # print accepted move
+            is_pawn = self.is_pawn(input_move)
             out_str = self.print_move(is_pawn,is_captured,move_to_col,move_to_line)
 
         print("Your move is : "+input_move + '. '+ out_str)
