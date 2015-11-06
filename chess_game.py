@@ -34,6 +34,10 @@ class ChessGame(object):
     def piece_eats(self, input_move):
         return input_move[1] == 'x'
 
+    def is_valid_eat_case(self, input_move):
+        'eat case should like "bxb6" or "Kxb7"'
+        return len(input_move) >= 4
+
     def parse_user_move(self, input_move):
         # TODO: Handle ambiguities
         # TODO: Handle check, check-mate
@@ -60,8 +64,10 @@ class ChessGame(object):
         if self.is_pawn(input_move):
 
             if self.piece_eats(input_move):
-                if len(input_move) < 4:
+                
+                if not self.is_valid_eat_case(input_move):
                     return True
+
                 is_captured = True
                 move_to_col = input_move[2]
                 move_to_line = input_move[3]   
@@ -73,8 +79,10 @@ class ChessGame(object):
         elif input_move[0] in ['K','Q','N','B','R']:
             
             if self.piece_eats(input_move):
-                if len(input_move) < 4:
+
+                if not self.is_valid_eat_case(input_move):
                     return True
+
                 is_captured = True
                 move_to_col = input_move[2]
                 move_to_line = input_move[3] 
