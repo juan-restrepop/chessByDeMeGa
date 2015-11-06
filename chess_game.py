@@ -19,6 +19,12 @@ class ChessGame(object):
     def has_quit(self, input_move):
         return input_move == "q"
 
+    def is_special_case(self, input_move):
+        res = input_move in ['O-O','O-O-O','1-0','0-1', '1/2-1/2']
+        if res:
+            print "Castling or End of game" 
+        return res
+
     def parse_user_move(self, input_move):
         # TODO: Handle ambiguities
         # TODO: Handle check, check-mate
@@ -31,10 +37,10 @@ class ChessGame(object):
         
         input_move = input_move.lstrip()
         out_str = ''
+
         if len(input_move) > 1:
-            # special cases
-            if input_move in ['O-O','O-O-O','1-0','0-1', '1/2-1/2']:
-                print "Castling or End of game" 
+
+            if is_special_case(input_move):
                 return True
 
             # standard cases
