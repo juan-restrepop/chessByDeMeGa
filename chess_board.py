@@ -57,11 +57,11 @@ class ChessBoard(object):
         self.knights_b.append(pieces.Knight('b',[7,1]))
         self.knights_b.append(pieces.Knight('b',[7,6]))
 
-        self.king_b.append(pieces.King('b', [7, 3]))
-        self.king_w.append(pieces.King('w', [0, 3]))
+        self.king_b.append(pieces.King('b', [7, 4]))
+        self.king_w.append(pieces.King('w', [0, 4]))
 
-        self.queen_b.append(pieces.Queen('b', [7, 4]))
-        self.queen_w.append(pieces.Queen('w', [0, 4]))
+        self.queen_b.append(pieces.Queen('b', [7, 3]))
+        self.queen_w.append(pieces.Queen('w', [0, 3]))
 
 
     def initialize_board(self):
