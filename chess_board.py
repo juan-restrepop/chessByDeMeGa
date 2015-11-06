@@ -29,7 +29,6 @@ class ChessBoard(object):
                      self.knights_w + self.knights_b)
 
     def initialize_board_with_pieces(self):
-
         for p in self.get_all_pieces():
             rowCoord = p.coordinates[0]
             colCoord = p.coordinates[1]
@@ -58,7 +57,6 @@ class ChessBoard(object):
         self.knights_b.append(pieces.Knight('b',[7,1]))
         self.knights_b.append(pieces.Knight('b',[7,6]))
 
-
         self.king_b.append(pieces.King('b', [7, 4]))
         self.king_w.append(pieces.King('w', [0, 4]))
 
@@ -69,17 +67,13 @@ class ChessBoard(object):
     def initialize_board(self):
         for i in range(0,8):
             self.grid.append(list())
-
             for j in range(0, 8):
                 self.grid[i].append(str((j + i) % 2))
 
     def print_board(self):
-
         board_string = ''
         for i in range(0, 8):
             for j in range(0, 8):
                 board_string = board_string + ' ' + self.grid[i][j]
-
             board_string = board_string + '\n'
-
         print board_string
