@@ -20,15 +20,17 @@ class Game(object):
         self.initialize_pieces()
         self.initialize_board_with_pieces()
 
-    def initialize_board_with_pieces(self):
-        all_pieces = self.pawns_w + self.pawns_b + \
+    def get_all_pieces(self):
+        return(self.pawns_w + self.pawns_b + \
                      self.king_w + self.king_b + \
                      self.queen_w + self.queen_b + \
                      self.rooks_w + self.rooks_b + \
                      self.bishops_w + self.bishops_b + \
-                     self.knights_w + self.knights_b
+                     self.knights_w + self.knights_b)
 
-        for p in all_pieces:
+    def initialize_board_with_pieces(self):
+
+        for p in self.get_all_pieces():
             rowCoord = p.coordinates[0]
             colCoord = p.coordinates[1]
             self.grid[rowCoord][colCoord] = p.kind
