@@ -31,6 +31,9 @@ class ChessGame(object):
     def is_pawn(self, input_move):
         return input_move[0] in self.column_names()
 
+    def piece_eats(self, input_move):
+        return input_move[1] == 'x'
+
     def parse_user_move(self, input_move):
         # TODO: Handle ambiguities
         # TODO: Handle check, check-mate
@@ -54,7 +57,7 @@ class ChessGame(object):
 
             if self.is_pawn(input_move):
 
-                if input_move[1] == 'x':
+                if self.piece_eats(input_move):
                     if len(input_move) < 4:
                         return True
                     is_captured = True
@@ -67,7 +70,7 @@ class ChessGame(object):
 
             elif input_move[0] in ['K','Q','N','B','R']:
 
-                if input_move[1] == 'x':
+                if self.piece_eats(input_move):
                     if len(input_move) < 4:
                         return True
                     is_captured = True
