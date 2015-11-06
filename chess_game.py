@@ -69,17 +69,14 @@ class ChessGame(object):
             return True
 
         # standard cases
-        is_captured = False
 
         if self.is_pawn(input_move):
 
             if self.piece_eats(input_move):
 
-                is_captured = True
                 move_to_col = input_move[2]
                 move_to_line = input_move[3]   
             else:
-                is_captured = False
                 move_to_col = input_move[0]
                 move_to_line = input_move[1]
 
@@ -87,13 +84,11 @@ class ChessGame(object):
             
             if self.piece_eats(input_move):
 
-                is_captured = True
                 move_to_col = input_move[2]
                 move_to_line = input_move[3] 
             else: 
                 if len(input_move)< 3:
                     return True
-                is_captured = False
                 move_to_col = input_move[1]
                 move_to_line = input_move[2]
         else:
@@ -104,6 +99,7 @@ class ChessGame(object):
 
         # print accepted move
         is_pawn = self.is_pawn(input_move)
+        is_captured = self.piece_eats(input_move)
         out_str = self.print_move(is_pawn,is_captured,move_to_col,move_to_line)
 
         print("Your move is : "+input_move + '. '+ out_str)
