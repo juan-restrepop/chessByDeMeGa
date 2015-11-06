@@ -72,8 +72,16 @@ class ChessBoard(object):
 
     def print_board(self):
         board_string = ''
+
         for i in range(0, 8):
+            board_string = board_string + ' ' + str(i) + '|'
             for j in range(0, 8):
                 board_string = board_string + ' ' + self.grid[i][j]
+            if i == 1:
+                board_string = board_string + '  <- White pawns line'
+            if i == 6:
+                board_string = board_string + '  <- Black pawns line'
             board_string = board_string + '\n'
+        board_string = board_string + '    _______________ \n'
+        board_string = board_string + '    a b c d e f g h \n'
         print board_string
