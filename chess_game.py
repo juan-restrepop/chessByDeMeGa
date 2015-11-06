@@ -30,6 +30,9 @@ class ChessGame(object):
 
     def is_pawn(self, input_move):
         return input_move[0] in self.column_names()
+        
+    def is_piece(self, input_move):
+        return input_move[0] in ['K','Q','N','B','R'] or self.is_pawn(input_move)
 
     def piece_eats(self, input_move):
         return input_move[1] == 'x'
@@ -73,17 +76,15 @@ class ChessGame(object):
         if self.is_pawn(input_move):
 
             if self.piece_eats(input_move):
-
                 move_to_col = input_move[2]
                 move_to_line = input_move[3]   
             else:
                 move_to_col = input_move[0]
                 move_to_line = input_move[1]
 
-        elif input_move[0] in ['K','Q','N','B','R']:
+        elif self.is_piece(input_move):
             
             if self.piece_eats(input_move):
-
                 move_to_col = input_move[2]
                 move_to_line = input_move[3] 
             else: 
