@@ -81,6 +81,11 @@ class ChessGame(object):
 
         return True
 
+    def are_coordinates_valid(self, input_move):
+        all_cols = ['a','b','c','d','e','f','g','h']
+        all_lines = ['1','2','3','4','5','6','7','8']
+        return (move_to_line in all_lines) and (move_to_col in all_cols)
+        
     def parse_user_move(self, input_move):
         # TODO: Handle ambiguities
         # TODO: Handle check, check-mate
@@ -101,11 +106,8 @@ class ChessGame(object):
         if self.is_main_piece(input_move):
             move_to_col, move_to_line = self.parse_main_pieces_coordinates(input_move)
 
-        all_cols = ['a','b','c','d','e','f','g','h']
-        all_lines = ['1','2','3','4','5','6','7','8']
-        out_str = ''
-
-        if (move_to_line not in all_lines) or (move_to_col not in all_cols):
+        if not self.are_coordinates_valid(move_to_col, move_to_line):
+            print 'coordinates not valid try again'
             return True
 
         # print accepted move
