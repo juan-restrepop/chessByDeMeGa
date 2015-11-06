@@ -1,6 +1,6 @@
 import pieces
 
-class Game(object):
+class ChessBoard(object):
     grid = list()
     pawns_w = list()
     pawns_b = list()
