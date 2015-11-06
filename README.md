@@ -1,5 +1,10 @@
 # python chess game and ml
-===
-By loops, pach and shin
 
-# loops is making the engine classes up to now
+===
+
+#### Contributors:
+
+* [loops](https://github.com/juan-restrepop/)
+* [pach](https://github.com/rodfr/)
+* [shin](https://github.com/santiaago/)
+
