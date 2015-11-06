@@ -1,7 +1,10 @@
 import chess_board
 
 class ChessGame(object):
-    
+
+    column_names = ['a','b','c','d','e','f','g','h']
+    line_names = ['1','2','3','4','5','6','7','8']
+
     def __init__(self):
         self.board = chess_board.ChessBoard()
 
@@ -25,11 +28,8 @@ class ChessGame(object):
             print "Castling or End of game" 
         return res
 
-    def column_names(self):
-        return ['a','b','c','d','e','f','g','h']
-
     def is_pawn(self, input_move):
-        return input_move[0] in self.column_names()
+        return input_move[0] in self.column_names
         
     def is_main_piece(self, input_move):
         return input_move[0] in ['K','Q','N','B','R']
@@ -81,10 +81,8 @@ class ChessGame(object):
 
         return True
 
-    def are_coordinates_valid(self, input_move):
-        all_cols = ['a','b','c','d','e','f','g','h']
-        all_lines = ['1','2','3','4','5','6','7','8']
-        return (move_to_line in all_lines) and (move_to_col in all_cols)
+    def are_coordinates_valid(self, col, line):
+        return (line in self.line_names) and (col in self.column_names)
         
     def parse_user_move(self, input_move):
         # TODO: Handle ambiguities
@@ -98,7 +96,7 @@ class ChessGame(object):
         if not self.is_user_move_valid(input_move):
             return True
 
-        # standard cases
+        move_to_col, move_to_line = None, None
 
         if self.is_pawn(input_move):
             move_to_col, move_to_line = self.parse_pawn_coordinates(input_move)
@@ -113,9 +111,9 @@ class ChessGame(object):
         # print accepted move
         is_pawn = self.is_pawn(input_move)
         is_captured = self.piece_eats(input_move)
-        out_str = self.print_move(is_pawn,is_captured,move_to_col,move_to_line)
+        out_str = self.print_move(is_pawn, is_captured, move_to_col, move_to_line)
 
-        print("Your move is : "+input_move + '. '+ out_str)
+        print("Your move is : " + input_move + '. ' + out_str)
 
         return True
 
@@ -124,16 +122,16 @@ class ChessGame(object):
         if self.piece_eats(input_move):
             return input_move[2], input_move[3]
 
-        return input_move[0],input_move[1]
+        return input_move[0], input_move[1]
 
     def parse_main_pieces_coordinates(self, input_move):
         
         if self.piece_eats(input_move):
             return input_move[2], input_move[3] 
 
-        return input_move[1],input_move[2]
+        return input_move[1], input_move[2]
 
-    def print_move(self,is_pawn,is_captured,move_to_col,move_to_line):
+    def print_move(self, is_pawn, is_captured, move_to_col, move_to_line):
         out_str  = ""
         if is_pawn:
             out_str = "Move pawn"
@@ -141,14 +139,8 @@ class ChessGame(object):
             out_str = "Move not_pawn"
 
         if is_captured: 
-            out_str = out_str + " and capture piece at (%s,%s)"%(move_to_col,move_to_line)
+            out_str = out_str + " and capture piece at (%s,%s)" % (move_to_col,move_to_line)
         else: 
-            out_str = out_str + " to (%s,%s)"%(move_to_col,move_to_line)
+            out_str = out_str + " to (%s,%s)" % (move_to_col, move_to_line)
 
         return  out_str
-
-
-  
-
-
-        
