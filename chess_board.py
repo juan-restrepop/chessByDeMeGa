@@ -74,7 +74,7 @@ class ChessBoard(object):
         board_string = ''
 
         for i in range(0, 8):
-            board_string = board_string + ' ' + str(i) + '|'
+            board_string = board_string + ' ' + str(i+1) + '|'
             for j in range(0, 8):
                 board_string = board_string + ' ' + self.grid[i][j]
             if i == 1:
