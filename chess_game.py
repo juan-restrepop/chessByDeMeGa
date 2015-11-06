@@ -16,6 +16,9 @@ class ChessGame(object):
         
         return(self.parse_user_move(new_move_str))
 
+    def has_quit(self, input_move):
+        return input_move == "q"
+
     def parse_user_move(self, input_move):
         # TODO: Handle ambiguities
         # TODO: Handle check, check-mate
@@ -23,10 +26,9 @@ class ChessGame(object):
         all_cols = ['a','b','c','d','e','f','g','h']
         all_lines = ['1','2','3','4','5','6','7','8']
 
-
-        if input_move == "q":
+        if has_quit(input_move):
             return False
-
+        
         input_move = input_move.lstrip()
         out_str = ''
         if len(input_move) > 1:
