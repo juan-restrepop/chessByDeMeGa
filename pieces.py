@@ -10,3 +10,27 @@ class Piece(object):
         self.kind = kind
         self.color = color
         self.coordinates = coordinate
+
+class Pawn(Piece):
+    def __init__(self, color, coordinates):
+        Piece.__init__(self, 'p', color, coordinates)
+
+class Rook(Piece):
+    def __init__(self, color, coordinates):
+        Piece.__init__(self, 'r', color, coordinates)
+
+class Bishop(Piece):
+    def __init__(self, color, coordinates):
+        Piece.__init__(self, 'b', color, coordinates)
+
+class Knight(Piece):
+    def __init__(self, color, coordinates):
+        Piece.__init__(self, 'n', color, coordinates)
+
+class Queen(Piece):
+    def __init__(self, color, coordinates):
+        Piece.__init__(self, 'q', color, coordinates)
+
+class King(Piece):
+    def __init__(self, color, coordinates):
+        Piece.__init__(self, 'k', color, coordinates)
