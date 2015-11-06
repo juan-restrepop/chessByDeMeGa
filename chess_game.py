@@ -38,59 +38,61 @@ class ChessGame(object):
         # TODO: Handle ambiguities
         # TODO: Handle check, check-mate
 
-        all_cols = ['a','b','c','d','e','f','g','h']
-        all_lines = ['1','2','3','4','5','6','7','8']
+        input_move = input_move.lstrip()
 
         if self.has_quit(input_move):
             return False
-        
-        input_move = input_move.lstrip()
+
+        if len(input_move) <= 1:
+            print 'wrong input try again'
+            return True
+
+        all_cols = ['a','b','c','d','e','f','g','h']
+        all_lines = ['1','2','3','4','5','6','7','8']
         out_str = ''
 
-        if len(input_move) > 1:
+        if self.is_special_case(input_move):
+            return True
 
-            if self.is_special_case(input_move):
-                return True
+        # standard cases
+        is_captured = False
 
-            # standard cases
-            is_captured = False
+        if self.is_pawn(input_move):
 
-            if self.is_pawn(input_move):
-
-                if self.piece_eats(input_move):
-                    if len(input_move) < 4:
-                        return True
-                    is_captured = True
-                    move_to_col = input_move[2]
-                    move_to_line = input_move[3]   
-                else:
-                    is_captured = False
-                    move_to_col = input_move[0]
-                    move_to_line = input_move[1]
-
-            elif input_move[0] in ['K','Q','N','B','R']:
-
-                if self.piece_eats(input_move):
-                    if len(input_move) < 4:
-                        return True
-                    is_captured = True
-                    move_to_col = input_move[2]
-                    move_to_line = input_move[3] 
-                else: 
-                    if len(input_move)< 3:
-                        return True
-                    is_captured = False
-                    move_to_col = input_move[1]
-                    move_to_line = input_move[2]
+            if self.piece_eats(input_move):
+                if len(input_move) < 4:
+                    return True
+                is_captured = True
+                move_to_col = input_move[2]
+                move_to_line = input_move[3]   
             else:
-                return True
+                is_captured = False
+                move_to_col = input_move[0]
+                move_to_line = input_move[1]
 
-            if (move_to_line not in all_lines) or (move_to_col not in all_cols):
-                return True
+        elif input_move[0] in ['K','Q','N','B','R']:
+            
+            if self.piece_eats(input_move):
+                if len(input_move) < 4:
+                    return True
+                is_captured = True
+                move_to_col = input_move[2]
+                move_to_line = input_move[3] 
+            else: 
+                if len(input_move)< 3:
+                    return True
+                is_captured = False
+                move_to_col = input_move[1]
+                move_to_line = input_move[2]
+        else:
+            return True
 
-            # print accepted move
-            is_pawn = self.is_pawn(input_move)
-            out_str = self.print_move(is_pawn,is_captured,move_to_col,move_to_line)
+        if (move_to_line not in all_lines) or (move_to_col not in all_cols):
+            return True
+
+        # print accepted move
+        is_pawn = self.is_pawn(input_move)
+        out_str = self.print_move(is_pawn,is_captured,move_to_col,move_to_line)
 
         print("Your move is : "+input_move + '. '+ out_str)
 
