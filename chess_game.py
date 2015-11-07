@@ -35,7 +35,7 @@ class ChessGame(object):
         return input_move[0] in ['K','Q','N','B','R']
 
     def piece_eats(self, input_move):
-        return input_move[1] == 'x'
+        return (len(input_move)>1) and (input_move[1] == 'x')
 
     def is_valid_eat_case(self, input_move):
         'eat case should like "bxb6" or "Kxb7"'
