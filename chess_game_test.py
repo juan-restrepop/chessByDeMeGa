@@ -118,17 +118,31 @@ class TestChessGame(unittest.TestCase):
             self.assertEqual(expected, actual)
 
     def test_are_coordinates_valid(self):
-            c = cg.ChessGame()
+        c = cg.ChessGame()
 
-            expected = True
-            for coords in [('a', '1'), ('d', '5'), ('h', '8')]:
-                actual = c.are_coordinates_valid(coords[0], coords[1])
-                self.assertEqual(expected, actual)
+        expected = True
+        for coords in [('a', '1'), ('d', '5'), ('h', '8')]:
+            actual = c.are_coordinates_valid(coords[0], coords[1])
+            self.assertEqual(expected, actual)
 
-            expected = False
-            for coords in [('a', '-1'), ('z', '5'), ('z', '17'), ('A', '5')]:
-                actual = c.are_coordinates_valid(coords[0], coords[1])
-                self.assertEqual(expected, actual)
+        expected = False
+        for coords in [('a', '-1'), ('z', '5'), ('z', '17'), ('A', '5')]:
+            actual = c.are_coordinates_valid(coords[0], coords[1])
+            self.assertEqual(expected, actual)
+
+    def test_parse_pawn_coordinates(self):
+        c = cg.ChessGame()
+
+        expected = [('a','2'),
+                    ('b','2')]
+
+        test_cases = ['a2','axb2']
+
+        for k in range(len(test_cases)):
+            input_move = test_cases[k]
+            actual = c.parse_pawn_coordinates(input_move)
+            self.assertEqual(expected[k], actual)
+
 
 if __name__ == '__main__':
     unittest.main()
