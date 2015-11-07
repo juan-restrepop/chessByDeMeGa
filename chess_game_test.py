@@ -82,8 +82,27 @@ class TestChessGame(unittest.TestCase):
             actual = c.validate_eat_case(input_move)
             self.assertEqual(expected, actual)
 
+    def test_validate_normal_case(self):
+        c  = cg.ChessGame()
 
+        expected = True
+        for piece in ['K','Q','N','B','R']:
+            actual = c.validate_normal_case(piece +'f3')
+            self.assertEqual(expected, actual)
 
+        expected = True
+        for col in c.column_names:
+            actual = c.validate_normal_case(col +'3')
+            self.assertEqual(expected, actual)
+
+        expected = False
+        for piece in ['K','Q','N','B','R']:
+            actual = c.validate_normal_case(piece +'3')
+            self.assertEqual(expected, actual)
+
+        for col in c.column_names:
+            actual = c.validate_normal_case(col)
+            self.assertEqual(expected, actual)
 
 if __name__ == '__main__':
     unittest.main()

@@ -43,6 +43,7 @@ class ChessGame(object):
         return False
 
     def validate_normal_case(self, input_move):
+        # not eating move
         if self.is_pawn(input_move):
             if len(input_move) <= 1:
                 return False
