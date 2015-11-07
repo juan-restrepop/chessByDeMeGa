@@ -104,5 +104,13 @@ class TestChessGame(unittest.TestCase):
             actual = c.validate_normal_case(col)
             self.assertEqual(expected, actual)
 
+    def test_is_user_move_valid(self):
+        c  = cg.ChessGame()
+
+        expected = True
+        for input_move in ['a2']:
+            actual = c.is_user_move_valid(input_move)
+            self.assertEqual(expected, actual)
+
 if __name__ == '__main__':
     unittest.main()
