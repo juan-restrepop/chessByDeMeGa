@@ -117,5 +117,18 @@ class TestChessGame(unittest.TestCase):
             actual = c.is_user_move_valid(input_move)
             self.assertEqual(expected, actual)
 
+    def test_are_coordinates_valid(self):
+            c = cg.ChessGame()
+
+            expected = True
+            for coords in [('a', '1'), ('d', '5'), ('h', '8')]:
+                actual = c.are_coordinates_valid(coords[0], coords[1])
+                self.assertEqual(expected, actual)
+
+            expected = False
+            for coords in [('a', '-1'), ('z', '5'), ('z', '17'), ('A', '5')]:
+                actual = c.are_coordinates_valid(coords[0], coords[1])
+                self.assertEqual(expected, actual)
+
 if __name__ == '__main__':
     unittest.main()
