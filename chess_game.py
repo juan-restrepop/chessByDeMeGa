@@ -103,6 +103,10 @@ class ChessGame(object):
         if not self.are_coordinates_valid(move_to_col, move_to_line):
             print 'coordinates not valid try again'
             return True
+        ##----->
+        if self.is_pawn(input_move):
+            print "moving pawn"
+            self.board.move_pawn_to(move_to_col, move_to_line)
 
         # print accepted move
         is_pawn = self.is_pawn(input_move)

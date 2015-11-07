@@ -65,6 +65,7 @@ class ChessBoard(object):
 
 
     def initialize_board(self):
+        self.grid = list()
         for i in range(0,8):
             self.grid.append(list())
             for j in range(0, 8):
@@ -72,7 +73,6 @@ class ChessBoard(object):
 
     def print_board(self):
         board_string = ''
-
         for i in range(0, 8):
             board_string = board_string + ' ' + str(i+1) + '|'
             for j in range(0, 8):
@@ -85,3 +85,33 @@ class ChessBoard(object):
         board_string = board_string + '    _______________ \n'
         board_string = board_string + '    a b c d e f g h \n'
         print board_string
+
+    def move_pawn_to(self, col, line):
+        # we work only with white
+        # TODO:
+        i,j  = self.coord_board_to_coord_grid(col,line)
+
+        # Move the pawn
+        for which_pawn in range(len(self.pawns_w)):
+            if self.pawns_w[which_pawn].coordinates[1] == j:
+                self.pawns_w[which_pawn].coordinates[0] = i
+                break
+
+        self.initialize_board()
+        self.initialize_board_with_pieces()
+
+
+        return
+
+    def coord_board_to_coord_grid(self,col,line):
+        columns_to_grid = {'a': 0,
+                           'b': 1,
+                           'c': 2,
+                           'd': 3,
+                           'e': 4,
+                           'f': 5,
+                           'g': 6,
+                           'h': 7}
+        return (int(line)-1 ,columns_to_grid[col])
+
+
