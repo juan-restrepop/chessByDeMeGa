@@ -37,15 +37,10 @@ class ChessGame(object):
     def piece_eats(self, input_move):
         return (len(input_move)>1) and (input_move[1] == 'x')
 
-    def is_valid_eat_case(self, input_move):
-        'eat case should like "bxb6" or "Kxb7"'
-        return len(input_move) >= 4
-
     def validate_eat_case(self, input_move):
-        if self.piece_eats(input_move):
-            if not self.is_valid_eat_case(input_move):
-                return False
-        return True
+        if self.piece_eats(input_move) and len(input_move) >= 4:
+            return True
+        return False
 
     def validate_normal_case(self, input_move):
         if self.is_pawn(input_move):

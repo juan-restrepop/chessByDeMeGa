@@ -68,6 +68,20 @@ class TestChessGame(unittest.TestCase):
             actual = c.piece_eats(input_move)
             self.assertEqual(expected, actual)
 
+    def test_validate_eat_case(self):
+        c  = cg.ChessGame()
+        expected = True
+        for input_move in ['Kxf3','axb2','Rxd2','Rxd222']:
+
+            actual = c.validate_eat_case(input_move)
+            self.assertEqual(expected, actual)
+
+        expected = False
+        for input_move in ['Kf3','a2','Rxd']:
+
+            actual = c.validate_eat_case(input_move)
+            self.assertEqual(expected, actual)
+
 
 
 
