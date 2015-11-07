@@ -62,7 +62,7 @@ class ChessGame(object):
             print 'special cases are not supported yet'
             return False
 
-        if not self.validate_eat_case(input_move):
+        if self.piece_eats(input_move) and (not self.validate_eat_case(input_move)):
             print 'eat case not valid try again'
             return False
 
