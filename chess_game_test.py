@@ -108,7 +108,12 @@ class TestChessGame(unittest.TestCase):
         c  = cg.ChessGame()
 
         expected = True
-        for input_move in ['a2']:
+        for input_move in ['a2','axb2','Bf3','Bxa2']:
+            actual = c.is_user_move_valid(input_move)
+            self.assertEqual(expected, actual)
+
+        expected = False
+        for input_move in ['ax2','B3','Abcd']:
             actual = c.is_user_move_valid(input_move)
             self.assertEqual(expected, actual)
 
