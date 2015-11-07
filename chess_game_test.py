@@ -144,5 +144,18 @@ class TestChessGame(unittest.TestCase):
             self.assertEqual(expected[k], actual)
 
 
+    def test_parse_main_pieces_coordinates(self):
+        c = cg.ChessGame()
+
+        expected = [('f','2'),
+                    ('b','3')]
+
+        test_cases = ['Bf2','Qxb3']
+
+        for k in range(len(test_cases)):
+            input_move = test_cases[k]
+            actual = c.parse_main_pieces_coordinates(input_move)
+            self.assertEqual(expected[k], actual)
+
 if __name__ == '__main__':
     unittest.main()
