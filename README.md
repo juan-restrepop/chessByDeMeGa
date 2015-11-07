@@ -8,3 +8,7 @@
 * [pach](https://github.com/rodfr/)
 * [shin](https://github.com/santiaago/)
 
+
+#### Test:
+
+To run test do: `python chess_game_test.py -v `
