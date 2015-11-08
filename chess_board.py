@@ -94,16 +94,14 @@ class ChessBoard(object):
 
     def move_pawn_to(self, col, line):
         # we work only with white
-        # TODO:
         i,j  = self.coord_board_to_coord_grid(col,line)
 
-        # Move the pawn
-        for which_pawn in range(len(self.pawns_w)):
-            if self.pawns_w[which_pawn].coordinates[1] == j:
-                old_i = self.pawns_w[which_pawn].coordinates[0]
-                self.pawns_w[which_pawn].coordinates[0] = i
+        for k in range(len(self.pawns_w)):
+            if self.pawns_w[k].coordinates[1] == j:
+                old_i = self.pawns_w[k].coordinates[0]
+                self.pawns_w[k].coordinates[0] = i
                 if i != old_i :
-                    self.grid[i][j] = self.pawns_w[which_pawn].kind
+                    self.grid[i][j] = self.pawns_w[k].kind
                     self.grid[old_i][j] = str(self.get_square_color(old_i,j))
                 break
         return
@@ -113,18 +111,15 @@ class ChessBoard(object):
         i,j  = self.coord_board_to_coord_grid(col,line)
         square_color = str(self.get_square_color(i,j))
         
-        # Move the bishop
-        for which_bishop in range(len(self.bishops_w)):
+        for k in range(len(self.bishops_w)):
 
-            if square_color == str(self.get_bishop_walk_color(self.bishops_w[which_bishop])):
-                old_i,old_j = self.bishops_w[which_bishop].coordinates
-                self.bishops_w[which_bishop].coordinates = [i,j]
-                self.grid[i][j] = self.bishops_w[which_bishop].kind
+            if square_color == str(self.get_bishop_walk_color(self.bishops_w[k])):
+                old_i,old_j = self.bishops_w[k].coordinates
+                self.bishops_w[k].coordinates = [i,j]
+                self.grid[i][j] = self.bishops_w[k].kind
                 self.grid[old_i][old_j] = square_color
                 break
         return
-
-
 
     def coord_board_to_coord_grid(self,col,line):
         columns_to_grid = {'a': 0,
