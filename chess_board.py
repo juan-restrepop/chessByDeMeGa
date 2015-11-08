@@ -64,6 +64,9 @@ class ChessBoard(object):
         self.queen_w.append(pieces.Queen('w', [0, 3]))
 
 
+    def get_square_color(self,i,j):
+        return ((j + i) % 2)
+
     def initialize_board(self):
         self.grid = list()
         for i in range(0,8):
@@ -94,13 +97,12 @@ class ChessBoard(object):
         # Move the pawn
         for which_pawn in range(len(self.pawns_w)):
             if self.pawns_w[which_pawn].coordinates[1] == j:
+                old_i = self.pawns_w[which_pawn].coordinates[0]
                 self.pawns_w[which_pawn].coordinates[0] = i
+
+                self.grid[i][j] = self.pawns_w[which_pawn].kind
+                self.grid[old_i][j] = str(self.get_square_color(old_i,j))
                 break
-
-        self.initialize_board()
-        self.initialize_board_with_pieces()
-
-
         return
 
     def coord_board_to_coord_grid(self,col,line):
