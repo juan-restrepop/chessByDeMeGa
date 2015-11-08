@@ -77,6 +77,10 @@ class ChessBoard(object):
             for j in range(0, 8):
                 self.grid[i].append(str((j + i) % 2))
 
+    def update_board(self):
+        self.initialize_board()
+        self.initialize_board_with_pieces()
+
     def print_board(self):
         board_string = ''
         for i in range(0, 8):
@@ -98,12 +102,9 @@ class ChessBoard(object):
 
         for k in range(len(self.pawns_w)):
             if self.pawns_w[k].coordinates[1] == j:
-                old_i = self.pawns_w[k].coordinates[0]
                 self.pawns_w[k].coordinates[0] = i
-                if i != old_i :
-                    self.grid[i][j] = self.pawns_w[k].kind
-                    self.grid[old_i][j] = str(self.get_square_color(old_i,j))
                 break
+        self.update_board()
         return
 
     def move_bishop_to(self, col, line):
@@ -112,13 +113,10 @@ class ChessBoard(object):
         square_color = str(self.get_square_color(i,j))
         
         for k in range(len(self.bishops_w)):
-
             if square_color == str(self.get_bishop_walk_color(self.bishops_w[k])):
-                old_i,old_j = self.bishops_w[k].coordinates
                 self.bishops_w[k].coordinates = [i,j]
-                self.grid[i][j] = self.bishops_w[k].kind
-                self.grid[old_i][old_j] = square_color
                 break
+        self.update_board()
         return
 
     def coord_board_to_coord_grid(self,col,line):
