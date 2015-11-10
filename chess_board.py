@@ -118,7 +118,6 @@ class ChessBoard(object):
         else:
             return False
 
-
     def can_king_reach(self, i, j, king):
         i_origin, j_origin = king.coordinates
 
@@ -129,7 +128,6 @@ class ChessBoard(object):
 
     def can_queen_reach(self, i, j, queen):
         return self.can_bishop_reach(i, j, queen) or self.can_rook_reach(i, j, queen)
-
 
     def can_rook_reach(self, i, j, rook):
         # TODO: The rook should eat if final square is occupied
@@ -247,7 +245,6 @@ class ChessBoard(object):
         self.update_board()
         return accepted_move
 
-
     def move_bishop_to(self, col, line):
         # we work only with white
 
@@ -257,8 +254,6 @@ class ChessBoard(object):
         square_color = str(self.get_square_color(i,j))
         
         for k in range(len(self.bishops_w)):
-            # if square_color == str(self.get_bishop_walk_color(self.bishops_w[k])):
-            #     self.bishops_w[k].coordinates = [i,j]
             if self.can_bishop_reach(i, j, self.bishops_w[k]):
                 self.bishops_w[k].coordinates = [i,j]
                 accepted_move = True
