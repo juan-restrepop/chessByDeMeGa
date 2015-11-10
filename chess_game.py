@@ -153,6 +153,12 @@ class ChessGame(object):
         elif self.is_rook(input_move):
             print "moving rook"
             self.board.move_rook_to(move_to_col, move_to_line)
+        elif self.is_king(input_move):
+            print "moving king"
+            self.boad.move_king_to(move_to_col, move_to_line)
+        elif self.is_queen(input_move):
+            print "moving queen"
+            self.board.move_queen_to(move_to_col, move_to_line)
         else:
             print "not supported move"
 
