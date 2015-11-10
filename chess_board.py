@@ -194,17 +194,15 @@ class ChessBoard(object):
 
     def move_king_to(self, col, line):
         # we work only with white
+        accepted_move = False
         i,j = self.coord_board_to_coord_grid(col,line)
 
-        i_origin, j_origin = self.king_w[0].coordinates
-
         if self.can_king_reach(i, j, self.king_w[0]):
-        #if ((abs(i - i_origin) == 1) and (abs(j - j_origin) <= 1) 
-        #    or (abs(j - j_origin) == 1) and (abs(i - i_origin) <= 1)):
             self.king_w[0].coordinates = [i,j]
+            accepted_move = True
 
         self.update_board()
-        return
+        return accepted_move
 
     def move_queen_to(self, col, line):
         #we work only with white
