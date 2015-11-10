@@ -1,6 +1,9 @@
 # ignoring loops .idea
 .idea
 
+# ignoring loops *.save
+*.save
+
 # ignoring .DS_Store
 .DS_Store
 
