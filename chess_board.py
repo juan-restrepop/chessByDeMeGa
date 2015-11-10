@@ -88,7 +88,8 @@ class ChessBoard(object):
 
     def move_pawn_to(self, col, line):
         # we work only with white
-        # TODO:
+        # TODO: Handle updates and initialization of board and grid.
+        # TODO: Handle difference between empty_board and grid?
         i,j  = self.coord_board_to_coord_grid(col,line)
 
         # Move the pawn
