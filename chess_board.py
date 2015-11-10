@@ -136,9 +136,46 @@ class ChessBoard(object):
 
 
     def can_rook_reach(self, i, j, rook):
-        # TODO: The rook should stop (or eat) if it encounters a piece on its path
+        # TODO: The rook should eat if final square is occupied
+        # TODO: Requesting to leave the piece in place should not be considered a valid move
         i_origin, j_origin = rook.coordinates
-        return (i == i_origin) or (j == j_origin)
+
+        free_path = True
+        if (i == i_origin):
+
+            if j > j_origin:
+                # rook moves to the right
+                temp_j = j_origin + 1
+                while free_path and (temp_j <= j):
+                    free_path = self.is_square_free(i, temp_j)
+                    temp_j = temp_j + 1
+
+            elif j < j_origin:
+                # rook moves to the left
+                temp_j = j_origin - 1
+                while free_path and (temp_j >= j):
+                    free_path = self.is_square_free(i, temp_j)
+                    temp_j = temp_j - 1
+
+        elif (j == j_origin):
+
+            if i > i_origin:
+                # rook moves down
+                temp_i = i_origin + 1
+                while free_path and (temp_i <= i):
+                    free_path = self.is_square_free(temp_i, j)
+                    temp_i = temp_i + 1
+
+            elif i < i_origin:
+                # rook moves up
+                temp_i = i_origin - 1
+                while free_path and (temp_i >= i):
+                    free_path = self.is_square_free(temp_i, j)
+                    temp_i = temp_i - 1
+        else:
+            return False
+
+        return free_path # to liberty
 
     def can_bishop_reach(self, i, j, bishop):
         # TODO: The bishop should stop (or eat) if it encounters a piece on its path
