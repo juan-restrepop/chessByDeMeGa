@@ -99,6 +99,9 @@ class ChessBoard(object):
         board_string = board_string + '    a b c d e f g h \n'
         print board_string
 
+    def is_square_free(self, i, j):
+        return ( (self.grid[i][j] =='0') or (self.grid[i][j] =='1'))
+
     def can_pawn_reach(self, i, j, pawn):
         # TODO: The pawn should only be able to move forward
         # TODO: Requesting to leave the piece in place should not be considered a valid move
