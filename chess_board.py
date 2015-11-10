@@ -89,7 +89,7 @@ class ChessBoard(object):
             board_string = board_string + ' ' + str(i+1) + '|'
             for j in range(0, 8):
                 board_string = board_string + ' ' + self.grid[i][j] 
-            board_string = board_string + ' |' + str(i+1) + ' '
+            board_string = board_string + ' |queen_w' + str(i+1) + ' '
             if i == 1:
                 board_string = board_string + '  <- White pawns line'
             if i == 6:
