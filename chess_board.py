@@ -128,11 +128,7 @@ class ChessBoard(object):
         return False
 
     def can_queen_reach(self, i, j, queen):
-        i_origin, j_origin = queen.coordinates
-        if (((i == i_origin) or (j == j_origin)) 
-            or (abs(i - i_origin) == abs(j - j_origin))):
-            return True
-        return False
+        return self.can_bishop_reach(i, j, queen) or self.can_rook_reach(i, j, queen)
 
 
     def can_rook_reach(self, i, j, rook):
