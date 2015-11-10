@@ -114,12 +114,13 @@ class ChessGame(object):
             print 'coordinates not valid try again'
             return True
 
-        self.move_piece_to(input_move, move_to_col, move_to_line)
+        accepted_move = self.move_piece_to(input_move, move_to_col, move_to_line)
 
-        # print accepted move
-        out_str = self.print_move(input_move, move_to_col, move_to_line)
-
-        print("Your move is : " + input_move + '. ' + out_str)
+        if accepted_move:
+            out_str = self.print_move(input_move, move_to_col, move_to_line)
+            print("Your move is : " + input_move + '. ' + out_str)
+        else:
+            print "Move not accepted"
 
         return True
 
@@ -140,25 +141,25 @@ class ChessGame(object):
     def move_piece_to(self, input_move, move_to_col, move_to_line):
            
         if self.is_pawn(input_move):
-            self.board.move_pawn_to(move_to_col, move_to_line)
+            return self.board.move_pawn_to(move_to_col, move_to_line)
 
         elif self.is_bishop(input_move):
-            self.board.move_bishop_to(move_to_col, move_to_line)
+            return self.board.move_bishop_to(move_to_col, move_to_line)
         
         elif self.is_knight(input_move):
-            self.board.move_knight_to(move_to_col, move_to_line)
+            return self.board.move_knight_to(move_to_col, move_to_line)
         
         elif self.is_rook(input_move):
-            self.board.move_rook_to(move_to_col, move_to_line)
+            return self.board.move_rook_to(move_to_col, move_to_line)
         
         elif self.is_king(input_move):
-            self.board.move_king_to(move_to_col, move_to_line)
+            return self.board.move_king_to(move_to_col, move_to_line)
         
         elif self.is_queen(input_move):
-            self.board.move_queen_to(move_to_col, move_to_line)
+            return self.board.move_queen_to(move_to_col, move_to_line)
         
         else:
-            print "not supported move"
+            return False
 
     def print_move(self, input_move, move_to_col, move_to_line):
         out_str  = ""
