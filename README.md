@@ -12,3 +12,7 @@
 #### Test:
 
 To run test do: `python chess_game_test.py -v `
+
+#### Launch basic game:
+
+To launch a basic game do : `python launch.py`
