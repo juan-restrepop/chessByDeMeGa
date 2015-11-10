@@ -99,15 +99,21 @@ class ChessBoard(object):
         board_string = board_string + '    a b c d e f g h \n'
         print board_string
 
+    def can_pawn_reach(self, i, j, pawn):
+
+        i_origin, j_origin = pawn.coordinates
+        if j == j_origin:
+            return True
+
     def move_pawn_to(self, col, line):
         # we work only with white
         # TODO: Handle updates and initialization of board and grid.
         # TODO: Handle difference between empty_board and grid?
 
-        i,j  = self.coord_board_to_coord_grid(col,line)
+        i, j = self.coord_board_to_coord_grid(col, line)
 
         for k in range(len(self.pawns_w)):
-            if self.pawns_w[k].coordinates[1] == j:
+            if self.can_pawn_reach(i, j, self.pawns_w[k]):
                 self.pawns_w[k].coordinates[0] = i
                 break
         self.update_board()
