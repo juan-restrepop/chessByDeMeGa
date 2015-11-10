@@ -106,9 +106,14 @@ class ChessBoard(object):
             return True
 
     def can_rook_reach(self, i, j, rook):
+        # TODO: The rook should stop (or eat) if it encounters a piece on its path
         i_origin, j_origin = rook.coordinates
         return (i == i_origin) or (j == j_origin)
 
+    def can_bishop_reach(self, i, j, bishop):
+        # TODO: The bishop should stop (or eat) if it encounters a piece on its path
+        i_origin, j_origin = bishop.coordinates
+        return abs(i - i_origin) == abs(j - j_origin)
 
     def move_pawn_to(self, col, line):
         # we work only with white
@@ -133,7 +138,7 @@ class ChessBoard(object):
         for k in range(len(self.bishops_w)):
             # if square_color == str(self.get_bishop_walk_color(self.bishops_w[k])):
             #     self.bishops_w[k].coordinates = [i,j]
-            if abs(i - self.bishops_w[k].coordinates[0]) == abs(j - self.bishops_w[k].coordinates[1]):
+            if self.can_bishop_reach(i, j, self.bishops_w[k]):
                 self.bishops_w[k].coordinates = [i,j]
                 break
         self.update_board()
