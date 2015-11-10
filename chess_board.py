@@ -63,6 +63,12 @@ class ChessBoard(object):
         self.queen_b.append(pieces.Queen('b', [7, 3]))
         self.queen_w.append(pieces.Queen('w', [0, 3]))
 
+    def get_bishop_walk_color(self,some_bishop):
+        return self.get_square_color(some_bishop.coordinates[0],
+                                     some_bishop.coordinates[1])
+
+    def get_square_color(self,i,j):
+        return ((j + i) % 2)
 
     def initialize_board(self):
         self.grid = list()
@@ -70,6 +76,10 @@ class ChessBoard(object):
             self.grid.append(list())
             for j in range(0, 8):
                 self.grid[i].append(str((j + i) % 2))
+
+    def update_board(self):
+        self.initialize_board()
+        self.initialize_board_with_pieces()
 
     def print_board(self):
         board_string = ''
@@ -90,18 +100,26 @@ class ChessBoard(object):
         # we work only with white
         # TODO: Handle updates and initialization of board and grid.
         # TODO: Handle difference between empty_board and grid?
+
         i,j  = self.coord_board_to_coord_grid(col,line)
 
-        # Move the pawn
-        for which_pawn in range(len(self.pawns_w)):
-            if self.pawns_w[which_pawn].coordinates[1] == j:
-                self.pawns_w[which_pawn].coordinates[0] = i
+        for k in range(len(self.pawns_w)):
+            if self.pawns_w[k].coordinates[1] == j:
+                self.pawns_w[k].coordinates[0] = i
                 break
+        self.update_board()
+        return
 
-        self.initialize_board()
-        self.initialize_board_with_pieces()
-
-
+    def move_bishop_to(self, col, line):
+        # we work only with white
+        i,j  = self.coord_board_to_coord_grid(col,line)
+        square_color = str(self.get_square_color(i,j))
+        
+        for k in range(len(self.bishops_w)):
+            if square_color == str(self.get_bishop_walk_color(self.bishops_w[k])):
+                self.bishops_w[k].coordinates = [i,j]
+                break
+        self.update_board()
         return
 
     def coord_board_to_coord_grid(self,col,line):

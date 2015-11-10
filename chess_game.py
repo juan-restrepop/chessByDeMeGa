@@ -30,6 +30,8 @@ class ChessGame(object):
 
     def is_pawn(self, input_move):
         return input_move[0] in self.column_names
+    def is_bishop(self, input_move):
+        return input_move[0] == 'B'
         
     def is_main_piece(self, input_move):
         return input_move[0] in ['K','Q','N','B','R']
@@ -103,10 +105,8 @@ class ChessGame(object):
         if not self.are_coordinates_valid(move_to_col, move_to_line):
             print 'coordinates not valid try again'
             return True
-        ##----->
-        if self.is_pawn(input_move):
-            print "moving pawn"
-            self.board.move_pawn_to(move_to_col, move_to_line)
+
+        self.move_piece_to(input_move, move_to_col, move_to_line)
 
         # print accepted move
         is_pawn = self.is_pawn(input_move)
@@ -130,6 +130,17 @@ class ChessGame(object):
             return input_move[2], input_move[3] 
 
         return input_move[1], input_move[2]
+
+    def move_piece_to(self, input_move, move_to_col, move_to_line):
+           
+        if self.is_pawn(input_move):
+            print "moving pawn"
+            self.board.move_pawn_to(move_to_col, move_to_line)
+        elif self.is_bishop(input_move):
+            print "moving bishop"
+            self.board.move_bishop_to(move_to_col, move_to_line)
+        else:
+            print "not supported move"
 
     def print_move(self, is_pawn, is_captured, move_to_col, move_to_line):
         out_str  = ""
