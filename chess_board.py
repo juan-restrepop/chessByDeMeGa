@@ -208,16 +208,18 @@ class ChessBoard(object):
 
     def move_queen_to(self, col, line):
         #we work only with white
+
+        accepted_move = False
         i,j = self.coord_board_to_coord_grid(col, line)
 
         for k in range(len(self.queen_w)):
-            i_origin, j_origin = self.queen_w[k].coordinates
             if self.can_queen_reach(i,j,self.queen_w[k]):
                 self.queen_w[k].coordinates = [i,j]
+                accepted_move = True
                 break
 
         self.update_board()
-        return
+        return accepted_move
 
     def coord_board_to_coord_grid(self,col,line):
         columns_to_grid = {'a': 0,
