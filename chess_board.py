@@ -100,10 +100,15 @@ class ChessBoard(object):
         print board_string
 
     def can_pawn_reach(self, i, j, pawn):
-
+        # TODO: The pawn should only be able to move by 1 or 2 squares
         i_origin, j_origin = pawn.coordinates
         if j == j_origin:
             return True
+
+    def can_rook_reach(self, i, j, rook):
+        i_origin, j_origin = rook.coordinates
+        return (i == i_origin) or (j == j_origin)
+
 
     def move_pawn_to(self, col, line):
         # we work only with white
@@ -153,8 +158,7 @@ class ChessBoard(object):
         i,j  = self.coord_board_to_coord_grid(col,line)
 
         for k in range(len(self.rooks_w)):
-
-            if (i == self.rooks_w[k].coordinates[0]) or (j == self.rooks_w[k].coordinates[1]):
+            if self.can_rook_reach(i, j, self.rooks_w[k]):
                 self.rooks_w[k].coordinates = [i,j]
                 break
         self.update_board()
