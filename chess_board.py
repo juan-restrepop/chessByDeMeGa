@@ -153,6 +153,18 @@ class ChessBoard(object):
         self.update_board()
         return
 
+    def move_queen_to(self, col, line):
+        #we work only with white
+        i,j = self.coord_board_to_coord_grid(col, line)
+
+        for k in range(len(self.queen_w)):
+            i_origin, j_origin = self.queen_w[k].coordinates
+            if ((i == i_origin) or (j == j_origin)) or (abs(i - i_origin) == abs(j - j_origin)):
+                self.queen_w[k].coordinates = [i,j]
+                break
+        self.update_board()
+        return
+
     def coord_board_to_coord_grid(self,col,line):
         columns_to_grid = {'a': 0,
                            'b': 1,
