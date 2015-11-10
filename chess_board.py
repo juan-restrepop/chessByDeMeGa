@@ -139,6 +139,7 @@ class ChessBoard(object):
                 self.knights_w[k].coordinates = [i,j]
                 break
         self.update_board()
+        return
 
     def move_rook_to(self, col, line):
         # we work only with white
