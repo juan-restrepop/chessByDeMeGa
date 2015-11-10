@@ -143,14 +143,17 @@ class ChessBoard(object):
         # TODO: Handle updates and initialization of board and grid.
         # TODO: Handle difference between empty_board and grid?
 
+        accepted_move = False
+
         i, j = self.coord_board_to_coord_grid(col, line)
 
         for k in range(len(self.pawns_w)):
             if self.can_pawn_reach(i, j, self.pawns_w[k]):
                 self.pawns_w[k].coordinates[0] = i
+                accepted_move = True
                 break
         self.update_board()
-        return
+        return accepted_move
 
 
     def move_bishop_to(self, col, line):
