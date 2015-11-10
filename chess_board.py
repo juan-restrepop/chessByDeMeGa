@@ -182,11 +182,16 @@ class ChessBoard(object):
         i_origin, j_origin = bishop.coordinates
         return abs(i - i_origin) == abs(j - j_origin)
 
-    def can_knight_reach(selfself, i, j, knight):
+    def can_knight_reach(self, i, j, knight):
+        # TODO: The knight should eat if final square is occupied
         i_origin, j_origin = knight.coordinates
-        return (abs(i - i_origin) == 1) and (abs(j - j_origin) == 2) \
+
+        if self.is_square_free(i, j):
+            return (abs(i - i_origin) == 1) and (abs(j - j_origin) == 2) \
                 or \
                 (abs(i - i_origin) == 2) and (abs(j - j_origin) == 1)
+
+        return False
 
     def move_pawn_to(self, col, line):
         # we work only with white
