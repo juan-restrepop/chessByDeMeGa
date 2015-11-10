@@ -124,7 +124,7 @@ class ChessBoard(object):
 
         if ((abs(i - i_origin) == 1) and (abs(j - j_origin) <= 1) 
             or (abs(j - j_origin) == 1) and (abs(i - i_origin) <= 1)):
-            return True
+            return self.is_square_free(i,j)
         return False
 
     def can_queen_reach(self, i, j, queen):
