@@ -100,7 +100,7 @@ class ChessBoard(object):
         print board_string
 
     def can_pawn_reach(self, i, j, pawn):
-
+        # TODO: The pawn should only be able to move by 1 or 2 squares
         i_origin, j_origin = pawn.coordinates
         if j == j_origin:
             return True
@@ -121,6 +121,22 @@ class ChessBoard(object):
             return True
         return False
 
+
+    def can_rook_reach(self, i, j, rook):
+        # TODO: The rook should stop (or eat) if it encounters a piece on its path
+        i_origin, j_origin = rook.coordinates
+        return (i == i_origin) or (j == j_origin)
+
+    def can_bishop_reach(self, i, j, bishop):
+        # TODO: The bishop should stop (or eat) if it encounters a piece on its path
+        i_origin, j_origin = bishop.coordinates
+        return abs(i - i_origin) == abs(j - j_origin)
+
+    def can_knight_reach(selfself, i, j, knight):
+        i_origin, j_origin = knight.coordinates
+        return (abs(i - i_origin) == 1) and (abs(j - j_origin) == 2) \
+                or \
+                (abs(i - i_origin) == 2) and (abs(j - j_origin) == 1)
 
     def move_pawn_to(self, col, line):
         # we work only with white
@@ -145,7 +161,7 @@ class ChessBoard(object):
         for k in range(len(self.bishops_w)):
             # if square_color == str(self.get_bishop_walk_color(self.bishops_w[k])):
             #     self.bishops_w[k].coordinates = [i,j]
-            if abs(i - self.bishops_w[k].coordinates[0]) == abs(j - self.bishops_w[k].coordinates[1]):
+            if self.can_bishop_reach(i, j, self.bishops_w[k]):
                 self.bishops_w[k].coordinates = [i,j]
                 break
         self.update_board()
@@ -156,10 +172,7 @@ class ChessBoard(object):
         i,j = self.coord_board_to_coord_grid(col, line)
 
         for k in range(len(self.knights_w)):
-            i_origin, j_origin = self.knights_w[k].coordinates
-            if (abs(i - i_origin) == 1) and (abs(j - j_origin) == 2) \
-                or \
-                (abs(i - i_origin) == 2) and (abs(j - j_origin) == 1):
+            if self.can_knight_reach(i, j, self.knights_w[k]):
                 self.knights_w[k].coordinates = [i,j]
                 break
         self.update_board()
@@ -170,8 +183,7 @@ class ChessBoard(object):
         i,j  = self.coord_board_to_coord_grid(col,line)
 
         for k in range(len(self.rooks_w)):
-
-            if (i == self.rooks_w[k].coordinates[0]) or (j == self.rooks_w[k].coordinates[1]):
+            if self.can_rook_reach(i, j, self.rooks_w[k]):
                 self.rooks_w[k].coordinates = [i,j]
                 break
         self.update_board()
