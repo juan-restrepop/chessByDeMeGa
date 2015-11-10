@@ -142,23 +142,23 @@ class ChessGame(object):
     def move_piece_to(self, input_move, move_to_col, move_to_line):
            
         if self.is_pawn(input_move):
-            print "moving pawn"
             self.board.move_pawn_to(move_to_col, move_to_line)
+
         elif self.is_bishop(input_move):
-            print "moving bishop"
             self.board.move_bishop_to(move_to_col, move_to_line)
+        
         elif self.is_knight(input_move):
-            print "moving knight"
             self.board.move_knight_to(move_to_col, move_to_line)
+        
         elif self.is_rook(input_move):
-            print "moving rook"
             self.board.move_rook_to(move_to_col, move_to_line)
+        
         elif self.is_king(input_move):
-            print "moving king"
             self.board.move_king_to(move_to_col, move_to_line)
+        
         elif self.is_queen(input_move):
-            print "moving queen"
             self.board.move_queen_to(move_to_col, move_to_line)
+        
         else:
             print "not supported move"
 
