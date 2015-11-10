@@ -100,11 +100,17 @@ class ChessBoard(object):
         print board_string
 
     def can_pawn_reach(self, i, j, pawn):
-        # TODO: The pawn should only be able to move by 1 or 2 squares
+        # TODO: The pawn should only be able to move forward
+        # TODO: Requesting to leave the piece in place should not be considered a valid move
         i_origin, j_origin = pawn.coordinates
         if j == j_origin:
-            return True
-        return False
+            if i_origin == 1:
+                return abs(i - i_origin) <= 2
+            else:
+                return abs(i - i_origin) <= 1
+        else:
+            return False
+
 
     def can_king_reach(self, i, j, king):
         i_origin, j_origin = king.coordinates
