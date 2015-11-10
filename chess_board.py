@@ -89,7 +89,7 @@ class ChessBoard(object):
             board_string = board_string + ' ' + str(i+1) + '|'
             for j in range(0, 8):
                 board_string = board_string + ' ' + self.grid[i][j] 
-            board_string = board_string + ' |queen_w' + str(i+1) + ' '
+            board_string = board_string + ' | ' + str(i+1) + ' '
             if i == 1:
                 board_string = board_string + '  <- White pawns line'
             if i == 6:
@@ -139,6 +139,18 @@ class ChessBoard(object):
                 self.knights_w[k].coordinates = [i,j]
                 break
         self.update_board()
+
+    def move_rook_to(self, col, line):
+        # we work only with white
+        i,j  = self.coord_board_to_coord_grid(col,line)
+
+        for k in range(len(self.rooks_w)):
+
+            if (i == self.rooks_w[k].coordinates[0]) or (j == self.rooks_w[k].coordinates[1]):
+                self.rooks_w[k].coordinates = [i,j]
+                break
+        self.update_board()
+        return
 
     def coord_board_to_coord_grid(self,col,line):
         columns_to_grid = {'a': 0,
