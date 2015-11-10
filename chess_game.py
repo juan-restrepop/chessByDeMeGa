@@ -117,9 +117,7 @@ class ChessGame(object):
         self.move_piece_to(input_move, move_to_col, move_to_line)
 
         # print accepted move
-        is_pawn = self.is_pawn(input_move)
-        is_captured = self.piece_eats(input_move)
-        out_str = self.print_move(is_pawn, is_captured, move_to_col, move_to_line)
+        out_str = self.print_move(input_move, move_to_col, move_to_line)
 
         print("Your move is : " + input_move + '. ' + out_str)
 
@@ -142,34 +140,50 @@ class ChessGame(object):
     def move_piece_to(self, input_move, move_to_col, move_to_line):
            
         if self.is_pawn(input_move):
-            print "moving pawn"
             self.board.move_pawn_to(move_to_col, move_to_line)
+
         elif self.is_bishop(input_move):
-            print "moving bishop"
             self.board.move_bishop_to(move_to_col, move_to_line)
+        
         elif self.is_knight(input_move):
-            print "moving knight"
             self.board.move_knight_to(move_to_col, move_to_line)
+        
         elif self.is_rook(input_move):
-            print "moving rook"
             self.board.move_rook_to(move_to_col, move_to_line)
+        
         elif self.is_king(input_move):
-            print "moving king"
             self.board.move_king_to(move_to_col, move_to_line)
+        
         elif self.is_queen(input_move):
-            print "moving queen"
             self.board.move_queen_to(move_to_col, move_to_line)
+        
         else:
             print "not supported move"
 
-    def print_move(self, is_pawn, is_captured, move_to_col, move_to_line):
+    def print_move(self, input_move, move_to_col, move_to_line):
         out_str  = ""
-        if is_pawn:
-            out_str = "Move pawn"
-        else:
-            out_str = "Move not_pawn"
 
-        if is_captured: 
+        if self.is_pawn(input_move):
+            out_str = "Move pawn"
+
+        elif self.is_bishop(input_move):
+            out_str = "Move bishop"
+        
+        elif self.is_knight(input_move):
+            out_str = "Move knight"
+        
+        elif self.is_rook(input_move):
+            out_str = "Move rook"
+        
+        elif self.is_king(input_move):
+            out_str = "Move king"
+        
+        elif self.is_queen(input_move):
+            out_str = "Move queen"
+        else:
+            out_str = "not supported move. Merry Xmas"
+
+        if self.piece_eats(input_move):
             out_str = out_str + " and capture piece at (%s,%s)" % (move_to_col,move_to_line)
         else: 
             out_str = out_str + " to (%s,%s)" % (move_to_col, move_to_line)
