@@ -32,6 +32,14 @@ class ChessGame(object):
         return input_move[0] in self.column_names
     def is_bishop(self, input_move):
         return input_move[0] == 'B'
+    def is_rook(self,input_move):
+        return input_move[0] == 'R'
+    def is_knight(self,input_move):
+        return input_move[0] == 'N'
+    def is_queen(self,input_move):
+        return input_move[0] == 'Q'
+    def is_king(self,input_move):
+        return input_move[0] == 'K'
         
     def is_main_piece(self, input_move):
         return input_move[0] in ['K','Q','N','B','R']
