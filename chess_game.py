@@ -147,6 +147,12 @@ class ChessGame(object):
         elif self.is_bishop(input_move):
             print "moving bishop"
             self.board.move_bishop_to(move_to_col, move_to_line)
+        elif self.is_knight(input_move):
+            print "moving knight"
+            self.board.move_knight_to(move_to_col, move_to_line)
+        elif self.is_rook(input_move):
+            print "moving rook"
+            self.board.move_rook_to(move_to_col, move_to_line)
         else:
             print "not supported move"
 
