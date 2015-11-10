@@ -165,8 +165,23 @@ class ChessGame(object):
 
         if self.is_pawn(input_move):
             out_str = "Move pawn"
+
+        elif self.is_bishop(input_move):
+            out_str = "Move bishop"
+        
+        elif self.is_knight(input_move):
+            out_str = "Move knight"
+        
+        elif self.is_rook(input_move):
+            out_str = "Move rook"
+        
+        elif self.is_king(input_move):
+            out_str = "Move king"
+        
+        elif self.is_queen(input_move):
+            out_str = "Move queen"
         else:
-            out_str = "Move not_pawn"
+            out_str = "not supported move. Merry Xmas"
 
         if self.piece_eats(input_move):
             out_str = out_str + " and capture piece at (%s,%s)" % (move_to_col,move_to_line)
