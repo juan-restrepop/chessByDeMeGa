@@ -104,6 +104,16 @@ class ChessBoard(object):
         i_origin, j_origin = pawn.coordinates
         if j == j_origin:
             return True
+        return False
+
+    def can_king_reach(self, i, j, king):
+        i_origin, j_origin = king.coordinates
+
+        if ((abs(i - i_origin) == 1) and (abs(j - j_origin) <= 1) 
+            or (abs(j - j_origin) == 1) and (abs(i - i_origin) <= 1)):
+            return True
+        return False
+
 
     def move_pawn_to(self, col, line):
         # we work only with white
@@ -166,8 +176,9 @@ class ChessBoard(object):
 
         i_origin, j_origin = self.king_w[0].coordinates
 
-        if ((abs(i - i_origin) == 1) and (abs(j - j_origin) <= 1) 
-            or (abs(j - j_origin) == 1) and (abs(i - i_origin) <= 1)):
+        if self.can_king_reach(i, j, self.king_w[0]):
+        #if ((abs(i - i_origin) == 1) and (abs(j - j_origin) <= 1) 
+        #    or (abs(j - j_origin) == 1) and (abs(i - i_origin) <= 1)):
             self.king_w[0].coordinates = [i,j]
 
         self.update_board()
