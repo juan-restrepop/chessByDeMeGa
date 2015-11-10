@@ -100,7 +100,7 @@ class ChessBoard(object):
         print board_string
 
     def is_square_free(self, i, j):
-        return ( (self.grid[i][j] =='0') or (self.grid[i][j] =='1'))
+        return self.grid[i][j] in ['0', '1']
 
     def can_pawn_reach(self, i, j, pawn):
         # only works with white pawns
