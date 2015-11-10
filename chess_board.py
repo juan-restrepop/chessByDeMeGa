@@ -114,6 +114,13 @@ class ChessBoard(object):
             return True
         return False
 
+    def can_queen_reach(self, i, j, queen):
+        i_origin, j_origin = queen.coordinates
+        if (((i == i_origin) or (j == j_origin)) 
+            or (abs(i - i_origin) == abs(j - j_origin))):
+            return True
+        return False
+
 
     def move_pawn_to(self, col, line):
         # we work only with white
@@ -190,7 +197,7 @@ class ChessBoard(object):
 
         for k in range(len(self.queen_w)):
             i_origin, j_origin = self.queen_w[k].coordinates
-            if ((i == i_origin) or (j == j_origin)) or (abs(i - i_origin) == abs(j - j_origin)):
+            if self.can_queen_reach(i,j,self.queen_w[k]):
                 self.queen_w[k].coordinates = [i,j]
                 break
 
