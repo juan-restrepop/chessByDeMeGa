@@ -115,6 +115,12 @@ class ChessBoard(object):
         i_origin, j_origin = bishop.coordinates
         return abs(i - i_origin) == abs(j - j_origin)
 
+    def can_knight_reach(selfself, i, j, knight):
+        i_origin, j_origin = knight.coordinates
+        return (abs(i - i_origin) == 1) and (abs(j - j_origin) == 2) \
+                or \
+                (abs(i - i_origin) == 2) and (abs(j - j_origin) == 1)
+
     def move_pawn_to(self, col, line):
         # we work only with white
         # TODO: Handle updates and initialization of board and grid.
@@ -149,10 +155,7 @@ class ChessBoard(object):
         i,j = self.coord_board_to_coord_grid(col, line)
 
         for k in range(len(self.knights_w)):
-            i_origin, j_origin = self.knights_w[k].coordinates
-            if (abs(i - i_origin) == 1) and (abs(j - j_origin) == 2) \
-                or \
-                (abs(i - i_origin) == 2) and (abs(j - j_origin) == 1):
+            if self.can_knight_reach(i, j, self.knights_w[k]):
                 self.knights_w[k].coordinates = [i,j]
                 break
         self.update_board()
