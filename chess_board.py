@@ -158,6 +158,9 @@ class ChessBoard(object):
 
     def move_bishop_to(self, col, line):
         # we work only with white
+
+        accepted_move = False
+
         i,j  = self.coord_board_to_coord_grid(col,line)
         square_color = str(self.get_square_color(i,j))
         
@@ -166,31 +169,39 @@ class ChessBoard(object):
             #     self.bishops_w[k].coordinates = [i,j]
             if self.can_bishop_reach(i, j, self.bishops_w[k]):
                 self.bishops_w[k].coordinates = [i,j]
+                accepted_move = True
                 break
         self.update_board()
-        return
+        return accepted_move
 
     def move_knight_to(self, col, line):
         # we work only with white
+        accepted_move = False
+
         i,j = self.coord_board_to_coord_grid(col, line)
 
         for k in range(len(self.knights_w)):
             if self.can_knight_reach(i, j, self.knights_w[k]):
                 self.knights_w[k].coordinates = [i,j]
+
+                accepted_move = True
                 break
         self.update_board()
-        return
+        return accepted_move
 
     def move_rook_to(self, col, line):
         # we work only with white
+        accepted_move = False
+
         i,j  = self.coord_board_to_coord_grid(col,line)
 
         for k in range(len(self.rooks_w)):
             if self.can_rook_reach(i, j, self.rooks_w[k]):
                 self.rooks_w[k].coordinates = [i,j]
+                accepted_move = True
                 break
         self.update_board()
-        return
+        return accepted_move
 
     def move_king_to(self, col, line):
         # we work only with white
