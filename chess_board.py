@@ -180,7 +180,49 @@ class ChessBoard(object):
     def can_bishop_reach(self, i, j, bishop):
         # TODO: The bishop should stop (or eat) if it encounters a piece on its path
         i_origin, j_origin = bishop.coordinates
-        return abs(i - i_origin) == abs(j - j_origin)
+
+        if abs(i - i_origin) == abs(j - j_origin):
+            free_path = True
+
+            if (i > i_origin) and (j > j_origin):
+                # move down and to the right
+                temp_i = i_origin + 1
+                temp_j = j_origin + 1
+                while free_path and (temp_i <= i):
+                    free_path = self.is_square_free(temp_i, temp_j)
+                    temp_i = temp_i + 1
+                    temp_j = temp_j + 1
+
+            elif (i > i_origin) and (j < j_origin):
+                # move down and to the left
+                temp_i = i_origin + 1
+                temp_j = j_origin - 1
+                while free_path and (temp_i <= i):
+                    free_path = self.is_square_free(temp_i, temp_j)
+                    temp_i = temp_i + 1
+                    temp_j = temp_j - 1
+
+            elif (i < i_origin) and (j < j_origin):
+                # move up and to the left
+                temp_i = i_origin - 1
+                temp_j = j_origin - 1
+                while free_path and (temp_i >= i):
+                    free_path = self.is_square_free(temp_i, temp_j)
+                    temp_i = temp_i - 1
+                    temp_j = temp_j - 1
+
+            elif (i < i_origin) and (j > j_origin):
+                # move up and to the right
+                temp_i = i_origin - 1
+                temp_j = j_origin + 1
+                while free_path and (temp_i >= i):
+                    free_path = self.is_square_free(temp_i, temp_j)
+                    temp_i = temp_i - 1
+                    temp_j = temp_j + 1 
+        
+            return free_path
+                
+        return False                                                                                
 
     def can_knight_reach(self, i, j, knight):
         # TODO: The knight should eat if final square is occupied
