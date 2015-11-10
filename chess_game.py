@@ -117,9 +117,7 @@ class ChessGame(object):
         self.move_piece_to(input_move, move_to_col, move_to_line)
 
         # print accepted move
-        is_pawn = self.is_pawn(input_move)
-        is_captured = self.piece_eats(input_move)
-        out_str = self.print_move(is_pawn, is_captured, move_to_col, move_to_line)
+        out_str = self.print_move(input_move, move_to_col, move_to_line)
 
         print("Your move is : " + input_move + '. ' + out_str)
 
@@ -162,14 +160,15 @@ class ChessGame(object):
         else:
             print "not supported move"
 
-    def print_move(self, is_pawn, is_captured, move_to_col, move_to_line):
+    def print_move(self, input_move, move_to_col, move_to_line):
         out_str  = ""
-        if is_pawn:
+
+        if self.is_pawn(input_move):
             out_str = "Move pawn"
         else:
             out_str = "Move not_pawn"
 
-        if is_captured: 
+        if self.piece_eats(input_move):
             out_str = out_str + " and capture piece at (%s,%s)" % (move_to_col,move_to_line)
         else: 
             out_str = out_str + " to (%s,%s)" % (move_to_col, move_to_line)
