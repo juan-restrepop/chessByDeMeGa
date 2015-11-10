@@ -127,6 +127,19 @@ class ChessBoard(object):
         self.update_board()
         return
 
+    def move_knight_to(self, col, line):
+        # we work only with white
+        i,j = self.coord_board_to_coord_grid(col, line)
+
+        for k in range(len(self.knights_w)):
+            i_origin, j_origin = self.knights_w[k].coordinates
+            if (abs(i - i_origin) == 1) and (abs(j - j_origin) == 2) \
+                or \
+                (abs(i - i_origin) == 2) and (abs(j - j_origin) == 1):
+                self.knights_w[k].coordinates = [i,j]
+                break
+        self.update_board()
+
     def coord_board_to_coord_grid(self,col,line):
         columns_to_grid = {'a': 0,
                            'b': 1,
