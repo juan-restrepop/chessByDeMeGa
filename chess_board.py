@@ -119,7 +119,9 @@ class ChessBoard(object):
         square_color = str(self.get_square_color(i,j))
         
         for k in range(len(self.bishops_w)):
-            if square_color == str(self.get_bishop_walk_color(self.bishops_w[k])):
+            # if square_color == str(self.get_bishop_walk_color(self.bishops_w[k])):
+            #     self.bishops_w[k].coordinates = [i,j]
+            if abs(i - self.bishops_w[k].coordinates[0]) == abs(j - self.bishops_w[k].coordinates[1]):
                 self.bishops_w[k].coordinates = [i,j]
                 break
         self.update_board()
