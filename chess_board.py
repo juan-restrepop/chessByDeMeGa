@@ -113,6 +113,7 @@ class ChessBoard(object):
         self.update_board()
         return
 
+
     def move_bishop_to(self, col, line):
         # we work only with white
         i,j  = self.coord_board_to_coord_grid(col,line)
@@ -149,6 +150,19 @@ class ChessBoard(object):
             if (i == self.rooks_w[k].coordinates[0]) or (j == self.rooks_w[k].coordinates[1]):
                 self.rooks_w[k].coordinates = [i,j]
                 break
+        self.update_board()
+        return
+
+    def move_king_to(self, col, line):
+        # we work only with white
+        i,j = self.coord_board_to_coord_grid(col,line)
+
+        i_origin, j_origin = self.king_w[0].coordinates
+
+        if ((abs(i - i_origin) == 1) and (abs(j - j_origin) <= 1) 
+            or (abs(j - j_origin) == 1) and (abs(i - i_origin) <= 1)):
+
+            self.king_w[0].coordinates = [i,j]
         self.update_board()
         return
 
