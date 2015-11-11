@@ -31,14 +31,19 @@ class ChessGame(object):
 
     def is_pawn(self, input_move):
         return input_move[0] in self.column_names
+
     def is_bishop(self, input_move):
         return input_move[0] == 'B'
+
     def is_rook(self,input_move):
         return input_move[0] == 'R'
+
     def is_knight(self,input_move):
         return input_move[0] == 'N'
+
     def is_queen(self,input_move):
         return input_move[0] == 'Q'
+
     def is_king(self,input_move):
         return input_move[0] == 'K'
         
@@ -162,9 +167,8 @@ class ChessGame(object):
         
         elif self.is_queen(input_move):
             return self.board.move_queen_to(move_to_col, move_to_line)
-        
-        else:
-            return False
+
+        return False
 
     def print_move(self, input_move, move_to_col, move_to_line):
         out_str  = ""

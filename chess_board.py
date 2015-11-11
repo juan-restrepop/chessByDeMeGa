@@ -104,15 +104,23 @@ class ChessBoard(object):
         print board_string
 
 
+    def is_square_free(self, i, j):
+        return self.grid[i][j] in ['0', '1']
+
+
     def can_pawn_reach(self, i, j, pawn):
+        # only works with white pawns
         # TODO: The pawn should only be able to move forward
         # TODO: Requesting to leave the piece in place should not be considered a valid move
         i_origin, j_origin = pawn.coordinates
         if j == j_origin:
             if i_origin == 1:
-                return abs(i - i_origin) <= 2
+                if abs(i - i_origin) <=1:
+                    return self.is_square_free(i,j)
+                elif abs(i - i_origin) <=2:
+                    return self.is_square_free(i-1,j) and self.is_square_free(i,j)
             else:
-                return abs(i - i_origin) <= 1
+                return abs(i - i_origin) <= 1 and self.is_square_free(i,j)
         else:
             return False
 
@@ -121,31 +129,111 @@ class ChessBoard(object):
 
         if ((abs(i - i_origin) == 1) and (abs(j - j_origin) <= 1) 
             or (abs(j - j_origin) == 1) and (abs(i - i_origin) <= 1)):
-            return True
+            return self.is_square_free(i,j)
         return False
 
     def can_queen_reach(self, i, j, queen):
-        i_origin, j_origin = queen.coordinates
-        if (((i == i_origin) or (j == j_origin)) 
-            or (abs(i - i_origin) == abs(j - j_origin))):
-            return True
-        return False
+        return self.can_bishop_reach(i, j, queen) or self.can_rook_reach(i, j, queen)
 
     def can_rook_reach(self, i, j, rook):
-        # TODO: The rook should stop (or eat) if it encounters a piece on its path
+        # TODO: The rook should eat if final square is occupied
+        # TODO: Requesting to leave the piece in place should not be considered a valid move
         i_origin, j_origin = rook.coordinates
-        return (i == i_origin) or (j == j_origin)
+
+        free_path = True
+        if (i == i_origin):
+
+            if j > j_origin:
+                # rook moves to the right
+                temp_j = j_origin + 1
+                while free_path and (temp_j <= j):
+                    free_path = self.is_square_free(i, temp_j)
+                    temp_j = temp_j + 1
+
+            elif j < j_origin:
+                # rook moves to the left
+                temp_j = j_origin - 1
+                while free_path and (temp_j >= j):
+                    free_path = self.is_square_free(i, temp_j)
+                    temp_j = temp_j - 1
+
+        elif (j == j_origin):
+
+            if i > i_origin:
+                # rook moves down
+                temp_i = i_origin + 1
+                while free_path and (temp_i <= i):
+                    free_path = self.is_square_free(temp_i, j)
+                    temp_i = temp_i + 1
+
+            elif i < i_origin:
+                # rook moves up
+                temp_i = i_origin - 1
+                while free_path and (temp_i >= i):
+                    free_path = self.is_square_free(temp_i, j)
+                    temp_i = temp_i - 1
+        else:
+            return False
+
+        return free_path # to liberty
 
     def can_bishop_reach(self, i, j, bishop):
         # TODO: The bishop should stop (or eat) if it encounters a piece on its path
         i_origin, j_origin = bishop.coordinates
-        return abs(i - i_origin) == abs(j - j_origin)
 
-    def can_knight_reach(selfself, i, j, knight):
+        if abs(i - i_origin) == abs(j - j_origin):
+            free_path = True
+
+            if (i > i_origin) and (j > j_origin):
+                # move down and to the right
+                temp_i = i_origin + 1
+                temp_j = j_origin + 1
+                while free_path and (temp_i <= i):
+                    free_path = self.is_square_free(temp_i, temp_j)
+                    temp_i = temp_i + 1
+                    temp_j = temp_j + 1
+
+            elif (i > i_origin) and (j < j_origin):
+                # move down and to the left
+                temp_i = i_origin + 1
+                temp_j = j_origin - 1
+                while free_path and (temp_i <= i):
+                    free_path = self.is_square_free(temp_i, temp_j)
+                    temp_i = temp_i + 1
+                    temp_j = temp_j - 1
+
+            elif (i < i_origin) and (j < j_origin):
+                # move up and to the left
+                temp_i = i_origin - 1
+                temp_j = j_origin - 1
+                while free_path and (temp_i >= i):
+                    free_path = self.is_square_free(temp_i, temp_j)
+                    temp_i = temp_i - 1
+                    temp_j = temp_j - 1
+
+            elif (i < i_origin) and (j > j_origin):
+                # move up and to the right
+                temp_i = i_origin - 1
+                temp_j = j_origin + 1
+                while free_path and (temp_i >= i):
+                    free_path = self.is_square_free(temp_i, temp_j)
+                    temp_i = temp_i - 1
+                    temp_j = temp_j + 1 
+        
+            return free_path
+                
+        return False                                                                                
+
+    def can_knight_reach(self, i, j, knight):
+        # TODO: The knight should eat if final square is occupied
         i_origin, j_origin = knight.coordinates
-        return (abs(i - i_origin) == 1) and (abs(j - j_origin) == 2) \
+
+        if self.is_square_free(i, j):
+            return (abs(i - i_origin) == 1) and (abs(j - j_origin) == 2) \
                 or \
                 (abs(i - i_origin) == 2) and (abs(j - j_origin) == 1)
+
+        return False
 
 
     def move_pawn_to(self, col, line):
@@ -173,8 +261,6 @@ class ChessBoard(object):
         square_color = str(self.get_square_color(i,j))
         
         for k in range(len(self.bishops_w)):
-            # if square_color == str(self.get_bishop_walk_color(self.bishops_w[k])):
-            #     self.bishops_w[k].coordinates = [i,j]
             if self.can_bishop_reach(i, j, self.bishops_w[k]):
                 self.bishops_w[k].coordinates = [i,j]
                 accepted_move = True
