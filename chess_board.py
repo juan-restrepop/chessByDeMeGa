@@ -20,6 +20,7 @@ class ChessBoard(object):
         self.initialize_pieces()
         self.initialize_board_with_pieces()
 
+
     def get_all_pieces(self):
         return(self.pawns_w + self.pawns_b + \
                      self.king_w + self.king_b + \
@@ -28,11 +29,13 @@ class ChessBoard(object):
                      self.bishops_w + self.bishops_b + \
                      self.knights_w + self.knights_b)
 
-    def initialize_board_with_pieces(self):
-        for p in self.get_all_pieces():
-            rowCoord = p.coordinates[0]
-            colCoord = p.coordinates[1]
-            self.grid[rowCoord][colCoord] = p.kind
+
+    def initialize_board(self):
+        self.grid = list()
+        for i in range(0,8):
+            self.grid.append(list())
+            for j in range(0, 8):
+                self.grid[i].append(str((j + i) % 2))
 
     def initialize_pieces(self):
         for k in range(8):
@@ -63,6 +66,13 @@ class ChessBoard(object):
         self.queen_b.append(pieces.Queen('b', [7, 3]))
         self.queen_w.append(pieces.Queen('w', [0, 3]))
 
+    def initialize_board_with_pieces(self):
+        for p in self.get_all_pieces():
+            rowCoord = p.coordinates[0]
+            colCoord = p.coordinates[1]
+            self.grid[rowCoord][colCoord] = p.kind
+
+
     def get_bishop_walk_color(self,some_bishop):
         return self.get_square_color(some_bishop.coordinates[0],
                                      some_bishop.coordinates[1])
@@ -70,12 +80,6 @@ class ChessBoard(object):
     def get_square_color(self,i,j):
         return ((j + i) % 2)
 
-    def initialize_board(self):
-        self.grid = list()
-        for i in range(0,8):
-            self.grid.append(list())
-            for j in range(0, 8):
-                self.grid[i].append(str((j + i) % 2))
 
     def update_board(self):
         self.initialize_board()
@@ -99,6 +103,7 @@ class ChessBoard(object):
         board_string = board_string + '    a b c d e f g h \n'
         print board_string
 
+
     def can_pawn_reach(self, i, j, pawn):
         # TODO: The pawn should only be able to move forward
         # TODO: Requesting to leave the piece in place should not be considered a valid move
@@ -110,7 +115,6 @@ class ChessBoard(object):
                 return abs(i - i_origin) <= 1
         else:
             return False
-
 
     def can_king_reach(self, i, j, king):
         i_origin, j_origin = king.coordinates
@@ -126,7 +130,6 @@ class ChessBoard(object):
             or (abs(i - i_origin) == abs(j - j_origin))):
             return True
         return False
-
 
     def can_rook_reach(self, i, j, rook):
         # TODO: The rook should stop (or eat) if it encounters a piece on its path
@@ -144,6 +147,7 @@ class ChessBoard(object):
                 or \
                 (abs(i - i_origin) == 2) and (abs(j - j_origin) == 1)
 
+
     def move_pawn_to(self, col, line):
         # we work only with white
         # TODO: Handle 'en passant' capture
@@ -159,7 +163,6 @@ class ChessBoard(object):
                 break
         self.update_board()
         return accepted_move
-
 
     def move_bishop_to(self, col, line):
         # we work only with white
@@ -234,6 +237,7 @@ class ChessBoard(object):
 
         self.update_board()
         return accepted_move
+
 
     def coord_board_to_coord_grid(self,col,line):
         columns_to_grid = {'a': 0,

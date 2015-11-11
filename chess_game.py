@@ -28,6 +28,7 @@ class ChessGame(object):
             print "Castling or End of game" 
         return res
 
+
     def is_pawn(self, input_move):
         return input_move[0] in self.column_names
     def is_bishop(self, input_move):
@@ -43,6 +44,7 @@ class ChessGame(object):
         
     def is_main_piece(self, input_move):
         return input_move[0] in ['K','Q','N','B','R']
+
 
     def piece_eats(self, input_move):
         return (len(input_move)>1) and (input_move[1] == 'x')
@@ -90,6 +92,7 @@ class ChessGame(object):
     def are_coordinates_valid(self, col, line):
         return (line in self.line_names) and (col in self.column_names)
         
+
     def parse_user_move(self, input_move):
         # TODO: Handle ambiguities
         # TODO: Handle check, check-mate
@@ -124,6 +127,7 @@ class ChessGame(object):
 
         return True
 
+
     def parse_pawn_coordinates(self, input_move):
 
         if self.piece_eats(input_move):
@@ -137,6 +141,7 @@ class ChessGame(object):
             return input_move[2], input_move[3] 
 
         return input_move[1], input_move[2]
+
 
     def move_piece_to(self, input_move, move_to_col, move_to_line):
            
