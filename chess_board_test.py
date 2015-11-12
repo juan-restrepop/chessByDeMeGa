@@ -390,7 +390,7 @@ class TestChessBoard(unittest.TestCase):
         expected = True
         actual = b.knights_b[0].coordinates == [2, 7]
         self.assertEqual(expected, actual)
-        
+
 
     def test_white_pawn_movement(self):
         b = cb.ChessBoard()
@@ -504,7 +504,51 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_bishop_to(move[0],move[1])
             self.assertEqual(expected, actual)
 
+    def test_white_knight_movement(self):
+        b = cb.ChessBoard()
 
+        # test forbidden moves
+        b.clean_pieces()
+        b.initialize_single_piece('n', 'w', [4, 3])
+
+        expected = False
+        for move in [['d', '3'], ['d','5'], \
+                        ['c', '4'], ['e', '4'], \
+                        ['c', '5'], ['e', '5'], ['c', '3'], ['e', '3']]:
+            actual = b.move_knight_to(move[0], move[1])
+            self.assertEqual(expected, actual)
+
+        #test approved moves
+        expected = True
+
+        for move in [['b', '5'], ['f', '5'], \
+                     ['b', '3'], ['f', '3'], \
+                     ['c', '6'], ['e', '6'], \
+                     ['c', '2'], ['e', '2']]:
+            b.clean_pieces()
+            b.initialize_single_piece('n', 'w', [4, 3])
+
+            actual = b.move_knight_to(move[0], move[1])
+            self.assertEqual(expected, actual)
+
+    def test_white_knight_blocked_movement(self):
+        b = cb.ChessBoard()
+
+        ## Initialize white knight in 'b1' and white pawns in 'd2' and 'b2'
+        b.clean_pieces()
+        b.initialize_single_piece('n', 'w', [7, 1])
+        b.initialize_single_piece('p', 'w', [6, 3])
+        b.initialize_single_piece('p', 'w', [6, 1])
+
+        # test blocked move
+        expected = False
+        actual = b.move_knight_to('d', '4')
+        self.assertEqual(expected, actual)
+
+        # test approved move
+        expected = True
+        actual = b.move_knight_to('a', '3')
+        self.assertEqual(expected, actual)
 
 if __name__ == '__main__':
     unittest.main()
