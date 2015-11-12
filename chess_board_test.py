@@ -355,6 +355,7 @@ class TestChessBoard(unittest.TestCase):
         actual = b.bishops_b[0].coordinates == [5, 2]
         self.assertEqual(expected, actual)
 
+
     def test_white_pawn_movement(self):
         b = cb.ChessBoard()
 
@@ -439,6 +440,43 @@ class TestChessBoard(unittest.TestCase):
 
         expected = False
         actual = b.move_pawn_to('d', '4')
+
+    def test_initialize_single_knight(self):
+        b = cb.ChessBoard()
+
+        # Initialization of single white knight
+        b.clean_pieces()
+        b.initialize_single_piece('n', 'w', [7,2])
+        # Test for pieces length
+        expected = 1
+        actual = len(b.get_all_pieces())
+        self.assertEqual(expected, actual)
+        # Test for  white knights length
+        expected = True
+        actual = len(b.knights_w) == 1
+        self.assertEqual(expected, actual)
+        # Test for white knights coordinates
+        expected = True
+        actual = b.knights_w[0].coordinates == [7, 2]
+        self.assertEqual(expected, actual)
+
+        b.clean_pieces()
+        # Initialization of single black knight
+        b.clean_pieces()
+        b.initialize_single_piece('n', 'b', [2,7])
+        # Test for pieces length
+        expected = 1
+        actual = len(b.get_all_pieces())
+        self.assertEqual(expected, actual)
+        # Test for black knights length
+        expected = True
+        actual = len(b.knights_b) == 1
+        self.assertEqual(expected, actual)
+        # Test for black knights coordinates
+        expected = True
+        actual = b.knights_b[0].coordinates == [2, 7]
+        self.assertEqual(expected, actual)
+
 
 if __name__ == '__main__':
     unittest.main()
