@@ -11,7 +11,8 @@
 
 #### Test:
 
-To run test do: `python chess_game_test.py -v`
+To run test on chess_game do: `python chess_game_test.py -v`
+To run test on chess_board do: `python chess_board_test.py -v`
 
 #### Launch basic game:
 
