@@ -3,7 +3,7 @@ import chess_board as cb
 
 class TestChessBoard(unittest.TestCase):
     
-    def test_initialize_board_object(self):
+    def test_initialize_board_object_number_of_pieces(self):
         b = cb.ChessBoard()
         
         expected = 32
