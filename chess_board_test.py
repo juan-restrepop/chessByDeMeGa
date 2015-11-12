@@ -147,14 +147,40 @@ class TestChessBoard(unittest.TestCase):
         actual = len(b.get_all_pieces())
         self.assertEqual(expected, actual)
 
-    def test_initialize_single_piece(self):
+    def test_initialize_single_pawn(self):
         b = cb.ChessBoard()
-        b.clean_pieces()
 
-        expected = True
-        actual = True
+        # Initialization of single white pawn
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', [6, 0])
+
+        expected = 1
+        actual = len(b.get_all_pieces())
         self.assertEqual(expected, actual)
 
+        expected = True
+        actual = len(b.pawns_w) == 1
+        self.assertEqual(expected, actual)
+
+        expected = True
+        actual = b.pawns_w[0].coordinates == [6, 0]
+        self.assertEqual(expected, actual)
+
+        # Initialization of single black pawn
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'b', [1, 0])
+
+        expected = 1
+        actual = len(b.get_all_pieces())
+        self.assertEqual(expected, actual)
+
+        expected = True
+        actual = len(b.pawns_b) == 1
+        self.assertEqual(expected, actual)
+
+        expected = True
+        actual = b.pawns_b[0].coordinates == [1, 0]
+        self.assertEqual(expected, actual)
 
 if __name__ == '__main__':
     unittest.main()
