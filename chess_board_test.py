@@ -390,7 +390,7 @@ class TestChessBoard(unittest.TestCase):
         expected = True
         actual = b.knights_b[0].coordinates == [2, 7]
         self.assertEqual(expected, actual)
-        
+
 
     def test_white_pawn_movement(self):
         b = cb.ChessBoard()
@@ -476,6 +476,33 @@ class TestChessBoard(unittest.TestCase):
 
         expected = False
         actual = b.move_pawn_to('d', '4')
+
+    def test_white_knight_movement(self):
+        b = cb.ChessBoard()
+
+        # test forbidden moves
+        b.clean_pieces()
+        b.initialize_single_piece('n', 'w', [4, 3])
+
+        expected = False
+        for move in [['d', '3'], ['d','5'], \
+                        ['c', '4'], ['e', '4'], \
+                        ['c', '5'], ['e', '5'], ['c', '3'], ['e', '3']]:
+            actual = b.move_knight_to(move[0], move[1])
+            self.assertEqual(expected, actual)
+
+        #test approved moves
+        expected = True
+
+        for move in [['b', '5'], ['f', '5'], \
+                     ['b', '3'], ['f', '3'], \
+                     ['c', '6'], ['e', '6'], \
+                     ['c', '2'], ['e', '2']]:
+            b.clean_pieces()
+            b.initialize_single_piece('n', 'w', [4, 3])
+
+            actual = b.move_knight_to(move[0], move[1])
+            self.assertEqual(expected, actual)
 
 
 
