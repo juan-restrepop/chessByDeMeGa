@@ -185,6 +185,7 @@ class TestChessBoard(unittest.TestCase):
     def test_initialize_single_rook(self):
         b = cb.ChessBoard()
 
+        # Test initialize single white rook
         b.clean_pieces()
         b.initialize_single_piece('r', 'w', [3,3])
 
@@ -198,6 +199,22 @@ class TestChessBoard(unittest.TestCase):
 
         expected = True
         actual = b.rooks_w[0].coordinates == [3, 3]
+        self.assertEqual(expected, actual)
+
+        # Test initialize single black rook
+        b.clean_pieces()
+        b.initialize_single_piece('r', 'b', [3, 3])
+
+        expected = 1
+        actual = len(b.get_all_pieces())
+        self.assertEqual(expected, actual)
+
+        expected = True
+        actual = len(b.rooks_b) == 1
+        self.assertEqual(expected, actual)
+
+        expected = True
+        actual = b.rooks_b[0].coordinates == [1, 0]
         self.assertEqual(expected, actual)
 
 
