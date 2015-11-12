@@ -538,6 +538,17 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_rook_to(move[0], move[1])
             self.assertEqual(expected, actual)
 
+        # Test approved moves
+        expected = True
+        for move in [['f','4'], ['g', '4'], \
+                     ['e','7'], ['e', '8'], \
+                     ['b', '4'], \
+                     ['e', '1']]:
+            b.clean_pieces()
+            b.initialize_single_piece('r', 'w', [4, 4])
+            actual = b.move_rook_to(move[0], move[1])
+            self.assertEqual(expected, actual)
+
 
 
 
