@@ -252,6 +252,40 @@ class TestChessBoard(unittest.TestCase):
         actual = b.queen_b[0].coordinates == [4, 3]
         self.assertEqual(expected, actual)
 
+    def test_initialize_single_bishop(self):
+        b = cb.ChessBoard()
+
+        # Initialization of single white bishop
+        b.clean_pieces()
+        b.initialize_single_piece('b', 'w', [2, 5])
+
+        expected = 1
+        actual = len(b.get_all_pieces())
+        self.assertEqual(expected, actual)
+
+        expected = True
+        actual = len(b.bishops_w) == 1
+        self.assertEqual(expected, actual)
+
+        expected = True
+        actual = b.bishops_w[0].coordinates == [2, 5]
+        self.assertEqual(expected, actual)
+
+        # Initialization of single black bishop
+        b.clean_pieces()
+        b.initialize_single_piece('b', 'b', [5, 2])
+
+        expected = 1
+        actual = len(b.get_all_pieces())
+        self.assertEqual(expected, actual)
+
+        actual = len(b.bishops_b) == 1
+        self.assertEqual(expected, actual)
+
+        expected = True
+        actual = b.bishops_b[0].coordinates == [5, 2]
+        self.assertEqual(expected, actual)
+
 
 if __name__ == '__main__':
     unittest.main()
