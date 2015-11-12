@@ -175,7 +175,7 @@ class ChessBoard(object):
             elif i_origin - i == 1:
                 return self.is_square_free(i,j)
             elif i_origin - i == 2:
-                return self.is_square_free(i-1,j) and self.is_square_free(i,j) and i_origin == 6
+                return self.is_square_free(i+1,j) and self.is_square_free(i,j) and i_origin == 6
             else:
                 return False
         else:
