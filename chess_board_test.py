@@ -34,8 +34,6 @@ class TestChessBoard(unittest.TestCase):
         actual = len(b.bishops_b)
         self.assertEqual(expected, actual)
 
-
-
     def test_get_square_color(self):
         
         b = cb.ChessBoard()
@@ -48,7 +46,6 @@ class TestChessBoard(unittest.TestCase):
         expected = 1
         actual = b.get_square_color(1, 0)
         self.assertEqual(expected, actual)
-        print "square test", len(b.get_all_pieces())
 
     def test_clean_pieces(self):
         b = cb.ChessBoard()
@@ -58,18 +55,14 @@ class TestChessBoard(unittest.TestCase):
         b.clean_pieces()
         actual = len(b.get_all_pieces())
         self.assertEqual(expected, actual)
-        print "clean test", len(b.get_all_pieces())
-
 
     def test_initialize_single_piece(self):
         b = cb.ChessBoard()
         b.clean_pieces()
 
-
         expected = True
         actual = True
-        self.assertEqual(expected, actual) 
-        print "initialize test", len(b.get_all_pieces())  
+        self.assertEqual(expected, actual)
 
 
 if __name__ == '__main__':
