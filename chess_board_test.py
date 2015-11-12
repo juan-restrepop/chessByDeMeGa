@@ -3,12 +3,27 @@ import chess_board as cb
 
 class TestChessBoard(unittest.TestCase):
     
-    def test_initialize_board_object(self):
+    def test_initialize_board_object_number_of_pieces(self):
         b = cb.ChessBoard()
         
         expected = 32
         actual = len(b.get_all_pieces())
         self.assertEqual(expected, actual)
+
+        expected = 2
+        for knights in [b.knights_w, b.knights_b]:
+            actual = len(knights)
+            self.assertEqual(expected, actual)
+
+        expected = 1
+        for queens in [b.queen_w, b.queen_b]:
+            actual = len(queens)
+            self.assertEqual(expected, actual)
+
+        expected = 1
+        for kings in [b.king_w, b.king_b]:
+            actual = len(kings)
+            self.assertEqual(expected, actual)
 
         expected = 8 
         actual = len(b.pawns_w)
@@ -33,6 +48,17 @@ class TestChessBoard(unittest.TestCase):
         expected = 2 
         actual = len(b.bishops_b)
         self.assertEqual(expected, actual)
+
+    def test_initialize_board_object_position_of_pieces(self):
+        b = cb.ChessBoard()
+
+        expected = True
+        for pawn in b.pawns_w:
+            positions = []
+            for col in range(8):
+                positions.append([1, col])
+            actual = pawn.coordinates in positions
+            self.assertEqual(expected, actual)
 
     def test_get_square_color(self):
         
