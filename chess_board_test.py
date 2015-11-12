@@ -477,7 +477,7 @@ class TestChessBoard(unittest.TestCase):
         expected = False
         actual = b.move_pawn_to('d', '4')
 
-    def test_bishop_to(self):
+    def test_bishop_movement(self):
         b = cb.ChessBoard()
         ## Initialize white bishop on 'e4'
         # test accepted moves : down-left,down-right,up-left,up-right
@@ -489,6 +489,21 @@ class TestChessBoard(unittest.TestCase):
             expected = True
             actual = b.move_bishop_to(move[0],move[1])
             self.assertEqual(expected, actual)
+
+    def test_bishop_blocked_movement(self):
+
+        b = cb.ChessBoard()
+        ## Initialize white bishop on 'e4'
+        # test not accepted moves : down-left,down-right,up-left,up-right
+        for move,blocking_piece in zip([['d','3'],['f','3'],['c','6'],['h','7']],
+                                        [[5,3], [5,5], [3,3],[2,6]]):
+            b.clean_pieces()
+            b.initialize_single_piece('b', 'w', [4, 4])
+            b.initialize_single_piece('p', 'b', blocking_piece)
+            expected = False
+            actual = b.move_bishop_to(move[0],move[1])
+            self.assertEqual(expected, actual)
+
 
 
 if __name__ == '__main__':
