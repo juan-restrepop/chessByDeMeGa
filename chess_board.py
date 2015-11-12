@@ -37,6 +37,60 @@ class ChessBoard(object):
             for j in range(0, 8):
                 self.grid[i].append(str((j + i) % 2))
 
+    def clean_pieces(self):
+        self.pawns_w = list()
+        self.pawns_b = list()
+        self.rooks_w = list()
+        self.rooks_b = list()
+        self.bishops_w = list()
+        self.bishops_b = list()
+        self.knights_w = list()
+        self.knights_b = list()
+        self.king_w = list()
+        self.king_b = list()
+        self.queen_w = list()
+        self.queen_b = list()
+
+        self.update_board()
+
+    def initialize_single_piece(self, kind, color, coordinates):
+        dic_piece_to_piece_lists = {'wp': self.pawns_w,
+                                    'bp': self.pawns_b,
+                                    'wr': self.pawns_w,
+                                    'br': self.pawns_w,
+                                    'wb': self.pawns_w,
+                                    'bb': self.pawns_w,
+                                    'wn': self.pawns_w,
+                                    'bn': self.pawns_w,
+                                    'wq': self.pawns_w,
+                                    'bq': self.pawns_w,
+                                    'wk': self.pawns_w,
+                                    'bk': self.pawns_w}
+        if not(\
+                        kind in ['p', 'k', 'q', 'b', 'r', 'n'] and \
+                        color in ['w', 'b'] and \
+                        coordinates[0] in range(8) and \
+                        coordinates[1] in range(8)\
+
+                  ):
+            print 'That piece or that board coordinate is not valid'
+
+        else:
+            if kind == 'p':
+                dic_piece_to_piece_lists[color + kind].append(pieces.Pawn(color, coordinates))
+            elif kind == 'r':
+                dic_piece_to_piece_lists[color + kind].append(pieces.Rook(color, coordinates))
+            elif kind == 'n':
+                dic_piece_to_piece_lists[color + kind].append(pieces.Knight(color, coordinates))
+            elif kind == 'b':
+                dic_piece_to_piece_lists[color + kind].append(pieces.Bishop(color, coordinates))
+            elif kind == 'q':
+                dic_piece_to_piece_lists[color + kind].append(pieces.Queen(color, coordinates))
+            elif kind == 'k':
+                dic_piece_to_piece_lists[color + kind].append(pieces.King(color, coordinates))
+
+        self.update_board()
+
     def initialize_pieces(self):
         for k in range(8):
             self.pawns_w.append(pieces.Pawn('w', [1, k]))
