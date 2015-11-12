@@ -390,6 +390,15 @@ class ChessBoard(object):
                            'f': 5,
                            'g': 6,
                            'h': 7}
-        return (int(line)-1 ,columns_to_grid[col])
+
+        lines_to_grid = {'8': 0,
+                         '7': 1,
+                         '6': 2,
+                         '5': 3,
+                         '4': 4,
+                         '3': 5,
+                         '2': 6,
+                         '1': 7}
+        return (lines_to_grid[line] ,columns_to_grid[col])
 
 
