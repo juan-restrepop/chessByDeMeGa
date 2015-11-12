@@ -165,18 +165,19 @@ class ChessBoard(object):
 
 
     def can_pawn_reach(self, i, j, pawn):
-        # only works with white pawns
-        # TODO: The pawn should only be able to move forward
-        # TODO: Requesting to leave the piece in place should not be considered a valid move
+        # TODO: should work for black pawns as well
+
         i_origin, j_origin = pawn.coordinates
+
         if j == j_origin:
-            if i_origin == 1:
-                if abs(i - i_origin) <=1:
-                    return self.is_square_free(i,j)
-                elif abs(i - i_origin) <=2:
-                    return self.is_square_free(i-1,j) and self.is_square_free(i,j)
+            if i >= i_origin:
+                return False
+            elif i_origin - i == 1:
+                return self.is_square_free(i,j)
+            elif i_origin - i == 2:
+                return self.is_square_free(i-1,j) and self.is_square_free(i,j) and i_origin == 6
             else:
-                return abs(i - i_origin) <= 1 and self.is_square_free(i,j)
+                return False
         else:
             return False
 
