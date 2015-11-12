@@ -10,6 +10,21 @@ class TestChessBoard(unittest.TestCase):
         actual = len(b.get_all_pieces())
         self.assertEqual(expected, actual)
 
+        expected = 2
+        for knights in [b.knights_w, b.knights_b]:
+            actual = len(knights)
+            self.assertEqual(expected, actual)
+
+        expected = 1
+        for queens in [b.queen_w, b.queen_b]:
+            actual = len(queens)
+            self.assertEqual(expected, actual)
+
+        expected = 1
+        for kings in [b.king_w, b.king_b]:
+            actual = len(kings)
+            self.assertEqual(expected, actual)
+
 
     def test_get_square_color(self):
         
