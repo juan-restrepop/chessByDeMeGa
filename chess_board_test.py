@@ -125,6 +125,7 @@ class TestChessBoard(unittest.TestCase):
             actual = king.coordinates == [7, 4]
             self.assertEqual(expected, actual)
 
+
     def test_get_square_color(self):
         
         b = cb.ChessBoard()
@@ -138,6 +139,7 @@ class TestChessBoard(unittest.TestCase):
         actual = b.get_square_color(1, 0)
         self.assertEqual(expected, actual)
 
+
     def test_clean_pieces(self):
         b = cb.ChessBoard()
 
@@ -146,6 +148,7 @@ class TestChessBoard(unittest.TestCase):
         b.clean_pieces()
         actual = len(b.get_all_pieces())
         self.assertEqual(expected, actual)
+
 
     def test_initialize_single_pawn(self):
         b = cb.ChessBoard()
