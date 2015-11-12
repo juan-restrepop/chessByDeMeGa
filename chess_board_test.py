@@ -355,6 +355,33 @@ class TestChessBoard(unittest.TestCase):
         actual = b.bishops_b[0].coordinates == [5, 2]
         self.assertEqual(expected, actual)
 
+    def test_white_pawn_movement(self):
+        b = cb.ChessBoard()
+
+        ## Initialize white pawn on 'd2'
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', [6, 3])
+
+        # Test forbidden forward-diagonal moves
+        expected = False
+        for move in [['e','3'], ['c','3']]:
+            actual = b.move_pawn_to(move[0], move[1])
+            self.assertEqual(expected, actual)
+
+        # Test forbidden lateral moves
+        expected = False
+        for move in [['e','2'], ['c','2']]:
+            actual = b.move_pawn_to(move[0], move[1])
+            self.assertEqual(expected, actual)
+
+        # Test forbidden backwards moves
+        expected = False
+        for move in [['e','1'], ['c','3'], ['d', '1']]:
+            actual = b.move_pawn_to(move[0], move[1])
+            self.assertEqual(expected, actual)
+
+
+
 
 if __name__ == '__main__':
     unittest.main()
