@@ -53,6 +53,14 @@ class TestChessBoard(unittest.TestCase):
         b = cb.ChessBoard()
 
         # black pieces
+        expected = True
+        for pawn in b.pawns_b:
+            positions = []
+            for col in range(8):
+                positions.append([6, col])
+            actual = pawn.coordinates in positions
+            self.assertEqual(expected, actual)
+
         expected = True 
         for rook in b.rooks_b:
             positions = [[7,0],[7,7]]
