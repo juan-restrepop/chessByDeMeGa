@@ -102,7 +102,7 @@ class TestChessBoard(unittest.TestCase):
 
         expected = True
         for rook in b.rooks_w:
-            actual = rook.coordinates in [ [0, 0], [0,7]]
+            actual = rook.coordinates in [ [7, 0], [7,7]]
             self.assertEqual(expected, actual)
 
         expected = True
