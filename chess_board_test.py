@@ -439,7 +439,7 @@ class TestChessBoard(unittest.TestCase):
 
         expected = False
         actual = b.move_pawn_to('d', '4')
-        
+
 if __name__ == '__main__':
     unittest.main()
 
