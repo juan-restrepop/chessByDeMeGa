@@ -362,6 +362,7 @@ class TestChessBoard(unittest.TestCase):
         b.clean_pieces()
         b.initialize_single_piece('p', 'w', [6, 3])
 
+        ## Test forbidden moves
         # Test forbidden forward-diagonal moves
         expected = False
         for move in [['e','3'], ['c','3']]:
@@ -380,6 +381,44 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_pawn_to(move[0], move[1])
             self.assertEqual(expected, actual)
 
+        # Test forbidden forward move longer than 2
+        expected = False
+        actual = b.move_pawn_to('d', '5')
+        self.assertEqual(expected, actual)
+
+        ## Test approved moves if initial position
+        # simple initial move
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', [6, 3])
+
+        expected = True
+        actual = b.move_pawn_to('d','3')
+        self.assertEqual(expected, actual)
+
+        # double initial move
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', [6, 3])
+
+        expected = True
+        actual = b.move_pawn_to('d','4')
+        self.assertEqual(expected, actual)
+
+        ## Test approved moves
+        # simple move
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', [4, 3])
+
+        expected = True
+        actual = b.move_pawn_to('d','5')
+        self.assertEqual(expected, actual)
+
+        # double move
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', [4, 3])
+
+        expected = False
+        actual = b.move_pawn_to('d','6')
+        self.assertEqual(expected, actual)
 
 
 
