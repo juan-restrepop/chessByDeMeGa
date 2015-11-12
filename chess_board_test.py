@@ -420,8 +420,26 @@ class TestChessBoard(unittest.TestCase):
         actual = b.move_pawn_to('d','6')
         self.assertEqual(expected, actual)
 
+    def test_white_pawn_blocked_movement(self):
+        b = cb.ChessBoard()
 
+        ## Initialize white pawn on 'd2' and black knight on 'd3'
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', [6, 3])
+        b.initialize_single_piece('n', 'b', [5, 3])
 
+        expected = False
+        actual = b.move_pawn_to('d', '3')
+        self.assertEqual(expected, actual)
+
+        ## Initialize white pawn on 'd2' and black knight on 'd3'
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', [6, 3])
+        b.initialize_single_piece('n', 'b', [5, 3])
+
+        expected = False
+        actual = b.move_pawn_to('d', '4')
+        
 if __name__ == '__main__':
     unittest.main()
 
