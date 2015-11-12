@@ -57,37 +57,37 @@ class TestChessBoard(unittest.TestCase):
         for pawn in b.pawns_b:
             positions = []
             for col in range(8):
-                positions.append([6, col])
+                positions.append([1, col])
             actual = pawn.coordinates in positions
             self.assertEqual(expected, actual)
 
         expected = True 
         for rook in b.rooks_b:
-            positions = [[7,0],[7,7]]
+            positions = [[0,0],[0,7]]
             actual = rook.coordinates in positions
             self.assertEqual(expected, actual)
 
         expected = True
         for knight in b.knights_b:
-            positions = [[7,1],[7,6]]
+            positions = [[0,1],[0,6]]
             actual = knight.coordinates in positions
             self.assertEqual(expected, actual)
 
         expected = True
         for bishop in b.bishops_b:
-            positions = [[7,2],[7,5]]
+            positions = [[0,2],[0,5]]
             actual = bishop.coordinates in positions
             self.assertEqual(expected, actual)
 
         expected = True
         for queen in b.queen_b:
-            position = [7,3]
+            position = [0,3]
             actual = queen.coordinates == position
             self.assertEqual(expected, actual)
 
         expected = True
         for king in b.king_b:
-            position = [7,4]
+            position = [0,4]
             actual = king.coordinates == position
             self.assertEqual(expected, actual)
 
@@ -96,7 +96,7 @@ class TestChessBoard(unittest.TestCase):
         for pawn in b.pawns_w:
             positions = []
             for col in range(8):
-                positions.append([1, col])
+                positions.append([6, col])
             actual = pawn.coordinates in positions
             self.assertEqual(expected, actual)
 
@@ -107,22 +107,22 @@ class TestChessBoard(unittest.TestCase):
 
         expected = True
         for knight in b.knights_w:
-            actual = knight.coordinates in [ [0, 1], [0,6]]
+            actual = knight.coordinates in [ [7, 1], [7,6]]
             self.assertEqual(expected, actual)
 
         expected = True
         for bishop in b.bishops_w:
-            actual = bishop.coordinates in [ [0, 2], [0,5]]
+            actual = bishop.coordinates in [ [7, 2], [7,5]]
             self.assertEqual(expected, actual)
 
         expected = True
         for queen in b.queen_w:
-            actual = queen.coordinates == [0, 3]
+            actual = queen.coordinates == [7, 3]
             self.assertEqual(expected, actual)
 
         expected = True
         for king in b.king_w:
-            actual = king.coordinates == [0, 4]
+            actual = king.coordinates == [7, 4]
             self.assertEqual(expected, actual)
 
     def test_get_square_color(self):
