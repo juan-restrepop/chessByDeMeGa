@@ -229,7 +229,6 @@ class TestChessBoard(unittest.TestCase):
         actual = b.rooks_b[0].coordinates == [2, 2]
         self.assertEqual(expected, actual)
 
-
     def test_initialize_single_queen(self):
         b = cb.ChessBoard()
 
@@ -316,33 +315,39 @@ class TestChessBoard(unittest.TestCase):
     def test_initialize_single_bishop(self):
         b = cb.ChessBoard()
 
-        # Initialization of single white bishop
+        ## Initialization of single white bishop
         b.clean_pieces()
         b.initialize_single_piece('b', 'w', [2, 5])
 
+        # Test if initialization of only 1 piece
         expected = 1
         actual = len(b.get_all_pieces())
         self.assertEqual(expected, actual)
 
+        # Test if initialized piece is a white bishop
         expected = True
         actual = len(b.bishops_w) == 1
         self.assertEqual(expected, actual)
 
+        # Test if white bishop in the right position
         expected = True
         actual = b.bishops_w[0].coordinates == [2, 5]
         self.assertEqual(expected, actual)
 
-        # Initialization of single black bishop
+        ## Initialization of single black bishop
         b.clean_pieces()
         b.initialize_single_piece('b', 'b', [5, 2])
 
+        # Test if initialization of only 1 piece
         expected = 1
         actual = len(b.get_all_pieces())
         self.assertEqual(expected, actual)
 
+        # Test if initialized piece is a black bishop
         actual = len(b.bishops_b) == 1
         self.assertEqual(expected, actual)
 
+        # Test if black bishop in the right position
         expected = True
         actual = b.bishops_b[0].coordinates == [5, 2]
         self.assertEqual(expected, actual)
