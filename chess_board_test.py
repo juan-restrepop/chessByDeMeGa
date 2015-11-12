@@ -523,6 +523,21 @@ class TestChessBoard(unittest.TestCase):
         actual = b.move_knight_to('a', '3')
         self.assertEqual(expected, actual)
 
+    def test_white_rook_movement(self):
+        b = cb.ChessBoard()
+
+        # We initialize white rook in 'e4'
+
+        # Test forbidden moves
+        b.clean_pieces()
+        b.initialize_single_piece('r', 'w', [4, 4])
+
+        expected = False
+        for move in [['d', '3'], ['c', '2'], \
+                     ['f','5'], ['g', '6']]:
+            actual = b.move_rook_to(move[0], move[1])
+            self.assertEqual(expected, actual)
+
 
 
 
