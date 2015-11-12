@@ -151,9 +151,9 @@ class ChessBoard(object):
                 board_string = board_string + ' ' + self.grid[i][j] 
             board_string = board_string + ' | ' + str(8 - i) + ' '
             if i == 1:
-                board_string = board_string + '  <- White pawns line'
-            if i == 6:
                 board_string = board_string + '  <- Black pawns line'
+            if i == 6:
+                board_string = board_string + '  <- White pawns line'
             board_string = board_string + '\n'
         board_string = board_string + '    _______________ \n'
         board_string = board_string + '    a b c d e f g h \n'
