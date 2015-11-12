@@ -60,6 +60,31 @@ class TestChessBoard(unittest.TestCase):
             actual = pawn.coordinates in positions
             self.assertEqual(expected, actual)
 
+        expected = True
+        for rook in b.rooks_w:
+            actual = rook.coordinates in [ [0, 0], [0,7]]
+            self.assertEqual(expected, actual)
+
+        expected = True
+        for knight in b.knights_w:
+            actual = knight.coordinates in [ [0, 1], [0,6]]
+            self.assertEqual(expected, actual)
+
+        expected = True
+        for bishop in b.bishops_w:
+            actual = bishop.coordinates in [ [0, 2], [0,5]]
+            self.assertEqual(expected, actual)
+
+        expected = True
+        for queen in b.queen_w:
+            actual = queen.coordinates == [0, 3]
+            self.assertEqual(expected, actual)
+
+        expected = True
+        for king in b.king_w:
+            actual = king.coordinates == [0, 4]
+            self.assertEqual(expected, actual)
+
     def test_get_square_color(self):
         
         b = cb.ChessBoard()
