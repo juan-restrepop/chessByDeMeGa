@@ -182,6 +182,27 @@ class TestChessBoard(unittest.TestCase):
         actual = b.pawns_b[0].coordinates == [1, 0]
         self.assertEqual(expected, actual)
 
+    def test_initialize_single_rook(self):
+        b = cb.ChessBoard()
+
+        b.clean_pieces()
+        b.initialize_single_piece('r', 'w', [3,3])
+
+        expected = 1
+        actual = len(b.get_all_pieces())
+        self.assertEqual(expected, actual)
+
+        expected = True
+        actual = len(b.rooks_w) == 1
+        self.assertEqual(expected, actual)
+
+        expected = True
+        actual = b.rooks_w[0].coordinates == [3, 3]
+        self.assertEqual(expected, actual)
+
+
+
+
 if __name__ == '__main__':
     unittest.main()
 
