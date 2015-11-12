@@ -25,6 +25,29 @@ class TestChessBoard(unittest.TestCase):
             actual = len(kings)
             self.assertEqual(expected, actual)
 
+        expected = 8 
+        actual = len(b.pawns_w)
+        self.assertEqual(expected, actual)
+
+        expected = 8 
+        actual = len(b.pawns_b)
+        self.assertEqual(expected, actual)
+
+        expected = 2 
+        actual = len(b.rooks_w)
+        self.assertEqual(expected, actual)
+
+        expected = 2 
+        actual = len(b.rooks_b)
+        self.assertEqual(expected, actual)
+
+        expected = 2 
+        actual = len(b.bishops_w)
+        self.assertEqual(expected, actual)
+
+        expected = 2 
+        actual = len(b.bishops_b)
+        self.assertEqual(expected, actual)
 
     def test_get_square_color(self):
         
