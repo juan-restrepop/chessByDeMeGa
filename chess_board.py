@@ -56,16 +56,16 @@ class ChessBoard(object):
     def initialize_single_piece(self, kind, color, coordinates):
         dic_piece_to_piece_lists = {'wp': self.pawns_w,
                                     'bp': self.pawns_b,
-                                    'wr': self.pawns_w,
-                                    'br': self.pawns_w,
-                                    'wb': self.pawns_w,
-                                    'bb': self.pawns_w,
-                                    'wn': self.pawns_w,
-                                    'bn': self.pawns_w,
-                                    'wq': self.pawns_w,
-                                    'bq': self.pawns_w,
-                                    'wk': self.pawns_w,
-                                    'bk': self.pawns_w}
+                                    'wr': self.rooks_w,
+                                    'br': self.rooks_b,
+                                    'wb': self.bishops_w,
+                                    'bb': self.bishops_b,
+                                    'wn': self.knights_w,
+                                    'bn': self.knights_b,
+                                    'wq': self.queen_w,
+                                    'bq': self.queen_b,
+                                    'wk': self.king_w,
+                                    'bk': self.king_b}
         if not(\
                         kind in ['p', 'k', 'q', 'b', 'r', 'n'] and \
                         color in ['w', 'b'] and \
