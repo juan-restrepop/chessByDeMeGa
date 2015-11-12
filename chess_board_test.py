@@ -150,34 +150,40 @@ class TestChessBoard(unittest.TestCase):
     def test_initialize_single_pawn(self):
         b = cb.ChessBoard()
 
-        # Initialization of single white pawn
+        ## Initialization of single white pawn
         b.clean_pieces()
         b.initialize_single_piece('p', 'w', [6, 0])
 
+        # Test if initialization of only 1 piece
         expected = 1
         actual = len(b.get_all_pieces())
         self.assertEqual(expected, actual)
 
+        # Test if initialized piece is a white pawn
         expected = True
         actual = len(b.pawns_w) == 1
         self.assertEqual(expected, actual)
 
+        # Test if initialized white pawn in the right position
         expected = True
         actual = b.pawns_w[0].coordinates == [6, 0]
         self.assertEqual(expected, actual)
 
-        # Initialization of single black pawn
+        ## Initialization of single black pawn
         b.clean_pieces()
         b.initialize_single_piece('p', 'b', [1, 0])
 
+        # Test if initialization of only 1 piece
         expected = 1
         actual = len(b.get_all_pieces())
         self.assertEqual(expected, actual)
 
+        # Test if initialized piece is a black pawn
         expected = True
         actual = len(b.pawns_b) == 1
         self.assertEqual(expected, actual)
 
+        # Test if initialized black pawn in the right position
         expected = True
         actual = b.pawns_b[0].coordinates == [1, 0]
         self.assertEqual(expected, actual)
@@ -185,36 +191,84 @@ class TestChessBoard(unittest.TestCase):
     def test_initialize_single_queen(self):
         b = cb.ChessBoard()
 
-        # Initialization of single white queen
+        ## Initialization of single white queen
         b.clean_pieces()
         b.initialize_single_piece('q', 'w', [3, 4])
 
+
+        # Test if initialization of only 1 piece
         expected = 1
         actual = len(b.get_all_pieces())
         self.assertEqual(expected, actual)
 
+        # Test if initialized piece is a white queen
         expected = True
         actual = len(b.queen_w) == 1
         self.assertEqual(expected, actual)
 
+        # Test if initialized white queen in the right position
         expected = True
         actual = b.queen_w[0].coordinates == [3, 4]
         self.assertEqual(expected, actual)
 
-        # Initialization of single black queen
+        ## Initialization of single black queen
         b.clean_pieces()
         b.initialize_single_piece('q', 'b', [4, 3])
 
+        # Test if initialization of only 1 piece
         expected = 1
         actual = len(b.get_all_pieces())
         self.assertEqual(expected, actual)
 
+        # Test if initialized piece is a black queen
         expected = True
         actual = len(b.queen_b) == 1
         self.assertEqual(expected, actual)
 
+        # Test if initialized black queen in the right position
         expected = True
         actual = b.queen_b[0].coordinates == [4, 3]
+        self.assertEqual(expected, actual)
+
+    def test_initialize_single_king(self):
+        b = cb.ChessBoard()
+
+        ## Initialization of a single white king
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'w', [3,5])
+
+        # Test if initialization of only 1 piece
+        expected = True
+        actual = len(b.get_all_pieces()) == 1
+        self.assertEqual(expected, actual)
+
+        # Test if initialized piece is a white king
+        expected = True
+        actual = len(b.king_w) == 1
+        self.assertEqual(expected, actual)
+
+        # Test if white king initialized in the right position
+        expected = True
+        actual = b.king_w[0].coordinates == [3, 5]
+        self.assertEqual(expected, actual)
+
+        ## Initialization of a single black king
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'b', [5, 3])
+
+        # Test if initialization of only 1 piece
+        expected = True
+        actual = len(b.get_all_pieces()) == 1
+        self.assertEqual(expected, actual)
+
+        # Test if initialized piece is a black king
+        expected = True
+        actual = len(b.king_b) == 1
+        self.assertEqual(expected, actual)
+
+        # Test if black king in the right position
+        expected = True
+        actual = b.king_b[0].coordinates == [5, 3]
         self.assertEqual(expected, actual)
 
 if __name__ == '__main__':
