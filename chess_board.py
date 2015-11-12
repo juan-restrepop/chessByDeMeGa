@@ -92,6 +92,8 @@ class ChessBoard(object):
         self.update_board()
 
     def initialize_pieces(self):
+        self.clean_pieces()
+
         for k in range(8):
             self.pawns_w.append(pieces.Pawn('w', [1, k]))
             self.pawns_b.append(pieces.Pawn('b', [6, k]))
