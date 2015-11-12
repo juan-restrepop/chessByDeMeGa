@@ -49,6 +49,17 @@ class TestChessBoard(unittest.TestCase):
         actual = len(b.bishops_b)
         self.assertEqual(expected, actual)
 
+    def test_initialize_board_object_position_of_pieces(self):
+        b = cb.ChessBoard()
+
+        expected = True
+        for pawn in b.pawns_w:
+            positions = []
+            for col in range(8):
+                positions.append([1, col])
+            actual = pawn.coordinates in positions
+            self.assertEqual(expected, actual)
+
     def test_get_square_color(self):
         
         b = cb.ChessBoard()
