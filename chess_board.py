@@ -328,7 +328,7 @@ class ChessBoard(object):
         pawn_list = self.list_to_update(player)
 
         for k in range(len(pawn_list)):
-            if self.can_pawn_reach(i, j, pawn_list[k]):
+            if self.can_pawn_reach(i, j, pawn_list[k], player):
                 self.piece_mover(pawn_list[k], i, j)
                 accepted_move = True
                 break
