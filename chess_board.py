@@ -310,11 +310,11 @@ class ChessBoard(object):
         piece.coordinates = [i, j]
         self.update_board()
 
-    def list_to_update(self, player):
+    def list_to_update(self, player, list_w, list_b):
         if player == 'white':
-            return self.pawns_w
+            return list_w
         elif player == 'black':
-            return self.pawns_b
+            return list_b
         else:
             return None
 
@@ -325,7 +325,7 @@ class ChessBoard(object):
 
         accepted_move = False
         i, j = self.transform_board_to_grid(col, line)
-        pawn_list = self.list_to_update(player)
+        pawn_list = self.list_to_update(player, self.pawns_w,self.pawns_b)
 
         for k in range(len(pawn_list)):
             if self.can_pawn_reach(i, j, pawn_list[k], player):
