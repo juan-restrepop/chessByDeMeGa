@@ -292,66 +292,65 @@ class ChessBoard(object):
 
         return False
 
+    def piece_mover(self, piece, i, j):
+        piece.coordinates = [i, j]
+        self.update_board()
 
     def move_pawn_to(self, col, line):
         # we work only with white
         # TODO: Handle 'en passant' capture
 
         accepted_move = False
-
         i, j = self.transform_board_to_grid(col, line)
 
         for k in range(len(self.pawns_w)):
             if self.can_pawn_reach(i, j, self.pawns_w[k]):
-                self.pawns_w[k].coordinates[0] = i
+                self.piece_mover(self.pawns_w[k], i, j)
                 accepted_move = True
                 break
-        self.update_board()
+
         return accepted_move
 
     def move_bishop_to(self, col, line):
         # we work only with white
 
         accepted_move = False
-
         i,j  = self.transform_board_to_grid(col,line)
-        square_color = str(self.get_square_color(i,j))
         
         for k in range(len(self.bishops_w)):
             if self.can_bishop_reach(i, j, self.bishops_w[k]):
-                self.bishops_w[k].coordinates = [i,j]
+                self.piece_mover(self.bishops_w[k], i, j)
                 accepted_move = True
                 break
-        self.update_board()
+
         return accepted_move
 
     def move_knight_to(self, col, line):
         # we work only with white
-        accepted_move = False
 
+        accepted_move = False
         i,j = self.transform_board_to_grid(col, line)
 
         for k in range(len(self.knights_w)):
             if self.can_knight_reach(i, j, self.knights_w[k]):
-                self.knights_w[k].coordinates = [i,j]
-
+                self.piece_mover(self.knights_w[k], i, j)
                 accepted_move = True
                 break
-        self.update_board()
+
         return accepted_move
 
     def move_rook_to(self, col, line):
         # we work only with white
-        accepted_move = False
 
+        accepted_move = False
         i,j  = self.transform_board_to_grid(col,line)
 
         for k in range(len(self.rooks_w)):
             if self.can_rook_reach(i, j, self.rooks_w[k]):
-                self.rooks_w[k].coordinates = [i,j]
+                self.piece_mover(self.rooks_w[k], i, j)
                 accepted_move = True
                 break
-        self.update_board()
+
         return accepted_move
 
     def move_king_to(self, col, line):
@@ -360,10 +359,9 @@ class ChessBoard(object):
         i,j = self.transform_board_to_grid(col,line)
 
         if self.can_king_reach(i, j, self.king_w[0]):
-            self.king_w[0].coordinates = [i,j]
+            self.piece_mover(self.king_w[0], i, j)
             accepted_move = True
 
-        self.update_board()
         return accepted_move
 
     def move_queen_to(self, col, line):
@@ -373,12 +371,11 @@ class ChessBoard(object):
         i,j = self.transform_board_to_grid(col, line)
 
         for k in range(len(self.queen_w)):
-            if self.can_queen_reach(i,j,self.queen_w[k]):
-                self.queen_w[k].coordinates = [i,j]
+            if self.can_queen_reach(i, j, self.queen_w[k]):
+                self.piece_mover(self.queen_w[k], i, j)
                 accepted_move = True
                 break
 
-        self.update_board()
         return accepted_move
 
 
