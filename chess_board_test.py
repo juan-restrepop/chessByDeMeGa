@@ -479,16 +479,27 @@ class TestChessBoard(unittest.TestCase):
 
     def test_bishop_movement(self):
         b = cb.ChessBoard()
-        ## Initialize white bishop on 'e4'
-        # test accepted moves : down-left,down-right,up-left,up-right
         
-        for move in [['d','3'],['f','3'],['c','6'],['h','7']]:
+        ## Initialize white bishop on 'e4'
+        # test accepted moves : down-left, down-right, up-left, up-right
+        for move in [['d', '3'], ['f', '3'], ['c', '6'], ['h', '7']]:
 
             b.clean_pieces()
             b.initialize_single_piece('b', 'w', [4, 4])
             expected = True
             actual = b.move_bishop_to(move[0],move[1])
             self.assertEqual(expected, actual)
+
+        # test unaccepted moves : left, right, up, down
+        for move in [['d', '4'], ['f', '4'], ['e', '6'],['e', '2']]:
+
+            b.clean_pieces()
+            b.initialize_single_piece('b', 'w', [4, 4])
+            expected = False
+            actual = b.move_bishop_to(move[0],move[1])
+            self.assertEqual(expected, actual)
+
+
 
     def test_bishop_blocked_movement(self):
 
