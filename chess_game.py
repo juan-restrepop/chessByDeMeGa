@@ -164,7 +164,7 @@ class ChessGame(object):
             return self.board.move_rook_to(move_to_col, move_to_line, self.player)
         
         elif self.is_king(input_move):
-            return self.board.move_king_to(move_to_col, move_to_line)
+            return self.board.move_king_to(move_to_col, move_to_line, self.player)
         
         elif self.is_queen(input_move):
             return self.board.move_queen_to(move_to_col, move_to_line)
