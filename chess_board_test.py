@@ -616,6 +616,19 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_rook_to(move[0], move[1])
             self.assertEqual(expected, actual)
 
+    def test_white_queen_movement(self):
+        b = cb.ChessBoard()
+
+        # Queen initialized in 'c4'
+        movements = [['b', '4'], ['a', '2'], ['c', '1'], ['f', '1'], ['g', '4'], ['g', '8'], ['c', '8'], ['a', '6']]
+        expected = True
+        for move in movements:
+            b.clean_pieces()
+            b.initialize_single_piece('q', 'w', [4, 2])
+
+            actual = b.move_queen_to(move[0], move[1])
+            self.assertEqual(expected, actual)
+
 if __name__ == '__main__':
     unittest.main()
 
