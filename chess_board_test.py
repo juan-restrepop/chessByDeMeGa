@@ -587,7 +587,6 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_rook_to(move[0], move[1])
             self.assertEqual(expected, actual)
 
-<<<<<<< HEAD
     def test_white_king_movement(self):
         b = cb.ChessBoard()
 
@@ -628,7 +627,7 @@ class TestChessBoard(unittest.TestCase):
             b.initialize_single_piece('k','w',
                 b.coord_board_to_coord_grid(blocking_piece[0],blocking_piece[1]))
         # accepted moves
-=======
+
     def test_white_rook_blocked_movement(self):
         b = cb.ChessBoard()
 
@@ -688,8 +687,6 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_queen_to(move[0], move[1])
             self.assertEqual(expected, actual)
 
-
->>>>>>> 9b83238a435e2fdee78ade5e6387277c0f325a94
 
 
 if __name__ == '__main__':
