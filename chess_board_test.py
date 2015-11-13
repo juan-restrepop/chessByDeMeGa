@@ -204,7 +204,7 @@ class TestChessBoard(unittest.TestCase):
 
         ## Initialize white pawn on 'd2'
         b.clean_pieces()
-        b.initialize_single_piece('p', 'w', [6, 3])
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '2'))
 
         ## Test forbidden moves
         # Test forbidden forward-diagonal moves
@@ -233,7 +233,7 @@ class TestChessBoard(unittest.TestCase):
         ## Test approved moves if initial position
         # simple initial move
         b.clean_pieces()
-        b.initialize_single_piece('p', 'w', [6, 3])
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '2'))
 
         expected = True
         actual = b.move_pawn_to('d','3')
@@ -241,7 +241,7 @@ class TestChessBoard(unittest.TestCase):
 
         # double initial move
         b.clean_pieces()
-        b.initialize_single_piece('p', 'w', [6, 3])
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '2'))
 
         expected = True
         actual = b.move_pawn_to('d','4')
@@ -250,7 +250,7 @@ class TestChessBoard(unittest.TestCase):
         ## Test approved moves
         # simple move
         b.clean_pieces()
-        b.initialize_single_piece('p', 'w', [4, 3])
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '4'))
 
         expected = True
         actual = b.move_pawn_to('d','5')
@@ -258,7 +258,7 @@ class TestChessBoard(unittest.TestCase):
 
         # double move
         b.clean_pieces()
-        b.initialize_single_piece('p', 'w', [4, 3])
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '4'))
 
         expected = False
         actual = b.move_pawn_to('d','6')
