@@ -380,13 +380,14 @@ class ChessBoard(object):
 
         return accepted_move
 
-    def move_king_to(self, col, line):
+    def move_king_to(self, col, line, player='white'):
         # we work only with white
         accepted_move = False
         i,j = self.transform_board_to_grid(col,line)
+        king_list = self.list_to_update(player, self.king_w, self.king_b)
 
-        if self.can_king_reach(i, j, self.king_w[0]):
-            self.piece_mover(self.king_w[0], i, j)
+        if self.can_king_reach(i, j, king_list[0]):
+            self.piece_mover(king_list[0], i, j)
             accepted_move = True
 
         return accepted_move
