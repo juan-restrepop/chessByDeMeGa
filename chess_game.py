@@ -155,10 +155,10 @@ class ChessGame(object):
             return self.board.move_pawn_to(move_to_col, move_to_line, self.player)
 
         elif self.is_bishop(input_move):
-            return self.board.move_bishop_to(move_to_col, move_to_line)
+            return self.board.move_bishop_to(move_to_col, move_to_line, self.player)
         
         elif self.is_knight(input_move):
-            return self.board.move_knight_to(move_to_col, move_to_line)
+            return self.board.move_knight_to(move_to_col, move_to_line, self.player)
         
         elif self.is_rook(input_move):
             return self.board.move_rook_to(move_to_col, move_to_line, self.player)
@@ -167,7 +167,7 @@ class ChessGame(object):
             return self.board.move_king_to(move_to_col, move_to_line, self.player)
         
         elif self.is_queen(input_move):
-            return self.board.move_queen_to(move_to_col, move_to_line)
+            return self.board.move_queen_to(move_to_col, move_to_line, self.player)
 
         return False
 
