@@ -400,7 +400,7 @@ class ChessBoard(object):
                          '3': 5,
                          '2': 6,
                          '1': 7}
-        return (lines_to_grid[line] ,columns_to_grid[col])
+        return [lines_to_grid[line] ,columns_to_grid[col]]
 
     def transform_grid_to_board(self, i, j):
         grid_lines_to_board_lines = {0 : '8',
