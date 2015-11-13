@@ -4,6 +4,7 @@ class ChessGame(object):
 
     column_names = ['a','b','c','d','e','f','g','h']
     line_names = ['1','2','3','4','5','6','7','8']
+    player = 'black'
 
     def __init__(self):
         self.board = chess_board.ChessBoard()
@@ -151,7 +152,7 @@ class ChessGame(object):
     def move_piece_to(self, input_move, move_to_col, move_to_line):
            
         if self.is_pawn(input_move):
-            return self.board.move_pawn_to(move_to_col, move_to_line)
+            return self.board.move_pawn_to(move_to_col, move_to_line, self.player)
 
         elif self.is_bishop(input_move):
             return self.board.move_bishop_to(move_to_col, move_to_line)
