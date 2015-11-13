@@ -125,7 +125,6 @@ class TestChessBoard(unittest.TestCase):
             actual = king.coordinates == [7, 4]
             self.assertEqual(expected, actual)
 
-
     def test_get_square_color(self):
         
         b = cb.ChessBoard()
@@ -139,7 +138,6 @@ class TestChessBoard(unittest.TestCase):
         actual = b.get_square_color(1, 0)
         self.assertEqual(expected, actual)
 
-
     def test_clean_pieces(self):
         b = cb.ChessBoard()
 
@@ -149,47 +147,66 @@ class TestChessBoard(unittest.TestCase):
         actual = len(b.get_all_pieces())
         self.assertEqual(expected, actual)
 
+    def piece_initialization(self, kind, color, coordinates):
+
+        b = cb.ChessBoard()
+        ## Initialize single piece
+        b.clean_pieces()
+        b.initialize_single_piece(kind, color, coordinates)
+
+        piece_to_pieces_list = {'wp':b.pawns_w,
+                                'bp':b.pawns_b,
+                                'wb':b.bishops_w,
+                                'bb':b.bishops_b,
+                                'wn':b.knights_w,
+                                'bn':b.knights_b,
+                                'wr':b.rooks_w,
+                                'br':b.rooks_b,
+                                'wk':b.king_w,
+                                'bk':b.king_b,
+                                'wq':b.queen_w,
+                                'bq':b.queen_b}
+
+        pieces_in_board = len(b.get_all_pieces())
+        pieces_in_list = len(piece_to_pieces_list[color + kind])
+        piece_coordinates = piece_to_pieces_list[color + kind][0].coordinates
+
+        return (pieces_in_board, pieces_in_list, piece_coordinates)
 
     def test_initialize_single_pawn(self):
         b = cb.ChessBoard()
 
         ## Initialization of single white pawn
         b.clean_pieces()
-        b.initialize_single_piece('p', 'w', [6, 0])
+        (pieces_in_board, pieces_in_list, piece_coordinates) = self.piece_initialization('p', 'w', [6, 0])
 
         # Test if initialization of only 1 piece
         expected = 1
-        actual = len(b.get_all_pieces())
-        self.assertEqual(expected, actual)
+        self.assertEqual(expected, pieces_in_board)
 
         # Test if initialized piece is a white pawn
-        expected = True
-        actual = len(b.pawns_w) == 1
-        self.assertEqual(expected, actual)
+        expected = 1
+        self.assertEqual(expected, pieces_in_list)
 
         # Test if initialized white pawn in the right position
-        expected = True
-        actual = b.pawns_w[0].coordinates == [6, 0]
-        self.assertEqual(expected, actual)
+        expected = [6, 0]
+        self.assertEqual(expected, piece_coordinates)
 
         ## Initialization of single black pawn
         b.clean_pieces()
-        b.initialize_single_piece('p', 'b', [1, 0])
+        (pieces_in_board, pieces_in_list, piece_coordinates) = self.piece_initialization('p', 'b', [1, 0])
 
         # Test if initialization of only 1 piece
         expected = 1
-        actual = len(b.get_all_pieces())
-        self.assertEqual(expected, actual)
+        self.assertEqual(expected, pieces_in_board)
 
         # Test if initialized piece is a black pawn
-        expected = True
-        actual = len(b.pawns_b) == 1
-        self.assertEqual(expected, actual)
+        expected = 1
+        self.assertEqual(expected, pieces_in_list)
 
         # Test if initialized black pawn in the right position
-        expected = True
-        actual = b.pawns_b[0].coordinates == [1, 0]
-        self.assertEqual(expected, actual)
+        expected = [1, 0]
+        self.assertEqual(expected, piece_coordinates)
 
     def test_initialize_single_rook(self):
         b = cb.ChessBoard()
