@@ -382,7 +382,7 @@ class ChessBoard(object):
         return accepted_move
 
 
-    def coord_board_to_coord_grid(self,col,line):
+    def transform_board_to_grid(self,col,line):
         columns_to_grid = {'a': 0,
                            'b': 1,
                            'c': 2,
