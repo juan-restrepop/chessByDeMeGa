@@ -335,15 +335,16 @@ class ChessBoard(object):
 
         return accepted_move
 
-    def move_bishop_to(self, col, line):
+    def move_bishop_to(self, col, line, player='white'):
         # we work only with white
 
         accepted_move = False
         i,j  = self.transform_board_to_grid(col,line)
+        bishop_list =self.list_to_update(player,self.bishops_w,self.bishops_b)
         
-        for k in range(len(self.bishops_w)):
-            if self.can_bishop_reach(i, j, self.bishops_w[k]):
-                self.piece_mover(self.bishops_w[k], i, j)
+        for k in range(len(bishop_list)):
+            if self.can_bishop_reach(i, j, bishop_list[k]):
+                self.piece_mover(bishop_list[k], i, j)
                 accepted_move = True
                 break
 
