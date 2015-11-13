@@ -299,7 +299,7 @@ class ChessBoard(object):
 
         accepted_move = False
 
-        i, j = self.coord_board_to_coord_grid(col, line)
+        i, j = self.transform_board_to_grid(col, line)
 
         for k in range(len(self.pawns_w)):
             if self.can_pawn_reach(i, j, self.pawns_w[k]):
@@ -314,7 +314,7 @@ class ChessBoard(object):
 
         accepted_move = False
 
-        i,j  = self.coord_board_to_coord_grid(col,line)
+        i,j  = self.transform_board_to_grid(col,line)
         square_color = str(self.get_square_color(i,j))
         
         for k in range(len(self.bishops_w)):
@@ -329,7 +329,7 @@ class ChessBoard(object):
         # we work only with white
         accepted_move = False
 
-        i,j = self.coord_board_to_coord_grid(col, line)
+        i,j = self.transform_board_to_grid(col, line)
 
         for k in range(len(self.knights_w)):
             if self.can_knight_reach(i, j, self.knights_w[k]):
@@ -344,7 +344,7 @@ class ChessBoard(object):
         # we work only with white
         accepted_move = False
 
-        i,j  = self.coord_board_to_coord_grid(col,line)
+        i,j  = self.transform_board_to_grid(col,line)
 
         for k in range(len(self.rooks_w)):
             if self.can_rook_reach(i, j, self.rooks_w[k]):
@@ -357,7 +357,7 @@ class ChessBoard(object):
     def move_king_to(self, col, line):
         # we work only with white
         accepted_move = False
-        i,j = self.coord_board_to_coord_grid(col,line)
+        i,j = self.transform_board_to_grid(col,line)
 
         if self.can_king_reach(i, j, self.king_w[0]):
             self.king_w[0].coordinates = [i,j]
@@ -370,7 +370,7 @@ class ChessBoard(object):
         #we work only with white
 
         accepted_move = False
-        i,j = self.coord_board_to_coord_grid(col, line)
+        i,j = self.transform_board_to_grid(col, line)
 
         for k in range(len(self.queen_w)):
             if self.can_queen_reach(i,j,self.queen_w[k]):
