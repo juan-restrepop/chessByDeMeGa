@@ -402,4 +402,23 @@ class ChessBoard(object):
                          '1': 7}
         return (lines_to_grid[line] ,columns_to_grid[col])
 
+    def transform_grid_to_board(self, i, j):
+        grid_lines_to_board_lines = {0 : '8',
+                                      1 : '7',
+                                      2 : '6',
+                                      3 : '5',
+                                      4 : '4',
+                                      5 : '3',
+                                      6 : '2',
+                                      7 : '1'}
 
+        grid_columns_to_board_columns = {0 : 'a',
+                                         1 : 'b',
+                                         2 : 'c',
+                                         3 : 'd',
+                                         4 : 'e',
+                                         5 : 'f',
+                                         6 : 'g',
+                                         7 : 'h'}
+
+        return (grid_columns_to_board_columns[j], grid_lines_to_board_lines[i])
