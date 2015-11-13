@@ -350,15 +350,16 @@ class ChessBoard(object):
 
         return accepted_move
 
-    def move_knight_to(self, col, line):
+    def move_knight_to(self, col, line, player='white'):
         # we work only with white
 
         accepted_move = False
         i,j = self.transform_board_to_grid(col, line)
+        knight_list =self.list_to_update(player,self.knights_w,self.knights_b)
 
-        for k in range(len(self.knights_w)):
-            if self.can_knight_reach(i, j, self.knights_w[k]):
-                self.piece_mover(self.knights_w[k], i, j)
+        for k in range(len(knight_list)):
+            if self.can_knight_reach(i, j, knight_list[k]):
+                self.piece_mover(knight_list[k], i, j)
                 accepted_move = True
                 break
 
