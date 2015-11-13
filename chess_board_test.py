@@ -625,7 +625,7 @@ class TestChessBoard(unittest.TestCase):
             b.clean_pieces()
             b.initialize_single_piece('k','w',[5,4])
             b.initialize_single_piece('k','w',
-                b.coord_board_to_coord_grid(blocking_piece[0],blocking_piece[1]))
+                b.transform_board_to_grid(blocking_piece[0],blocking_piece[1]))
         # accepted moves
 
     def test_white_rook_blocked_movement(self):
