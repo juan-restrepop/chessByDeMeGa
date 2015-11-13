@@ -199,7 +199,7 @@ class TestChessBoard(unittest.TestCase):
             self.assertEqual(expected, piece_coordinates)
 
 
-    def test_white_pawn_movement(self):
+    def test_white_pawn_movement_rules(self):
         b = cb.ChessBoard()
 
         ## Initialize white pawn on 'd2'
@@ -264,7 +264,7 @@ class TestChessBoard(unittest.TestCase):
         actual = b.move_pawn_to('d','6')
         self.assertEqual(expected, actual)
 
-    def test_white_pawn_blocked_movement(self):
+    def test_white_pawn_blocked_movement_rules(self):
         b = cb.ChessBoard()
 
         ## Initialize white pawn on 'd2' and black knight on 'd3'
@@ -284,7 +284,7 @@ class TestChessBoard(unittest.TestCase):
         expected = False
         actual = b.move_pawn_to('d', '4')
 
-    def test_white_bishop_movement(self):
+    def test_white_bishop_movement_rules(self):
         b = cb.ChessBoard()
         
         ## Initialize white bishop on 'e4'
@@ -306,7 +306,7 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_bishop_to(move[0],move[1])
             self.assertEqual(expected, actual)
 
-    def test_white_bishop_blocked_movement(self):
+    def test_white_bishop_blocked_movement_rules(self):
 
         b = cb.ChessBoard()
         ## Initialize white bishop on 'e4'
@@ -320,7 +320,7 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_bishop_to(move[0],move[1])
             self.assertEqual(expected, actual)
 
-    def test_white_knight_movement(self):
+    def test_white_knight_movement_rules(self):
         b = cb.ChessBoard()
 
         # test forbidden moves
@@ -347,7 +347,7 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_knight_to(move[0], move[1])
             self.assertEqual(expected, actual)
 
-    def test_white_knight_blocked_movement(self):
+    def test_white_knight_blocked_movement_rules(self):
         b = cb.ChessBoard()
 
         ## Initialize white knight in 'b1' and white pawns in 'd2' and 'b2'
@@ -366,7 +366,7 @@ class TestChessBoard(unittest.TestCase):
         actual = b.move_knight_to('a', '3')
         self.assertEqual(expected, actual)
 
-    def test_white_rook_movement(self):
+    def test_white_rook_movement_rules(self):
         b = cb.ChessBoard()
 
         # We initialize white rook in 'e4'
@@ -392,7 +392,7 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_rook_to(move[0], move[1])
             self.assertEqual(expected, actual)
 
-    def test_white_king_movement(self):
+    def test_white_king_movement_rules(self):
         b = cb.ChessBoard()
 
         # We initialize white king in 'f5' aka [3,5]
@@ -418,7 +418,7 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_king_to(move[0],move[1])
             self.assertEqual(expected, actual)
 
-    def test_white_king_blocked_movement(self):
+    def test_white_king_blocked_movement_rules(self):
         b = cb.ChessBoard()
         # We initialize white king in 'e3' aka [5,4]
         for move, blocking_piece in zip([['d', '4'], ['e', '4'], ['f', '4'],
@@ -433,7 +433,7 @@ class TestChessBoard(unittest.TestCase):
                 b.transform_board_to_grid(blocking_piece[0],blocking_piece[1]))
         # accepted moves
 
-    def test_white_rook_blocked_movement(self):
+    def test_white_rook_blocked_movement_rules(self):
         b = cb.ChessBoard()
 
         ## Initialize white rook in 'e4', white pawn in 'g4' and black knight in 'e6'
@@ -462,7 +462,7 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_rook_to(move[0], move[1])
             self.assertEqual(expected, actual)
 
-    def test_white_queen_movement(self):
+    def test_white_queen_movement_rules(self):
         b = cb.ChessBoard()
 
         # Queen initialized in 'c4'
@@ -475,7 +475,7 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_queen_to(move[0], move[1])
             self.assertEqual(expected, actual)
 
-    def test_white_queen_blocked_movement(self):
+    def test_white_queen_blocked_movement_rules(self):
         b = cb.ChessBoard()
 
         # Queen initialized in 'c4', white pawn initialized 'g4', black rook in 'c6' and black knight in 'f7'
