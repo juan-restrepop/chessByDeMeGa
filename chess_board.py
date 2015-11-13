@@ -325,7 +325,7 @@ class ChessBoard(object):
 
         accepted_move = False
         i, j = self.transform_board_to_grid(col, line)
-        pawn_list = self.list_to_update(player, self.pawns_w,self.pawns_b)
+        pawn_list = self.list_to_update(player, self.pawns_w, self.pawns_b)
 
         for k in range(len(pawn_list)):
             if self.can_pawn_reach(i, j, pawn_list[k], player):
@@ -365,27 +365,29 @@ class ChessBoard(object):
 
         return accepted_move
 
-    def move_rook_to(self, col, line):
+    def move_rook_to(self, col, line, player='white'):
         # we work only with white
 
         accepted_move = False
         i,j  = self.transform_board_to_grid(col,line)
+        rook_list = self.list_to_update(player, self.rooks_w, self.rooks_b)
 
-        for k in range(len(self.rooks_w)):
-            if self.can_rook_reach(i, j, self.rooks_w[k]):
-                self.piece_mover(self.rooks_w[k], i, j)
+        for k in range(len(rook_list)):
+            if self.can_rook_reach(i, j, rook_list[k]):
+                self.piece_mover(rook_list[k], i, j)
                 accepted_move = True
                 break
 
         return accepted_move
 
-    def move_king_to(self, col, line):
+    def move_king_to(self, col, line, player='white'):
         # we work only with white
         accepted_move = False
         i,j = self.transform_board_to_grid(col,line)
+        king_list = self.list_to_update(player, self.king_w, self.king_b)
 
-        if self.can_king_reach(i, j, self.king_w[0]):
-            self.piece_mover(self.king_w[0], i, j)
+        if self.can_king_reach(i, j, king_list[0]):
+            self.piece_mover(king_list[0], i, j)
             accepted_move = True
 
         return accepted_move
