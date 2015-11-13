@@ -296,7 +296,16 @@ class ChessBoard(object):
         piece.coordinates = [i, j]
         self.update_board()
 
-    def move_pawn_to(self, col, line, player):
+    def list_to_update(self, player):
+        if player == 'white':
+            return self.pawns_w
+        elif player == 'black':
+            return self.pawns_b
+        else:
+            return None
+
+
+    def move_pawn_to(self, col, line, player='white'):
         # we work only with white
         # TODO: Handle 'en passant' capture
 
