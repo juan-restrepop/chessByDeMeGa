@@ -296,16 +296,17 @@ class ChessBoard(object):
         piece.coordinates = [i, j]
         self.update_board()
 
-    def move_pawn_to(self, col, line):
+    def move_pawn_to(self, col, line, player):
         # we work only with white
         # TODO: Handle 'en passant' capture
 
         accepted_move = False
         i, j = self.transform_board_to_grid(col, line)
+        pawn_list = self.list_to_update(player)
 
-        for k in range(len(self.pawns_w)):
-            if self.can_pawn_reach(i, j, self.pawns_w[k]):
-                self.piece_mover(self.pawns_w[k], i, j)
+        for k in range(len(pawn_list)):
+            if self.can_pawn_reach(i, j, pawn_list[k]):
+                self.piece_mover(pawn_list[k], i, j)
                 accepted_move = True
                 break
 
