@@ -164,22 +164,36 @@ class ChessBoard(object):
         return self.grid[i][j] in ['0', '1']
 
 
-    def can_pawn_reach(self, i, j, pawn):
+    def can_pawn_reach(self, i, j, pawn, player='white'):
         # TODO: should work for black pawns as well
 
         i_origin, j_origin = pawn.coordinates
 
-        if j == j_origin:
-            if i >= i_origin:
-                return False
-            elif i_origin - i == 1:
-                return self.is_square_free(i,j)
-            elif i_origin - i == 2:
-                return self.is_square_free(i+1,j) and self.is_square_free(i,j) and i_origin == 6
+        if player == 'white':
+            if j == j_origin:
+                if i >= i_origin:
+                    return False
+                elif i_origin - i == 1:
+                    return self.is_square_free(i, j)
+                elif i_origin - i == 2:
+                    return self.is_square_free(i + 1, j) and self.is_square_free(i, j) and i_origin == 6
+                else:
+                    return False
             else:
                 return False
-        else:
-            return False
+        elif player == 'black':
+            if j == j_origin:
+                if i <= i_origin:
+                    return False
+                elif i - i_origin == 1:
+                    return self.is_square_free(i, j)
+                elif i - i_origin == 2:
+                    return self.is_square_free(i - 1, j) and self.is_square_free(i, j) and i_origin == 1
+                else:
+                    return False
+            else:
+                return False
+
 
     def can_king_reach(self, i, j, king):
         i_origin, j_origin = king.coordinates
