@@ -350,7 +350,7 @@ class TestChessBoard(unittest.TestCase):
             self.assertEqual(expected, actual)
 
 
-    def test_white_knight_movement_rules(self):
+    def test_knight_movement_rules(self):
         b = cb.ChessBoard()
 
         ## Test forbidden moves
@@ -384,7 +384,7 @@ class TestChessBoard(unittest.TestCase):
 
         # Test white knight on 'd4'
         b.clean_pieces()
-       
+
         expected = True
         for move in movements:
             b.clean_pieces()
