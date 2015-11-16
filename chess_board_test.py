@@ -367,6 +367,15 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_knight_to(move[0], move[1], 'white')
             self.assertEqual(expected, actual)
 
+        # Test black knight on 'd4'
+        b.clean_pieces()
+        b.initialize_single_piece('n', 'b', [4, 3])
+
+        expected = False
+        for move in movements:
+            actual = b.move_knight_to(move[0], move[1], 'black')
+            self.assertEqual(expected, actual)
+
         ## Test approved moves
         movements = [['b', '5'], ['f', '5'], \
                      ['b', '3'], ['f', '3'], \
@@ -375,14 +384,24 @@ class TestChessBoard(unittest.TestCase):
 
         # Test white knight on 'd4'
         b.clean_pieces()
-        b.initialize_single_piece('n', 'w', [4, 3])
-
+       
         expected = True
         for move in movements:
             b.clean_pieces()
             b.initialize_single_piece('n', 'w', [4, 3])
 
             actual = b.move_knight_to(move[0], move[1], 'white')
+            self.assertEqual(expected, actual)
+
+        # Test black knight on 'd4'
+        b.clean_pieces()
+
+        expected = True
+        for move in movements:
+            b.clean_pieces()
+            b.initialize_single_piece('n', 'b', [4, 3])
+
+            actual = b.move_knight_to(move[0], move[1], 'black')
             self.assertEqual(expected, actual)
 
     def test_white_knight_blocked_movement_rules(self):
