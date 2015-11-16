@@ -483,48 +483,6 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_rook_to(move[0], move[1], 'black')
             self.assertEqual(expected, actual)
 
-    def test_white_king_movement_rules(self):
-        b = cb.ChessBoard()
-
-        # We initialize white king in 'f5' aka [3,5]
-        # accepted moves
-        for move in [['e', '6'], ['f', '6'], ['g', '6'],
-                     ['e', '5'], ['g','5'],
-                     ['e', '4'], ['f', '4'], ['g', '4']]:
-
-            b.clean_pieces()
-            b.initialize_single_piece('k', 'w', [3, 5])
-            expected = True
-            actual = b.move_king_to(move[0],move[1])
-            self.assertEqual(expected, actual)
-        
-        # unaccepted moves c8,f7,h7,h5,h3,f3,c2
-        for move in [['c', '8'], ['f', '7'],['h', '7'],
-                     ['a', '5'], ['h', '5'],
-                     ['h', '3'], ['f', '3'], ['c', '2'],
-                     ['g', '3']]:
-            b.clean_pieces()
-            b.initialize_single_piece('k', 'w', [3, 5])
-            expected = False
-            actual = b.move_king_to(move[0],move[1])
-            self.assertEqual(expected, actual)
-
-
-    def test_white_king_blocked_movement_rules(self):
-        b = cb.ChessBoard()
-        # We initialize white king in 'e3' aka [5,4]
-        for move, blocking_piece in zip([['d', '4'], ['e', '4'], ['f', '4'],
-                                         ['d', '3'], ['f', '3'], 
-                                         ['d', '2'], ['e', '2'], ['f', '2']],
-                                        [['d', '4'], ['e', '4'], ['f', '4'],
-                                         ['d', '3'], ['f', '3'], 
-                                         ['d', '2'], ['e', '2'], ['f', '2']]):
-            b.clean_pieces()
-            b.initialize_single_piece('k','w',[5,4])
-            b.initialize_single_piece('k','w',
-                b.transform_board_to_grid(blocking_piece[0],blocking_piece[1]))
-        # accepted moves
-
     def test_white_rook_blocked_movement_rules(self):
         b = cb.ChessBoard()
 
@@ -553,6 +511,49 @@ class TestChessBoard(unittest.TestCase):
 
             actual = b.move_rook_to(move[0], move[1])
             self.assertEqual(expected, actual)
+
+
+    def test_white_king_movement_rules(self):
+        b = cb.ChessBoard()
+
+        # We initialize white king in 'f5' aka [3,5]
+        # accepted moves
+        for move in [['e', '6'], ['f', '6'], ['g', '6'],
+                     ['e', '5'], ['g','5'],
+                     ['e', '4'], ['f', '4'], ['g', '4']]:
+
+            b.clean_pieces()
+            b.initialize_single_piece('k', 'w', [3, 5])
+            expected = True
+            actual = b.move_king_to(move[0],move[1])
+            self.assertEqual(expected, actual)
+        
+        # unaccepted moves c8,f7,h7,h5,h3,f3,c2
+        for move in [['c', '8'], ['f', '7'],['h', '7'],
+                     ['a', '5'], ['h', '5'],
+                     ['h', '3'], ['f', '3'], ['c', '2'],
+                     ['g', '3']]:
+            b.clean_pieces()
+            b.initialize_single_piece('k', 'w', [3, 5])
+            expected = False
+            actual = b.move_king_to(move[0],move[1])
+            self.assertEqual(expected, actual)
+
+    def test_white_king_blocked_movement_rules(self):
+        b = cb.ChessBoard()
+        # We initialize white king in 'e3' aka [5,4]
+        for move, blocking_piece in zip([['d', '4'], ['e', '4'], ['f', '4'],
+                                         ['d', '3'], ['f', '3'], 
+                                         ['d', '2'], ['e', '2'], ['f', '2']],
+                                        [['d', '4'], ['e', '4'], ['f', '4'],
+                                         ['d', '3'], ['f', '3'], 
+                                         ['d', '2'], ['e', '2'], ['f', '2']]):
+            b.clean_pieces()
+            b.initialize_single_piece('k','w',[5,4])
+            b.initialize_single_piece('k','w',
+                b.transform_board_to_grid(blocking_piece[0],blocking_piece[1]))
+        # accepted moves
+
 
     def test_white_queen_movement_rules(self):
         b = cb.ChessBoard()
