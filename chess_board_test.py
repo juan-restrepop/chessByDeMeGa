@@ -604,17 +604,24 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_king_to(coords[0], coords[1], 'black')
             self.assertEqual(expected, actual)
 
-    def test_white_queen_movement_rules(self):
+
+    def test_queen_movement_rules(self):
         b = cb.ChessBoard()
 
-        # Queen initialized in 'c4'
         movements = [['b', '4'], ['a', '2'], ['c', '1'], ['f', '1'], ['g', '4'], ['g', '8'], ['c', '8'], ['a', '6']]
         expected = True
+
         for move in movements:
+            # Test white queen on 'c4'
             b.clean_pieces()
             b.initialize_single_piece('q', 'w', [4, 2])
+            actual = b.move_queen_to(move[0], move[1], 'white')
+            self.assertEqual(expected, actual)
 
-            actual = b.move_queen_to(move[0], move[1])
+            # Test black queen on 'c4'
+            b.clean_pieces()
+            b.initialize_single_piece('q', 'b', [4, 2])
+            actual = b.move_queen_to(move[0], move[1], 'black')
             self.assertEqual(expected, actual)
 
     def test_white_queen_blocked_movement_rules(self):
