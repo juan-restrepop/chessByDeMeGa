@@ -284,6 +284,7 @@ class TestChessBoard(unittest.TestCase):
         expected = False
         actual = b.move_pawn_to('d', '4')
 
+
     def test_bishop_movement_rules(self):
         b = cb.ChessBoard()
         
@@ -348,7 +349,6 @@ class TestChessBoard(unittest.TestCase):
             expected = False
             actual = b.move_bishop_to(move[0],move[1], 'black')
             self.assertEqual(expected, actual)
-
 
     def test_knight_movement_rules(self):
         b = cb.ChessBoard()
@@ -438,7 +438,6 @@ class TestChessBoard(unittest.TestCase):
         expected = True
         actual = b.move_knight_to('a', '3', 'black')
         self.assertEqual(expected, actual)
-
 
     def test_rook_movement_rules(self):
         b = cb.ChessBoard()
@@ -532,7 +531,6 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_rook_to(move[0], move[1], 'black')
             self.assertEqual(expected, actual)
 
-
     def test_king_movement_rules(self):
         b = cb.ChessBoard()
 
@@ -603,7 +601,6 @@ class TestChessBoard(unittest.TestCase):
             b.initialize_single_piece('k','w', b.transform_board_to_grid(coords[0],coords[1]))
             actual = b.move_king_to(coords[0], coords[1], 'black')
             self.assertEqual(expected, actual)
-
 
     def test_queen_movement_rules(self):
         b = cb.ChessBoard()
