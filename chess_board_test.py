@@ -298,6 +298,13 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_bishop_to(move[0],move[1], 'white')
             self.assertEqual(expected, actual)
 
+            # Test black bishop on 'e4'
+            b.clean_pieces()
+            b.initialize_single_piece('b', 'b', [4, 4])
+            expected = True
+            actual = b.move_bishop_to(move[0],move[1], 'black')
+            self.assertEqual(expected, actual)
+
         ## Unaccepted moves : left, right, up, down
         movements = [['d', '4'], ['f', '4'], ['e', '6'],['e', '2']]
         for move in movements:
@@ -307,6 +314,13 @@ class TestChessBoard(unittest.TestCase):
             b.initialize_single_piece('b', 'w', [4, 4])
             expected = False
             actual = b.move_bishop_to(move[0],move[1], 'white')
+            self.assertEqual(expected, actual)
+
+            # Test black bishop on 'e4'
+            b.clean_pieces()
+            b.initialize_single_piece('b', 'b', [4, 4])
+            expected = False
+            actual = b.move_bishop_to(move[0],move[1], 'black')
             self.assertEqual(expected, actual)
 
     def test_white_bishop_blocked_movement_rules(self):
