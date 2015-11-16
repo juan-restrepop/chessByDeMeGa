@@ -579,19 +579,23 @@ class TestChessBoard(unittest.TestCase):
 
     def test_white_king_blocked_movement_rules(self):
         b = cb.ChessBoard()
-        # We initialize white king in 'e3' aka [5,4]
-        for move, blocking_piece in zip([['d', '4'], ['e', '4'], ['f', '4'],
-                                         ['d', '3'], ['f', '3'], 
-                                         ['d', '2'], ['e', '2'], ['f', '2']],
-                                        [['d', '4'], ['e', '4'], ['f', '4'],
-                                         ['d', '3'], ['f', '3'], 
-                                         ['d', '2'], ['e', '2'], ['f', '2']]):
+
+        movements = [['d', '4'], ['e', '4'], ['f', '4'],
+                     ['d', '3'], ['f', '3'],
+                     ['d', '2'], ['e', '2'], ['f', '2']]
+
+        blocking_pieces_coordinates = [['d', '4'], ['e', '4'], ['f', '4'],
+                           ['d', '3'], ['f', '3'],
+                           ['d', '2'], ['e', '2'], ['f', '2']]
+
+        expected = False
+        for move, coords in zip(movements, blocking_pieces_coordinates):
+            # Test white king on 'e3'
             b.clean_pieces()
             b.initialize_single_piece('k','w',[5,4])
-            b.initialize_single_piece('k','w',
-                b.transform_board_to_grid(blocking_piece[0],blocking_piece[1]))
-        # accepted moves
-
+            b.initialize_single_piece('k','w', b.transform_board_to_grid(coords[0],coords[1]))
+            actual = b.move_king_to(coords[0], coords[1], 'white')
+            self.assertEqual(expected, actual)
 
     def test_white_queen_movement_rules(self):
         b = cb.ChessBoard()
