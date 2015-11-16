@@ -323,7 +323,7 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_bishop_to(move[0],move[1], 'black')
             self.assertEqual(expected, actual)
 
-    def test_white_bishop_blocked_movement_rules(self):
+    def test_bishop_blocked_movement_rules(self):
 
         b = cb.ChessBoard()
 
