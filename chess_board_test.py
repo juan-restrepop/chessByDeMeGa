@@ -415,12 +415,12 @@ class TestChessBoard(unittest.TestCase):
 
         # test blocked move
         expected = False
-        actual = b.move_knight_to('d', '4')
+        actual = b.move_knight_to('d', '4', 'white')
         self.assertEqual(expected, actual)
 
         # test approved move
         expected = True
-        actual = b.move_knight_to('a', '3')
+        actual = b.move_knight_to('a', '3', 'white')
         self.assertEqual(expected, actual)
 
 
