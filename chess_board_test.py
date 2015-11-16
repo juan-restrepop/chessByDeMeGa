@@ -443,27 +443,30 @@ class TestChessBoard(unittest.TestCase):
     def test_white_rook_movement_rules(self):
         b = cb.ChessBoard()
 
-        # We initialize white rook in 'e4'
+        ## Test forbidden moves
+        movements = [['d', '3'], ['c', '2'], \
+                     ['f','5'], ['g', '6']]
 
-        # Test forbidden moves
+        # Test white rook on 'e4'
         b.clean_pieces()
         b.initialize_single_piece('r', 'w', [4, 4])
-
         expected = False
-        for move in [['d', '3'], ['c', '2'], \
-                     ['f','5'], ['g', '6']]:
-            actual = b.move_rook_to(move[0], move[1])
+        for move in movements:
+            actual = b.move_rook_to(move[0], move[1], 'white')
             self.assertEqual(expected, actual)
 
-        # Test approved moves
-        expected = True
-        for move in [['f','4'], ['g', '4'], \
+        ## Test approved moves
+        movements = [['f','4'], ['g', '4'], \
                      ['e','7'], ['e', '8'], \
                      ['b', '4'], \
-                     ['e', '1']]:
+                     ['e', '1']]
+
+        expected = True
+        for move in movements:
+            # Test white rook on 'e4'
             b.clean_pieces()
             b.initialize_single_piece('r', 'w', [4, 4])
-            actual = b.move_rook_to(move[0], move[1])
+            actual = b.move_rook_to(move[0], move[1], 'white')
             self.assertEqual(expected, actual)
 
     def test_white_king_movement_rules(self):
@@ -491,6 +494,7 @@ class TestChessBoard(unittest.TestCase):
             expected = False
             actual = b.move_king_to(move[0],move[1])
             self.assertEqual(expected, actual)
+
 
     def test_white_king_blocked_movement_rules(self):
         b = cb.ChessBoard()
