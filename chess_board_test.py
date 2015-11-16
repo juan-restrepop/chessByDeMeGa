@@ -295,7 +295,7 @@ class TestChessBoard(unittest.TestCase):
             b.clean_pieces()
             b.initialize_single_piece('b', 'w', [4, 4])
             expected = True
-            actual = b.move_bishop_to(move[0],move[1])
+            actual = b.move_bishop_to(move[0],move[1], 'white')
             self.assertEqual(expected, actual)
 
         ## Unaccepted moves : left, right, up, down
@@ -306,7 +306,7 @@ class TestChessBoard(unittest.TestCase):
             b.clean_pieces()
             b.initialize_single_piece('b', 'w', [4, 4])
             expected = False
-            actual = b.move_bishop_to(move[0],move[1])
+            actual = b.move_bishop_to(move[0],move[1], 'white')
             self.assertEqual(expected, actual)
 
     def test_white_bishop_blocked_movement_rules(self):
