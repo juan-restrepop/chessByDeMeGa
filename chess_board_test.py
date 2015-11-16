@@ -536,23 +536,27 @@ class TestChessBoard(unittest.TestCase):
     def test_white_king_movement_rules(self):
         b = cb.ChessBoard()
 
-        # We initialize white king in 'f5' aka [3,5]
-        # accepted moves
-        for move in [['e', '6'], ['f', '6'], ['g', '6'],
+        ## Accepted moves
+        movements = [['e', '6'], ['f', '6'], ['g', '6'],
                      ['e', '5'], ['g','5'],
-                     ['e', '4'], ['f', '4'], ['g', '4']]:
+                     ['e', '4'], ['f', '4'], ['g', '4']]
 
+        for move in movements:
+            # Test white king on 'f5'
             b.clean_pieces()
             b.initialize_single_piece('k', 'w', [3, 5])
             expected = True
             actual = b.move_king_to(move[0],move[1])
             self.assertEqual(expected, actual)
         
-        # unaccepted moves c8,f7,h7,h5,h3,f3,c2
-        for move in [['c', '8'], ['f', '7'],['h', '7'],
+        ## Unaccepted moves c8,f7,h7,h5,h3,f3,c2
+        movements = [['c', '8'], ['f', '7'],['h', '7'],
                      ['a', '5'], ['h', '5'],
                      ['h', '3'], ['f', '3'], ['c', '2'],
-                     ['g', '3']]:
+                     ['g', '3']]
+
+        for move in movements:
+            # Test white king on 'f5'
             b.clean_pieces()
             b.initialize_single_piece('k', 'w', [3, 5])
             expected = False
