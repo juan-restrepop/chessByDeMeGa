@@ -349,31 +349,40 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_bishop_to(move[0],move[1], 'black')
             self.assertEqual(expected, actual)
 
+
     def test_white_knight_movement_rules(self):
         b = cb.ChessBoard()
 
-        # test forbidden moves
+        ## Test forbidden moves
+        movements = [['d', '3'], ['d','5'], \
+                        ['c', '4'], ['e', '4'], \
+                        ['c', '5'], ['e', '5'], ['c', '3'], ['e', '3']]
+
+        # Test white knight on 'd4'
         b.clean_pieces()
         b.initialize_single_piece('n', 'w', [4, 3])
 
         expected = False
-        for move in [['d', '3'], ['d','5'], \
-                        ['c', '4'], ['e', '4'], \
-                        ['c', '5'], ['e', '5'], ['c', '3'], ['e', '3']]:
-            actual = b.move_knight_to(move[0], move[1])
+        for move in movements:
+            actual = b.move_knight_to(move[0], move[1], 'white')
             self.assertEqual(expected, actual)
 
-        #test approved moves
-        expected = True
-
-        for move in [['b', '5'], ['f', '5'], \
+        ## Test approved moves
+        movements = [['b', '5'], ['f', '5'], \
                      ['b', '3'], ['f', '3'], \
                      ['c', '6'], ['e', '6'], \
-                     ['c', '2'], ['e', '2']]:
+                     ['c', '2'], ['e', '2']]
+
+        # Test white knight on 'd4'
+        b.clean_pieces()
+        b.initialize_single_piece('n', 'w', [4, 3])
+
+        expected = True
+        for move in movements:
             b.clean_pieces()
             b.initialize_single_piece('n', 'w', [4, 3])
 
-            actual = b.move_knight_to(move[0], move[1])
+            actual = b.move_knight_to(move[0], move[1], 'white')
             self.assertEqual(expected, actual)
 
     def test_white_knight_blocked_movement_rules(self):
@@ -394,6 +403,7 @@ class TestChessBoard(unittest.TestCase):
         expected = True
         actual = b.move_knight_to('a', '3')
         self.assertEqual(expected, actual)
+
 
     def test_white_rook_movement_rules(self):
         b = cb.ChessBoard()
