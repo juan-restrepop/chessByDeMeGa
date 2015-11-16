@@ -284,7 +284,7 @@ class TestChessBoard(unittest.TestCase):
         expected = False
         actual = b.move_pawn_to('d', '4')
 
-    def test_white_bishop_movement_rules(self):
+    def test_bishop_movement_rules(self):
         b = cb.ChessBoard()
         
         ## Accepted moves : down-left, down-right, up-left, up-right
