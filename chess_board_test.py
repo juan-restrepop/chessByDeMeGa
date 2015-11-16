@@ -328,8 +328,11 @@ class TestChessBoard(unittest.TestCase):
         b = cb.ChessBoard()
         ## Initialize white bishop on 'e4'
         # test not accepted moves : down-left,down-right,up-left,up-right
-        for move,blocking_piece in zip([['d','3'],['f','3'],['c','6'],['h','7']],
-                                        [[5,3], [5,5], [3,3],[2,6]]):
+        movements = [['d','3'],['f','3'],['c','6'],['h','7']]
+        blocking_pieces =  [[5,3], [5,5], [3,3],[2,6]]
+
+        for move,blocking_piece in zip(movements, blocking_pieces):
+
             b.clean_pieces()
             b.initialize_single_piece('b', 'w', [4, 4])
             b.initialize_single_piece('p', 'b', blocking_piece)
