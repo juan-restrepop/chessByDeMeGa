@@ -198,7 +198,8 @@ class TestChessBoard(unittest.TestCase):
             expected = coords
             self.assertEqual(expected, piece_coordinates)
 
-
+    # TODO: Write down tests for black pawns
+    # TODO: Make sure that requesting a piece to stay at the same place is not accepted
     def test_white_pawn_movement_rules(self):
         b = cb.ChessBoard()
 
@@ -647,7 +648,6 @@ class TestChessBoard(unittest.TestCase):
 
             actual = b.move_queen_to(move[0], move[1], 'black')
             self.assertEqual(expected, actual)
-
 
 
 if __name__ == '__main__':
