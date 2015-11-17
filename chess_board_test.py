@@ -649,6 +649,19 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_queen_to(move[0], move[1], 'black')
             self.assertEqual(expected, actual)
 
+    def test_transform_coords(self):
+        b = cb.ChessBoard()
+
+        for col in ['a','b','c','d','e','f','g','h']:
+            for line in ['1','2','3','4','5','6','7','8']:
+                
+                col,line = 'a','1'
+                grid_x,grid_y = b.transform_board_to_grid(col,line)
+                new_col,new_line = b.transform_grid_to_board(grid_x,grid_y)
+
+                self.assertEqual(col,new_col)
+                self.assertEqual(line,new_line)
+
 
 if __name__ == '__main__':
     unittest.main()
