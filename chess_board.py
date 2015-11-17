@@ -66,14 +66,17 @@ class ChessBoard(object):
                                     'bq': self.queen_b,
                                     'wk': self.king_w,
                                     'bk': self.king_b}
-        if not(\
-                        kind in ['p', 'k', 'q', 'b', 'r', 'n'] and \
-                        color in ['w', 'b'] and \
-                        coordinates[0] in range(8) and \
-                        coordinates[1] in range(8)\
 
-                  ):
-            print 'That piece or that board coordinate is not valid'
+        # Check function input
+        if not(kind in ['p', 'k', 'q', 'b', 'r', 'n']):
+            print 'Cannot initialize piece, invalid kind'
+            return
+        elif not(color in ['w', 'b']):
+            print 'Cannot initialize piece, invalid color'
+            return
+        elif not( (coordinates[0] in range(8)) and (coordinates[1] in range(8)) ):
+            print 'Cannot initialize piece, invalid coordinate' \
+                  'return'
 
         else:
             if kind == 'p':
