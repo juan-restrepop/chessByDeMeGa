@@ -200,9 +200,6 @@ class TestChessBoard(unittest.TestCase):
 
 
     def test_black_pawn_movement_rules(self):
-        # TODO: Write down tests for black pawns
-        # TODO: Make sure that requesting a piece to stay at the same place is not accepted
-
         # forbidden
         b = cb.ChessBoard()
         b.clean_pieces()
@@ -295,6 +292,13 @@ class TestChessBoard(unittest.TestCase):
         # Test forbidden forward move longer than 2
         expected = False
         actual = b.move_pawn_to('d', '5')
+        self.assertEqual(expected, actual)
+
+        # Test forbidden in-place move
+        expected = False
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '2'))
+        actual = b.move_pawn_to('d', '2')
         self.assertEqual(expected, actual)
 
         ## Test approved moves if initial position
