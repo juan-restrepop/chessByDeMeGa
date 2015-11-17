@@ -78,19 +78,24 @@ class ChessBoard(object):
             print 'Cannot initialize piece, invalid coordinate' \
                   'return'
 
-        else:
-            if kind == 'p':
-                dic_piece_to_piece_lists[color + kind].append(pieces.Pawn(color, coordinates))
-            elif kind == 'r':
-                dic_piece_to_piece_lists[color + kind].append(pieces.Rook(color, coordinates))
-            elif kind == 'n':
-                dic_piece_to_piece_lists[color + kind].append(pieces.Knight(color, coordinates))
-            elif kind == 'b':
-                dic_piece_to_piece_lists[color + kind].append(pieces.Bishop(color, coordinates))
-            elif kind == 'q':
-                dic_piece_to_piece_lists[color + kind].append(pieces.Queen(color, coordinates))
-            elif kind == 'k':
-                dic_piece_to_piece_lists[color + kind].append(pieces.King(color, coordinates))
+        # Check if square is available
+        if not(self.is_square_free(coordinates[0], coordinates[1])):
+            print 'Cannot initialize piece, occupied square'
+            return
+
+        #Initialize the piece
+        if kind == 'p':
+            dic_piece_to_piece_lists[color + kind].append(pieces.Pawn(color, coordinates))
+        elif kind == 'r':
+            dic_piece_to_piece_lists[color + kind].append(pieces.Rook(color, coordinates))
+        elif kind == 'n':
+            dic_piece_to_piece_lists[color + kind].append(pieces.Knight(color, coordinates))
+        elif kind == 'b':
+            dic_piece_to_piece_lists[color + kind].append(pieces.Bishop(color, coordinates))
+        elif kind == 'q':
+            dic_piece_to_piece_lists[color + kind].append(pieces.Queen(color, coordinates))
+        elif kind == 'k':
+            dic_piece_to_piece_lists[color + kind].append(pieces.King(color, coordinates))
 
         self.update_board()
 
