@@ -2,7 +2,7 @@
 .idea
 
 # ignoring loops *.save
-*.save
+*.save.*
 
 # ignoring .DS_Store
 .DS_Store
