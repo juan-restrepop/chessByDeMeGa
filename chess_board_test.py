@@ -198,8 +198,61 @@ class TestChessBoard(unittest.TestCase):
             expected = coords
             self.assertEqual(expected, piece_coordinates)
 
-    # TODO: Write down tests for black pawns
-    # TODO: Make sure that requesting a piece to stay at the same place is not accepted
+
+    def test_black_pawn_movement_rules(self):
+        # TODO: Write down tests for black pawns
+        # TODO: Make sure that requesting a piece to stay at the same place is not accepted
+
+        # forbidden
+        b = cb.ChessBoard()
+        b.clean_pieces()
+
+        moves = [['d','7'],['f','7'], # lateral
+                 ['d','6'],['f','6'], # fwd-diagonal
+                 ['c','8'],['d','8'],['e','8'], # backwards
+                 ['e','4'],           # fwd, more than 2
+                 ['e','7']]           # in-place
+
+        expected = False
+        for move in moves:
+            b.clean_pieces()
+            b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '7'))
+            actual = b.move_pawn_to(move[0],move[1],'black')
+            self.assertEqual(actual,expected)
+
+        # forbidden: more than 2 in line < 7
+        b.clean_pieces()
+        expected = False
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '6'))
+        move = ['e','4']
+        actual  = b.move_pawn_to(move[0],move[1],'black')
+        self.assertEqual(actual,expected)
+        
+        # accepted: single and double in the starting line
+        expected = True
+        moves = [['e','6'],['e','5']]
+
+        for move in moves:
+            b.clean_pieces()
+            b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '7'))
+            actual  = b.move_pawn_to(move[0],move[1],'black')
+            self.assertEqual(actual,expected)
+
+        # accepted: single elsewhere
+        expected = True
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '4'))
+        actual  = b.move_pawn_to('e','3','black')
+        self.assertEqual(actual,expected)
+
+
+        
+
+
+
+
+
+
     def test_white_pawn_movement_rules(self):
         b = cb.ChessBoard()
 
@@ -222,7 +275,7 @@ class TestChessBoard(unittest.TestCase):
 
         # Test forbidden backwards moves
         expected = False
-        for move in [['e','1'], ['c','3'], ['d', '1']]:
+        for move in [['e','1'], ['c','1'], ['d', '1']]:
             actual = b.move_pawn_to(move[0], move[1])
             self.assertEqual(expected, actual)
 
@@ -654,7 +707,7 @@ class TestChessBoard(unittest.TestCase):
 
         for col in ['a','b','c','d','e','f','g','h']:
             for line in ['1','2','3','4','5','6','7','8']:
-                
+
                 col,line = 'a','1'
                 grid_x,grid_y = b.transform_board_to_grid(col,line)
                 new_col,new_line = b.transform_grid_to_board(grid_x,grid_y)
