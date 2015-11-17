@@ -724,15 +724,20 @@ class TestChessBoard(unittest.TestCase):
     def test_transform_coords(self):
         b = cb.ChessBoard()
 
-        for col in ['a','b','c','d','e','f','g','h']:
-            for line in ['1','2','3','4','5','6','7','8']:
+        board_cols = ['a','b','c','d','e','f','g','h']
+        grid_cols = [0, 1, 2, 3, 4, 5, 6, 7]
 
-                col,line = 'a','1'
-                grid_x,grid_y = b.transform_board_to_grid(col,line)
-                new_col,new_line = b.transform_grid_to_board(grid_x,grid_y)
+        board_lines = ['8', '7', '6', '5', '4', '3', '2', '1']
+        grid_lines = [0, 1, 2, 3, 4, 5, 6, 7]
 
-                self.assertEqual(col,new_col)
-                self.assertEqual(line,new_line)
+        for (col, line, i, j) in zip(board_cols, board_lines, grid_lines, grid_cols):
+            new_col, new_line = b.transform_grid_to_board(i, j)
+            new_i, new_j = b.transform_board_to_grid(col, line)
+
+            self.assertEqual(col, new_col)
+            self.assertEqual(line, new_line)
+            self.assertEqual(i, new_i)
+            self.assertEqual(j, new_j)
 
 
 if __name__ == '__main__':
