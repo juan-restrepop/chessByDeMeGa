@@ -701,8 +701,8 @@ class TestChessBoard(unittest.TestCase):
 
         expected = False
         for move in movements:
-            b.clean_pieces()
             # Test white queen on 'c4'
+            b.clean_pieces()
             b.initialize_single_piece('q', 'w', [4, 2])
             b.initialize_single_piece('p', 'w', [4, 6])
             b.initialize_single_piece('r', 'b', [2, 2])
@@ -712,6 +712,7 @@ class TestChessBoard(unittest.TestCase):
             self.assertEqual(expected, actual)
 
             # Test black queen on 'c4'
+            b.clean_pieces()
             b.initialize_single_piece('q', 'b', [4, 2])
             b.initialize_single_piece('p', 'w', [4, 6])
             b.initialize_single_piece('r', 'b', [2, 2])
