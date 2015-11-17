@@ -245,13 +245,26 @@ class TestChessBoard(unittest.TestCase):
         actual  = b.move_pawn_to('e','3','black')
         self.assertEqual(actual,expected)
 
+    def test_black_pawn_blocked_movement(self):
+        b = cb.ChessBoard()
 
-        
+        b.clean_pieces()
+        expected = False
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '7'))
+        b.initialize_single_piece('n', 'w', b.transform_board_to_grid('e', '6'))
 
+        actual  = b.move_pawn_to('e','6','black')
+        self.assertEqual(expected, actual)
 
+        actual  = b.move_pawn_to('e','5','black')
+        self.assertEqual(expected, actual)
 
-
-
+        b.clean_pieces()
+        expected = False
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '6'))
+        b.initialize_single_piece('n', 'w', b.transform_board_to_grid('e', '5'))
+        actual  = b.move_pawn_to('e','5','black')
+        self.assertEqual(expected, actual)
 
     def test_white_pawn_movement_rules(self):
         b = cb.ChessBoard()
@@ -337,6 +350,7 @@ class TestChessBoard(unittest.TestCase):
 
         expected = False
         actual = b.move_pawn_to('d', '4')
+        self.assertEqual(expected, actual)
 
 
     def test_bishop_movement_rules(self):
