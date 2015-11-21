@@ -24,10 +24,7 @@ class ChessGame(object):
         return input_move == "q"
 
     def is_special_case(self, input_move):
-        res = input_move in ['O-O','O-O-O','1-0','0-1', '1/2-1/2']
-        if res:
-            print "Castling or End of game" 
-        return res
+        return self.is_castling(input_move) or self.is_end_of_game(input_move)
 
     def is_castling(self, input_move):
         res = input_move in ['O-O','O-O-O']
@@ -35,7 +32,7 @@ class ChessGame(object):
             print "Castling"
         return res
 
-    def is_end_of_game(self,input_move):
+    def is_end_of_game(self, input_move):
         res = input_move in ['1-0','0-1', '1/2-1/2']
         if res:
             print "End of game"
