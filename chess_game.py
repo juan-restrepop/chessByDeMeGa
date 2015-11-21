@@ -29,6 +29,17 @@ class ChessGame(object):
             print "Castling or End of game" 
         return res
 
+    def is_castling(self, input_move):
+        res = input_move in ['O-O','O-O-O']
+        if res:
+            print "Castling"
+        return res
+
+    def is_end_of_game(self,input_move):
+        res = input_move in ['1-0','0-1', '1/2-1/2']
+        if res:
+            print "End of game"
+        return res
 
     def is_pawn(self, input_move):
         return input_move[0] in self.column_names
