@@ -23,6 +23,7 @@ class ChessGame(object):
     def has_quit(self, input_move):
         return input_move == "q"
 
+
     def is_special_case(self, input_move):
         return self.is_castling(input_move) or self.is_end_of_game(input_move)
 
@@ -48,6 +49,7 @@ class ChessGame(object):
     def is_check(self,input_move):
         return input_move[-1] in ['+','#']
 
+
     def is_pawn(self, input_move):
         return input_move[0] in self.column_names
 
@@ -66,11 +68,10 @@ class ChessGame(object):
     def is_king(self,input_move):
         return input_move[0] == 'K'
         
+
     def is_main_piece(self, input_move):
         return input_move[0] in ['K','Q','N','B','R']
 
-    def piece_eats(self, input_move):
-        return self.validate_eat_case(input_move)
 
     def validate_eat_case(self, input_move):
         if len(input_move) >= 4:
@@ -127,6 +128,7 @@ class ChessGame(object):
 
         print 'wrong input, try again'
         return False
+
 
     def are_coordinates_valid(self, col, line):
         return (line in self.line_names) and (col in self.column_names)
@@ -190,6 +192,9 @@ class ChessGame(object):
         return input_move[1], input_move[2]
 
 
+    def piece_eats(self, input_move):
+        return self.validate_eat_case(input_move)
+
     def move_piece_to(self, input_move, move_to_col, move_to_line):
            
         if self.is_pawn(input_move):
@@ -211,6 +216,7 @@ class ChessGame(object):
             return self.board.move_queen_to(move_to_col, move_to_line, self.player)
 
         return False
+
 
     def print_move(self, input_move, move_to_col, move_to_line):
         out_str  = ""
