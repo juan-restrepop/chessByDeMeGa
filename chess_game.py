@@ -83,7 +83,7 @@ class ChessGame(object):
             if len(input_move) <= 1:
                 return False
         elif self.is_main_piece(input_move):
-            if len(input_move) < 3:
+            if len(input_move)< 3:
                 return False
         return True
 

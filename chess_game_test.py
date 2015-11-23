@@ -113,9 +113,12 @@ class TestChessGame(unittest.TestCase):
             self.assertEqual(expected, actual)
 
         expected = False
-        for input_move in ['ax2','B3','Abcd']:
+        k = 1
+        for input_move  in ['ax2','B3','Abcd']:
+            #print input_move, actual
             actual = c.is_user_move_valid(input_move)
-            self.assertEqual(expected, actual)
+            self.assertEqual(expected, actual, msg='Error on test # %i: %s'  %(k,input_move) )
+            k += 1
 
     def test_are_coordinates_valid(self):
         c = cg.ChessGame()
