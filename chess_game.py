@@ -151,7 +151,7 @@ class ChessGame(object):
 
         promotion,input_move,promoted_to = self.is_promotion(input_move)
 
-        if promotion and not is_valid_promotion(promoted_to):
+        if promotion and not self.is_valid_promotion(promoted_to):
             return True
 
         move_to_col, move_to_line = None, None
