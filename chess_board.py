@@ -19,6 +19,7 @@ class ChessBoard(object):
         self.initialize_board()
         self.initialize_pieces()
         self.initialize_board_with_pieces()
+        self.Rules = MovementRules()
 
 
     def get_all_pieces(self):
@@ -172,37 +173,6 @@ class ChessBoard(object):
         return self.grid[i][j] in ['0', '1']
 
 
-    def can_pawn_reach(self, i, j, pawn, player='white'):
-        # TODO: should work for black pawns as well
-
-        i_origin, j_origin = pawn.coordinates
-
-        if player == 'white':
-            if j == j_origin:
-                if i >= i_origin:
-                    return False
-                elif i_origin - i == 1:
-                    return self.is_square_free(i, j)
-                elif i_origin - i == 2:
-                    return self.is_square_free(i + 1, j) and self.is_square_free(i, j) and i_origin == 6
-                else:
-                    return False
-            else:
-                return False
-        elif player == 'black':
-            if j == j_origin:
-                if i <= i_origin:
-                    return False
-                elif i - i_origin == 1:
-                    return self.is_square_free(i, j)
-                elif i - i_origin == 2:
-                    return self.is_square_free(i - 1, j) and self.is_square_free(i, j) and i_origin == 1
-                else:
-                    return False
-            else:
-                return False
-
-
     def can_king_reach(self, i, j, king):
         i_origin, j_origin = king.coordinates
 
@@ -336,7 +306,7 @@ class ChessBoard(object):
         pawn_list = self.list_to_update(player, self.pawns_w, self.pawns_b)
 
         for k in range(len(pawn_list)):
-            if self.can_pawn_reach(i, j, pawn_list[k], player):
+            if self.Rules.is_pawn_movement_valid(self, i, j, pawn_list[k], player):
                 self.piece_mover(pawn_list[k], i, j)
                 accepted_move = True
                 break
@@ -456,3 +426,32 @@ class ChessBoard(object):
                                          7 : 'h'}
 
         return (grid_columns_to_board_columns[j], grid_lines_to_board_lines[i])
+
+class MovementRules(object):
+    def is_pawn_movement_valid(self, board, i, j, pawn, player = 'white'):
+        i_origin, j_origin = pawn.coordinates
+
+        if player == 'white':
+            if j == j_origin:
+                if i >= i_origin:
+                    return False
+                elif i_origin - i == 1:
+                    return board.is_square_free(i, j)
+                elif i_origin - i == 2:
+                    return board.is_square_free(i + 1, j) and board.is_square_free(i, j) and i_origin == 6
+                else:
+                    return False
+            else:
+                return False
+        elif player == 'black':
+            if j == j_origin:
+                if i <= i_origin:
+                    return False
+                elif i - i_origin == 1:
+                    return board.is_square_free(i, j)
+                elif i - i_origin == 2:
+                    return board.is_square_free(i - 1, j) and board.is_square_free(i, j) and i_origin == 1
+                else:
+                    return False
+            else:
+                return False
