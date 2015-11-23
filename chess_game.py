@@ -38,6 +38,9 @@ class ChessGame(object):
             print "End of game"
         return res
 
+    def is_check(self,input_move):
+        return input_move[-1] in ['+','#']
+
     def is_pawn(self, input_move):
         return input_move[0] in self.column_names
 
