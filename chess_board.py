@@ -174,16 +174,7 @@ class ChessBoard(object):
 
 
 
-    def can_knight_reach(self, i, j, knight):
-        # TODO: The knight should eat if final square is occupied
-        i_origin, j_origin = knight.coordinates
-
-        if self.is_square_free(i, j):
-            return (abs(i - i_origin) == 1) and (abs(j - j_origin) == 2) \
-                or \
-                (abs(i - i_origin) == 2) and (abs(j - j_origin) == 1)
-
-        return False
+    
 
     def piece_mover(self, piece, i, j):
         piece.coordinates = [i, j]
@@ -236,7 +227,7 @@ class ChessBoard(object):
         knight_list =self.list_to_update(player,self.knights_w,self.knights_b)
 
         for k in range(len(knight_list)):
-            if self.can_knight_reach(i, j, knight_list[k]):
+            if self.Rules.is_knight_movement_valid(self, i, j, knight_list[k]):
                 self.piece_mover(knight_list[k], i, j)
                 accepted_move = True
                 break
@@ -454,5 +445,16 @@ class MovementRules(object):
 
     def is_queen_movement_valid(self, board, i, j, queen):
         return self.is_rook_movement_valid(board, i, j, queen) or self.is_bishop_movement_valid(board, i, j, queen)
+
+    def is_knight_movement_valid(self, board, i, j, knight):
+        # TODO: The knight should eat if final square is occupied
+        i_origin, j_origin = knight.coordinates
+
+        if board.is_square_free(i, j):
+            return (abs(i - i_origin) == 1) and (abs(j - j_origin) == 2) \
+                   or \
+                   (abs(i - i_origin) == 2) and (abs(j - j_origin) == 1)
+
+        return False
 
 
