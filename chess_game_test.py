@@ -177,6 +177,18 @@ class TestChessGame(unittest.TestCase):
         actual =  c.is_promotion('a8')
         self.assertEqual(expected,actual)
 
+    def test_is_valid_promotion(self):
+        c = cg.ChessGame()
+
+        expected = True
+        actual = c.is_valid_promotion('Q')
+        self.assertEqual(expected,actual)
+
+        expected = False
+        for new_piece in ['a','b','c','d','e','f','g','h','K']:
+            actual = c.is_valid_promotion(new_piece)
+            self.assertEqual(expected,actual)
+
 
 if __name__ == '__main__':
     unittest.main()
