@@ -38,6 +38,13 @@ class ChessGame(object):
             print "End of game"
         return res
 
+    def is_promotion(self,input_move):
+        if not '=' in input_move:
+            return (False, input_move,'')
+        else:
+            idx = input_move.index('=')
+            return (True,input_move[:idx],input_move[idx+1:]) 
+
     def is_check(self,input_move):
         return input_move[-1] in ['+','#']
 
