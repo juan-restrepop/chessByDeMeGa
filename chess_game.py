@@ -129,6 +129,10 @@ class ChessGame(object):
         if not self.is_user_move_valid(input_move):
             return True
 
+        checked = self.is_check(input_move)
+        promotion,input_move,promoted_to = self.is_promotion(input_move)
+
+
         move_to_col, move_to_line = None, None
 
         if self.is_pawn(input_move):
