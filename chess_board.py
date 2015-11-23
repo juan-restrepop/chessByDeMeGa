@@ -173,14 +173,7 @@ class ChessBoard(object):
         return self.grid[i][j] in ['0', '1']
 
 
-    def can_king_reach(self, i, j, king):
-        i_origin, j_origin = king.coordinates
-
-        if ((abs(i - i_origin) == 1) and (abs(j - j_origin) <= 1) 
-            or (abs(j - j_origin) == 1) and (abs(i - i_origin) <= 1)):
-            return self.is_square_free(i,j)
-        return False
-
+    
     def can_queen_reach(self, i, j, queen):
         return self.can_bishop_reach(i, j, queen) or self.can_rook_reach(i, j, queen)
 
@@ -298,7 +291,6 @@ class ChessBoard(object):
 
 
     def move_pawn_to(self, col, line, player='white'):
-        # we work only with white
         # TODO: Handle 'en passant' capture
 
         accepted_move = False
@@ -364,7 +356,7 @@ class ChessBoard(object):
         i,j = self.transform_board_to_grid(col,line)
         king_list = self.list_to_update(player, self.king_w, self.king_b)
 
-        if self.can_king_reach(i, j, king_list[0]):
+        if self.Rules.is_king_movement_valid(self, i, j, king_list[0]):
             self.piece_mover(king_list[0], i, j)
             accepted_move = True
 
@@ -455,3 +447,11 @@ class MovementRules(object):
                     return False
             else:
                 return False
+
+    def is_king_movement_valid(self, board, i, j, king):
+        i_origin, j_origin = king.coordinates
+
+        if ((abs(i - i_origin) == 1) and (abs(j - j_origin) <= 1)
+            or (abs(j - j_origin) == 1) and (abs(i - i_origin) <= 1)):
+            return board.is_square_free(i,j)
+        return False
