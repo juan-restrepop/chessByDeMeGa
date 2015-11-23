@@ -157,5 +157,15 @@ class TestChessGame(unittest.TestCase):
             actual = c.parse_main_pieces_coordinates(input_move)
             self.assertEqual(expected[k], actual)
 
+    def test_is_check(self):
+        c = cg.ChessGame()
+
+        expected = True
+        test_cases = ['Bf5+','a6#']
+        for input_move in test_cases:
+            actual = c.is_check(input_move)
+            self.assertEqual(actual,expected)
+
+
 if __name__ == '__main__':
     unittest.main()
