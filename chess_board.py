@@ -38,22 +38,6 @@ class ChessBoard(object):
             for j in range(0, 8):
                 self.grid[i].append(str((j + i) % 2))
 
-    def clean_pieces(self):
-        self.pawns_w = list()
-        self.pawns_b = list()
-        self.rooks_w = list()
-        self.rooks_b = list()
-        self.bishops_w = list()
-        self.bishops_b = list()
-        self.knights_w = list()
-        self.knights_b = list()
-        self.king_w = list()
-        self.king_b = list()
-        self.queen_w = list()
-        self.queen_b = list()
-
-        self.update_board()
-
     def initialize_single_piece(self, kind, color, coordinates):
         dic_piece_to_piece_lists = {'wp': self.pawns_w,
                                     'bp': self.pawns_b,
@@ -138,6 +122,23 @@ class ChessBoard(object):
             self.grid[rowCoord][colCoord] = p.kind
 
 
+    def clean_pieces(self):
+        self.pawns_w = list()
+        self.pawns_b = list()
+        self.rooks_w = list()
+        self.rooks_b = list()
+        self.bishops_w = list()
+        self.bishops_b = list()
+        self.knights_w = list()
+        self.knights_b = list()
+        self.king_w = list()
+        self.king_b = list()
+        self.queen_w = list()
+        self.queen_b = list()
+
+        self.update_board()
+
+
     def get_bishop_walk_color(self,some_bishop):
         return self.get_square_color(some_bishop.coordinates[0],
                                      some_bishop.coordinates[1])
@@ -171,10 +172,6 @@ class ChessBoard(object):
 
     def is_square_free(self, i, j):
         return self.grid[i][j] in ['0', '1']
-
-
-
-    
 
     def piece_mover(self, piece, i, j):
         piece.coordinates = [i, j]
