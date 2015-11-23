@@ -69,7 +69,6 @@ class ChessGame(object):
     def is_main_piece(self, input_move):
         return input_move[0] in ['K','Q','N','B','R']
 
-
     def piece_eats(self, input_move):
         return (len(input_move)>1) and (input_move[1] == 'x')
 
@@ -84,9 +83,12 @@ class ChessGame(object):
             if len(input_move) <= 1:
                 return False
         elif self.is_main_piece(input_move):
-            if len(input_move)< 3:
+            if len(input_move) < 3:
                 return False
-        return True            
+        return True
+
+    def is_valid_promotion(self, input_promotion):
+        return input_promotion in ['B','N','R','Q']
 
     def is_user_move_valid(self, input_move):
 
@@ -116,7 +118,6 @@ class ChessGame(object):
     def are_coordinates_valid(self, col, line):
         return (line in self.line_names) and (col in self.column_names)
         
-
     def parse_user_move(self, input_move):
         # TODO: Handle ambiguities
         # TODO: Handle check, check-mate
@@ -130,8 +131,13 @@ class ChessGame(object):
             return True
 
         checked = self.is_check(input_move)
+        if checked:
+            input_move = input_move[:-1]
+
         promotion,input_move,promoted_to = self.is_promotion(input_move)
 
+        if promotion and not is_valid_promotion(promoted_to):
+            return True
 
         move_to_col, move_to_line = None, None
 
