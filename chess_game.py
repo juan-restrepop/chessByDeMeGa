@@ -70,22 +70,28 @@ class ChessGame(object):
         return input_move[0] in ['K','Q','N','B','R']
 
     def piece_eats(self, input_move):
-        return (len(input_move)>1) and (input_move[1] == 'x')
+        return self.validate_eat_case(input_move)
 
     def validate_eat_case(self, input_move):
-        if self.piece_eats(input_move) and len(input_move) >= 4:
-            return True
+        if len(input_move) >= 4:
+            if input_move[-3] == 'x':
+                if (input_move[-1] in self.line_names) and (input_move[-2] in self.column_names):
+                    return len(input_move) == 4 and (self.is_pawn(input_move) or self.is_main_piece(input_move))
+
         return False
 
-    def validate_normal_case(self, input_move):
-        # not eating move
+    def validate_move_case(self, input_move):
+
         if self.is_pawn(input_move):
-            if len(input_move) <= 1:
+            if len(input_move) != 2:
                 return False
+            return input_move[1] in self.line_names
+
         elif self.is_main_piece(input_move):
-            if len(input_move)< 3:
+            if len(input_move) != 3:
                 return False
-        return True
+            return input_move[1] in self.column_names and input_move[2] in self.line_names
+        return False
 
     def is_valid_promotion(self, input_promotion):
         return input_promotion in ['B','N','R','Q']
@@ -100,20 +106,27 @@ class ChessGame(object):
             print 'special cases are not supported yet'
             return False
 
-        if self.piece_eats(input_move) and (not self.validate_eat_case(input_move)):
-            print 'eat case not valid try again'
-            return False
-
-        if not self.piece_eats(input_move):
-            if not self.validate_normal_case(input_move):
-                print 'case not valid try again'
-                return False
-
         if not self.is_pawn(input_move) and not self.is_main_piece(input_move):
             print 'case not valid, not a chess piece'
             return False
 
-        return True
+
+        if self.validate_eat_case(input_move):
+            print 'Valid eat case'
+            return True
+
+        '''
+        if not self.piece_eats(input_move):
+            if not self.validate_normal_case(input_move):
+                print 'case not valid try again'
+                return False
+        '''
+        if self.validate_move_case(input_move):
+            print 'Valid move case'
+            return True
+
+        print 'wrong input, try again'
+        return False
 
     def are_coordinates_valid(self, col, line):
         return (line in self.line_names) and (col in self.column_names)
