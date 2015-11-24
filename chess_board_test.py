@@ -356,6 +356,7 @@ class TestChessBoard(unittest.TestCase):
         actual = b.move_pawn_to('d', '4')
         self.assertEqual(expected, actual)
 
+
     def test_white_knight_eating_rules(self):
         B = cb.ChessBoard()
         B.clean_pieces()
@@ -389,6 +390,52 @@ class TestChessBoard(unittest.TestCase):
         actual = B.Rules.is_knight_eating_valid(B, i, j, B.knights_w[0])
         self.assertEqual(expected, actual)
 
+    def test_white_queen_eating_rules(self):
+        B = cb.ChessBoard()
+        B.clean_pieces()
+
+        B.initialize_single_piece('q', 'w', B.transform_board_to_grid('e', '4'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('e', '8'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('h', '7'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('e', '6'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('c', '3'))
+        B.initialize_single_piece('p', 'w', B.transform_board_to_grid('h', '4'))
+
+        # Test eating well placed opponent
+        movements = ['e6', 'h7']
+        expected = True
+        for move in movements:
+            i, j = B.transform_board_to_grid(move[0], move[1])
+            actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w)
+            self.assertEqual(expected, actual)
+
+        # Test eating well placed same color
+        move = 'h4'
+        i, j = B.transform_board_to_grid(move[0], move[1])
+        expected = False
+        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w)
+        self.assertEqual(expected, actual)
+
+        # Test eating well placed empty square
+        move = 'c4'
+        i, j = B.transform_board_to_grid(move[0], move[1])
+        expected = False
+        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w)
+        self.assertEqual(expected, actual)
+
+        # Test ill placed opponent
+        move = 'c3'
+        i, j = B.transform_board_to_grid(move[0], move[1])
+        expected = False
+        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w)
+        self.assertEqual(expected, actual)
+
+        # Test blocked eating
+        move = 'e8'
+        i, j = B.transform_board_to_grid(move[0], move[1])
+        expected = False
+        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w)
+        self.assertEqual(expected, actual)
 
 
 
