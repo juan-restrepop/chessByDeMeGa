@@ -438,49 +438,7 @@ class MovementRules(object):
 
     def is_bishop_movement_valid(self, board, i, j, bishop):
         i_origin, j_origin = bishop.coordinates
-
-        if abs(i - i_origin) == abs(j - j_origin):
-            free_path = True
-
-            if (i > i_origin) and (j > j_origin):
-                # move down and to the right
-                temp_i = i_origin + 1
-                temp_j = j_origin + 1
-                while free_path and (temp_i <= i):
-                    free_path = board.is_square_free(temp_i, temp_j)
-                    temp_i = temp_i + 1
-                    temp_j = temp_j + 1
-
-            elif (i > i_origin) and (j < j_origin):
-                # move down and to the left
-                temp_i = i_origin + 1
-                temp_j = j_origin - 1
-                while free_path and (temp_i <= i):
-                    free_path = board.is_square_free(temp_i, temp_j)
-                    temp_i = temp_i + 1
-                    temp_j = temp_j - 1
-
-            elif (i < i_origin) and (j < j_origin):
-                # move up and to the left
-                temp_i = i_origin - 1
-                temp_j = j_origin - 1
-                while free_path and (temp_i >= i):
-                    free_path = board.is_square_free(temp_i, temp_j)
-                    temp_i = temp_i - 1
-                    temp_j = temp_j - 1
-
-            elif (i < i_origin) and (j > j_origin):
-                # move up and to the right
-                temp_i = i_origin - 1
-                temp_j = j_origin + 1
-                while free_path and (temp_i >= i):
-                    free_path = board.is_square_free(temp_i, temp_j)
-                    temp_i = temp_i - 1
-                    temp_j = temp_j + 1
-
-            return free_path
-
-        return False
+        return self.is_diagonal_move_valid(board, i_origin, j_origin, i, j)
 
     def is_rook_movement_valid(self, board, i, j, rook):
         # TODO: The rook should eat if final square is occupied
