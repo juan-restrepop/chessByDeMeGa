@@ -465,7 +465,9 @@ class MovementRules(object):
     def is_knight_eating_valid(self, board, i, j, knight):
         i_origin, j_origin = knight.coordinates
 
-        if board.is_square_free(i, j):
+        if (i == i_origin) and (j == j_origin):
+            return False
+        elif board.is_square_free(i, j):
             return False
         else:
             victim = board.get_piece_in_square(i, j)
