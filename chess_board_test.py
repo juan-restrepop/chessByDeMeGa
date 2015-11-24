@@ -412,42 +412,42 @@ class TestChessBoard(unittest.TestCase):
         expected = True
         for move in movements:
             i, j = B.transform_board_to_grid(move[0], move[1])
-            actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w)
+            actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w[0])
             self.assertEqual(expected, actual)
 
         # Test eating well placed same color
         move = 'h4'
         i, j = B.transform_board_to_grid(move[0], move[1])
         expected = False
-        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w)
+        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w[0])
         self.assertEqual(expected, actual)
 
         # Test eating well placed empty square
         move = 'c4'
         i, j = B.transform_board_to_grid(move[0], move[1])
         expected = False
-        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w)
+        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w[0])
         self.assertEqual(expected, actual)
 
         # Test ill placed opponent
         move = 'c3'
         i, j = B.transform_board_to_grid(move[0], move[1])
         expected = False
-        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w)
+        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w[0])
         self.assertEqual(expected, actual)
 
         # Test blocked eating
         move = 'e8'
         i, j = B.transform_board_to_grid(move[0], move[1])
         expected = False
-        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w)
+        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w[0])
         self.assertEqual(expected, actual)
 
         # Test eating itself
         move = 'e4'
         i, j = B.transform_board_to_grid(move[0], move[1])
         expected = False
-        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w)
+        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w[0])
         self.assertEqual(expected, actual)
 
     def test_white_pawn_eating_rules(self):
