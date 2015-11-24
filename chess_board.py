@@ -552,34 +552,20 @@ class MovementRules(object):
 
                     if j > j_origin:
                         # rook moves to the right
-                        temp_j = j_origin + 1
-                        while free_path and (temp_j < j):
-                            free_path = board.is_square_free(i, temp_j)
-                            temp_j = temp_j + 1
-
+                        free_path = self.is_lateral_move_valid(board, i_origin, j_origin, i, j - 1)
                     elif j < j_origin:
                         # rook moves to the left
-                        temp_j = j_origin - 1
-                        while free_path and (temp_j > j):
-                            free_path = board.is_square_free(i, temp_j)
-                            temp_j = temp_j - 1
+                        free_path = self.is_lateral_move_valid(board, i_origin, j_origin, i, j + 1)
 
                 elif (j == j_origin):
-
                     if i > i_origin:
                         # rook moves down
-                        temp_i = i_origin + 1
-                        while free_path and (temp_i < i):
-                            free_path = board.is_square_free(temp_i, j)
-                            temp_i = temp_i + 1
-
+                        free_path = self.is_vertical_move_valid(board, i_origin, j_origin, i - 1, j)
                     elif i < i_origin:
                         # rook moves up
-                        temp_i = i_origin - 1
-                        while free_path and (temp_i > i):
-                            free_path = board.is_square_free(temp_i, j)
-                            temp_i = temp_i - 1
+                        free_path = self.is_vertical_move_valid(board, i_origin, j_origin, i + 1, j)
+
                 else:
                     return False
 
-                return free_path # to liberty
+                return free_path
