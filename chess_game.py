@@ -164,10 +164,23 @@ class ChessGame(object):
         if accepted_move:
             out_str = self.print_move(input_move, move_to_col, move_to_line)
             print("Your move is : " + input_move + '. ' + out_str)
+            self.switch_player()
+
         else:
             print "Move not accepted"
 
+
+
         return True
+
+    def switch_player(self):
+        print self.player
+        if self.player == 'white':
+            self.player = 'black'
+            return
+        self.player = 'white'
+        return
+
 
 
     def parse_pawn_coordinates(self, input_move):
