@@ -113,11 +113,11 @@ class ChessGame(object):
             return False
 
         if self.validate_eat_case(input_move):
-            print 'Valid eat case'
+            print 'valid eat input'
             return True
 
         if self.validate_move_case(input_move):
-            print 'Valid move case'
+            print 'valid move input'
             return True
 
         print 'wrong input, try again'
@@ -184,19 +184,10 @@ class ChessGame(object):
 
 
     def parse_pawn_coordinates(self, input_move):
-
-        if self.piece_eats(input_move):
-            return input_move[2], input_move[3]
-
-        return input_move[0], input_move[1]
+        return input_move[-2],input_move[-1]
 
     def parse_main_pieces_coordinates(self, input_move):
-        
-        if self.piece_eats(input_move):
-            return input_move[2], input_move[3] 
-
-        return input_move[1], input_move[2]
-
+        return input_move[-2],input_move[-1]
 
     def piece_eats(self, input_move):
         return self.validate_eat_case(input_move)
