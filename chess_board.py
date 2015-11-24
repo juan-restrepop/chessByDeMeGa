@@ -506,4 +506,50 @@ class MovementRules(object):
             return False
 
     def is_rook_eating_valid(self, board, i, j, rook):
-        return False
+        i_origin, j_origin = rook.coordinates
+
+        if i == i_origin and j == j_origin:
+            return False
+        elif board.is_square_free(i, j):
+            return False
+        else:
+            victim = board.get_piece_in_square(i, j)
+            if rook.color == victim.color:
+                return False
+            else:
+                free_path = True
+                if (i == i_origin):
+
+                    if j > j_origin:
+                        # rook moves to the right
+                        temp_j = j_origin + 1
+                        while free_path and (temp_j < j):
+                            free_path = board.is_square_free(i, temp_j)
+                            temp_j = temp_j + 1
+
+                    elif j < j_origin:
+                        # rook moves to the left
+                        temp_j = j_origin - 1
+                        while free_path and (temp_j > j):
+                            free_path = board.is_square_free(i, temp_j)
+                            temp_j = temp_j - 1
+
+                elif (j == j_origin):
+
+                    if i > i_origin:
+                        # rook moves down
+                        temp_i = i_origin + 1
+                        while free_path and (temp_i < i):
+                            free_path = board.is_square_free(temp_i, j)
+                            temp_i = temp_i + 1
+
+                    elif i < i_origin:
+                        # rook moves up
+                        temp_i = i_origin - 1
+                        while free_path and (temp_i > i):
+                            free_path = board.is_square_free(temp_i, j)
+                            temp_i = temp_i - 1
+                else:
+                    return False
+
+                return free_path # to liberty
