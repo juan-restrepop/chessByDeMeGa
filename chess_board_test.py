@@ -391,7 +391,7 @@ class TestChessBoard(unittest.TestCase):
         self.assertEqual(expected, actual)
 
         # Test eating one self
-        expected = True
+        expected = False
         i, j = B.transform_board_to_grid('d', '6')
         actual = B.Rules.is_knight_eating_valid(B, i, j, B.knights_w[0])
         self.assertEqual(expected, actual)
