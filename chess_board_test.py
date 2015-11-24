@@ -739,6 +739,51 @@ class TestChessBoard(unittest.TestCase):
             self.assertEqual(i, new_i)
             self.assertEqual(j, new_j)
 
+    def test_white_king_eating_rules(self):
+        b = cb.ChessBoard()
+
+        # accepted eating
+        for kind, color, coords in  [('p', 'b', ['e','3']),
+                                     ('q', 'b', ['e','5']),
+                                     ('b', 'b', ['d','3']),
+                                     ('r', 'b', ['f','5']),
+                                     ('b', 'b', ['f','4'])
+                                    ]:
+
+            b.clean_pieces()
+            b.initialize_single_piece('k','w',b.transform_board_to_grid('e','4'))
+            i,j = b.transform_board_to_grid(coords[0],coords[1])
+            b.initialize_single_piece(kind,color,[i,j])
+            expected = True
+            actual = b.Rules.is_king_eating_valid(b,i,j,b.king_w[0])
+            self.assertEqual(expected, actual, msg = 'unable to eat %s at %s %s' %(kind, coords[0], coords[1]))
+
+        # forbidden eating of same team (in the king case is the same test for forbidden blocked displacement)
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('e','4'))
+        i,j = b.transform_board_to_grid(['e', '3'])
+        b.initialize_single_piece('p', 'w', [i, j])
+        expected = False
+        actual = b.Rules.is_king_eating_valid(b, i , j, b.king_w[0])
+        self.assertEqual(expected, actual, msg = 'eating same team piece')
+
+        # forbidden eating of empty square
+        i,j = b.transform_board_to_grid(['e', '5'])
+        expected = False
+        actual = b.Rules.is_king_eating_valid(b, i, j, b.king_w[0])
+        self.assertEqual(expected, actual, msg = 'eating nobody')
+
+        # forbidden suicide
+        i,j = b.transform_board_to_grid(['e','4'])
+        expected = False
+        actual = b.Rules.is_king_eating_valid(b,i,j,b.king_w[0])
+        self.assertEqual(expected, actual, msg = 'suicidal king')
+
+        # forbidden king displacement
+        i,j = b.transform_board_to_grid(['h','4'])
+        expected = False
+        actual = b.Rules.is_king_eating_valid(b,i,j,b.king_w[0])
+        self.assertEqual(expected, actual, msg = 'thy majesty is going way to far')
 
 if __name__ == '__main__':
     unittest.main()
