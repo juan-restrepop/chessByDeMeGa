@@ -574,7 +574,8 @@ class MovementRules(object):
             return False
 
     def is_queen_eating_valid(self, board, i, j, queen):
-        return False
+        return ( self.is_rook_eating_valid(board, i, j, queen)
+               or self.is_bishop_eating_valid(board, i, j, queen) )
 
     def is_pawn_eating_valid(self, board, i, j, pawn, player = 'white'):
         # TODO: handle 'en passant' pawn capture
