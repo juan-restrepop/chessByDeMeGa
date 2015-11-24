@@ -30,6 +30,12 @@ class ChessBoard(object):
                      self.bishops_w + self.bishops_b + \
                      self.knights_w + self.knights_b)
 
+    def get_piece_in_square(self, i, j):
+        for piece in self.get_all_pieces():
+            if piece.coordinates == [i, j]:
+                return piece
+        return []
+
 
     def initialize_board(self):
         self.grid = list()
@@ -316,6 +322,7 @@ class ChessBoard(object):
         return (grid_columns_to_board_columns[j], grid_lines_to_board_lines[i])
 
 class MovementRules(object):
+    ## Simple movement rules
     def is_pawn_movement_valid(self, board, i, j, pawn, player = 'white'):
         i_origin, j_origin = pawn.coordinates
 
@@ -454,4 +461,18 @@ class MovementRules(object):
 
         return False
 
+    ## Eating Rules
+    def is_knight_eating_valid(self, board, i, j, knight):
+        i_origin, j_origin = knight.coordinates
 
+        if board.is_square_free(i, j):
+            return False
+        else:
+            victim = board.get_piece_in_square(i, j)
+            if victim.color == knight.color:
+                return False
+            else:
+                return (abs(i - i_origin) == 1) and (abs(j - j_origin) == 2) \
+                        or \
+                        (abs(i - i_origin) == 2) and (abs(j - j_origin) == 1)
+        return False
