@@ -77,7 +77,7 @@ class ChessGame(object):
     def validate_eat_case(self, input_move):
         if len(input_move) >= 4:
             if input_move[-3] == 'x':
-                if (input_move[-1] in self.line_names) and (input_move[-2] in self.column_names):
+                if self.are_coordinates_valid(input_move[-2],input_move[-1]):
                     return len(input_move) == 4 and (self.is_pawn(input_move) or self.is_main_piece(input_move))
 
         return False
@@ -92,7 +92,7 @@ class ChessGame(object):
         elif self.is_main_piece(input_move):
             if len(input_move) != 3:
                 return False
-            return input_move[1] in self.column_names and input_move[2] in self.line_names
+            return self.are_coordinates_valid(input_move[1], input_move[2])
         return False
 
     def is_valid_promotion(self, input_promotion):
@@ -154,10 +154,6 @@ class ChessGame(object):
 
         if self.is_main_piece(input_move):
             move_to_col, move_to_line = self.parse_main_pieces_coordinates(input_move)
-
-        if not self.are_coordinates_valid(move_to_col, move_to_line):
-            print 'coordinates not valid try again'
-            return True
 
         accepted_move = self.move_piece_to(input_move, move_to_col, move_to_line)
 
