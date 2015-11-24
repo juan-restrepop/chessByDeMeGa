@@ -514,6 +514,63 @@ class TestChessBoard(unittest.TestCase):
         actual = B.Rules.is_pawn_eating_valid(B, i, j, B.pawns_w[0])
         self.assertEqual(expected, actual)
 
+    def test_white_rook_eating_rules(self):
+        B = cb.ChessBoard()
+        B.clean_pieces()
+
+        B.initialize_single_piece('r', 'w', B.transform_board_to_grid('d', '3'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('a', '3'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('d', '1'))
+        B.initialize_single_piece('p', 'w', B.transform_board_to_grid('h', '3'))
+        B.initialize_single_piece('p', 'w', B.transform_board_to_grid('d', '6'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('e', '4'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('d', '8'))
+
+
+        # Test eating well placed opponent
+        movements = ['a3', 'd1']
+        expected = True
+        for move in movements:
+            i, j = B.transform_board_to_grid(move[0], move[1])
+            actual = B.Rules.is_rook_eating_valid(B, i, j, B.rooks_w[0])
+            self.assertEqual(expected, actual)
+
+        # Test eating well placed same color
+        movements = ['h3', 'd6']
+        expected = False
+        for move in movements:
+            i, j = B.transform_board_to_grid(move[0], move[1])
+            actual = B.Rules.is_rook_eating_valid(B, i, j, B.rooks_w[0])
+            self.assertEqual(expected, actual)
+
+        # Test eating well placed empty square
+        move = 'd5'
+        expected = False
+        i, j = B.transform_board_to_grid(move[0], move[1])
+        actual = B.Rules.is_rook_eating_valid(B, i, j, B.rooks_w[0])
+        self.assertEqual(expected, actual)
+
+        # Test eating ill placed opponent
+        move = 'e4'
+        expected = False
+        i, j = B.transform_board_to_grid(move[0], move[1])
+        actual = B.Rules.is_rook_eating_valid(B, i, j, B.rooks_w[0])
+        self.assertEqual(expected, actual)
+
+        # Test blocked eating
+        move = 'd8'
+        expected = False
+        i, j = B.transform_board_to_grid(move[0], move[1])
+        actual = B.Rules.is_rook_eating_valid(B, i, j, B.rooks_w[0])
+        self.assertEqual(expected, actual)
+
+        #Test eating itself
+        move = 'd3'
+        expected = False
+        i, j = B.transform_board_to_grid(move[0], move[1])
+        actual = B.Rules.is_rook_eating_valid(B, i, j, B.rooks_w[0])
+        self.assertEqual(expected, actual)
+
 
 
     def test_bishop_movement_rules(self):
