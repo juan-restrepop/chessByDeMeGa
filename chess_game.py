@@ -228,22 +228,22 @@ class ChessGame(object):
         out_str  = ""
 
         if self.is_pawn(input_move):
-            out_str = "Move pawn"
+            out_str = "Move %s pawn" % self.player
 
         elif self.is_bishop(input_move):
-            out_str = "Move bishop"
+            out_str = "Move %s bishop" % self.player
         
         elif self.is_knight(input_move):
-            out_str = "Move knight"
+            out_str = "Move %s knight" % self.player
         
         elif self.is_rook(input_move):
-            out_str = "Move rook"
+            out_str = "Move %s rook" % self.player
         
         elif self.is_king(input_move):
-            out_str = "Move king"
+            out_str = "Move %s king" % self.player
         
         elif self.is_queen(input_move):
-            out_str = "Move queen"
+            out_str = "Move %s queen" % self.player
         else:
             out_str = "not supported move. Merry Xmas"
 
