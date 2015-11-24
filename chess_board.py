@@ -483,6 +483,7 @@ class MovementRules(object):
         return False
 
     def is_pawn_eating_valid(self, board, i, j, pawn, player = 'white'):
+        # TODO: handle 'en passant' pawn capture
         i_origin, j_origin = pawn.coordinates
         if (i == i_origin) and (j == j_origin):
             return False
