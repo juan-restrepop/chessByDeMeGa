@@ -465,7 +465,9 @@ class MovementRules(object):
     def is_knight_eating_valid(self, board, i, j, knight):
         i_origin, j_origin = knight.coordinates
 
-        if board.is_square_free(i, j):
+        if (i == i_origin) and (j == j_origin):
+            return False
+        elif board.is_square_free(i, j):
             return False
         else:
             victim = board.get_piece_in_square(i, j)
@@ -501,3 +503,78 @@ class MovementRules(object):
     def is_bishop_eating_valid(self, board, i, j, bishop):
         i_origin, j_origin = bishop.coordinates
         return False
+
+    def is_queen_eating_valid(self, board, i, j, queen):
+        return False
+
+    def is_pawn_eating_valid(self, board, i, j, pawn, player = 'white'):
+        # TODO: handle 'en passant' pawn capture
+        i_origin, j_origin = pawn.coordinates
+        if (i == i_origin) and (j == j_origin):
+            return False
+        elif board.is_square_free(i, j):
+            return False
+        else:
+            victim = board.get_piece_in_square(i, j)
+            if pawn.color == victim.color:
+                return False
+            elif player == 'white':
+                if (i_origin - i) == 1 and (abs(j - j_origin) == 1):
+                    return True
+                else:
+                    return False
+            elif player == 'black':
+                if (i - i_origin == 1) and (abs(j - j_origin) == 1):
+                    return True
+                else:
+                    return False
+            return False
+
+    def is_rook_eating_valid(self, board, i, j, rook):
+        i_origin, j_origin = rook.coordinates
+
+        if i == i_origin and j == j_origin:
+            return False
+        elif board.is_square_free(i, j):
+            return False
+        else:
+            victim = board.get_piece_in_square(i, j)
+            if rook.color == victim.color:
+                return False
+            else:
+                free_path = True
+                if (i == i_origin):
+
+                    if j > j_origin:
+                        # rook moves to the right
+                        temp_j = j_origin + 1
+                        while free_path and (temp_j < j):
+                            free_path = board.is_square_free(i, temp_j)
+                            temp_j = temp_j + 1
+
+                    elif j < j_origin:
+                        # rook moves to the left
+                        temp_j = j_origin - 1
+                        while free_path and (temp_j > j):
+                            free_path = board.is_square_free(i, temp_j)
+                            temp_j = temp_j - 1
+
+                elif (j == j_origin):
+
+                    if i > i_origin:
+                        # rook moves down
+                        temp_i = i_origin + 1
+                        while free_path and (temp_i < i):
+                            free_path = board.is_square_free(temp_i, j)
+                            temp_i = temp_i + 1
+
+                    elif i < i_origin:
+                        # rook moves up
+                        temp_i = i_origin - 1
+                        while free_path and (temp_i > i):
+                            free_path = board.is_square_free(temp_i, j)
+                            temp_i = temp_i - 1
+                else:
+                    return False
+
+                return free_path # to liberty

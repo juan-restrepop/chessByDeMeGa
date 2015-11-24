@@ -357,6 +357,222 @@ class TestChessBoard(unittest.TestCase):
         self.assertEqual(expected, actual)
 
 
+    def test_white_knight_eating_rules(self):
+        B = cb.ChessBoard()
+        B.clean_pieces()
+
+        B.initialize_single_piece('n', 'w', B.transform_board_to_grid('d', '6'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('c', '8'))
+        B.initialize_single_piece('p', 'w', B.transform_board_to_grid('e', '8'))
+        B.initialize_single_piece('p', 'w', B.transform_board_to_grid('e', '6'))
+
+        # Test eating well placed opponent
+        expected = True
+        i, j = B.transform_board_to_grid('c', '8')
+        actual = B.Rules.is_knight_eating_valid(B, i, j, B.knights_w[0])
+        self.assertEqual(expected, actual)
+
+        # Test eating well placed same color
+        expected = False
+        i, j = B.transform_board_to_grid('e', '8')
+        actual = B.Rules.is_knight_eating_valid(B, i, j, B.knights_w[0])
+        self.assertEqual(expected, actual)
+
+        # Test eating empty well placed square
+        expected = False
+        i, j = B.transform_board_to_grid('f', '5')
+        actual = B.Rules.is_knight_eating_valid(B, i, j, B.knights_w[0])
+        self.assertEqual(expected, actual)
+
+        # Test eating ill placed opponent
+        expected = False
+        i, j = B.transform_board_to_grid('e', '6')
+        actual = B.Rules.is_knight_eating_valid(B, i, j, B.knights_w[0])
+        self.assertEqual(expected, actual)
+
+        # Test eating one self
+        expected = False
+        i, j = B.transform_board_to_grid('d', '6')
+        actual = B.Rules.is_knight_eating_valid(B, i, j, B.knights_w[0])
+        self.assertEqual(expected, actual)
+
+    def test_white_queen_eating_rules(self):
+        B = cb.ChessBoard()
+        B.clean_pieces()
+
+        B.initialize_single_piece('q', 'w', B.transform_board_to_grid('e', '4'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('e', '8'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('h', '7'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('e', '6'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('c', '3'))
+        B.initialize_single_piece('p', 'w', B.transform_board_to_grid('h', '4'))
+
+        # Test eating well placed opponent
+        movements = ['e6', 'h7']
+        expected = True
+        for move in movements:
+            i, j = B.transform_board_to_grid(move[0], move[1])
+            actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w)
+            self.assertEqual(expected, actual)
+
+        # Test eating well placed same color
+        move = 'h4'
+        i, j = B.transform_board_to_grid(move[0], move[1])
+        expected = False
+        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w)
+        self.assertEqual(expected, actual)
+
+        # Test eating well placed empty square
+        move = 'c4'
+        i, j = B.transform_board_to_grid(move[0], move[1])
+        expected = False
+        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w)
+        self.assertEqual(expected, actual)
+
+        # Test ill placed opponent
+        move = 'c3'
+        i, j = B.transform_board_to_grid(move[0], move[1])
+        expected = False
+        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w)
+        self.assertEqual(expected, actual)
+
+        # Test blocked eating
+        move = 'e8'
+        i, j = B.transform_board_to_grid(move[0], move[1])
+        expected = False
+        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w)
+        self.assertEqual(expected, actual)
+
+        # Test eating itself
+        move = 'e4'
+        i, j = B.transform_board_to_grid(move[0], move[1])
+        expected = False
+        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w)
+        self.assertEqual(expected, actual)
+
+    def test_white_pawn_eating_rules(self):
+        B = cb.ChessBoard()
+
+        # Test eating well placed opponents
+        B.clean_pieces()
+        B.initialize_single_piece('p', 'w', B.transform_board_to_grid('d', '3'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('c', '4'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('e', '4'))
+
+        movements = ['e4', 'c4']
+        expected = True
+        for move in movements:
+            i, j = B.transform_board_to_grid(move[0], move[1])
+            actual = B.Rules.is_pawn_eating_valid(B, i, j, B.pawns_w[0])
+            self.assertEqual(expected, actual)
+
+        # Test eating well placed same color
+        B.clean_pieces()
+        B.initialize_single_piece('p', 'w', B.transform_board_to_grid('d', '3'))
+        B.initialize_single_piece('n', 'w', B.transform_board_to_grid('c', '4'))
+        B.initialize_single_piece('r', 'w', B.transform_board_to_grid('e', '4'))
+
+        movements = ['e4', 'c4']
+        expected = False
+        for move in movements:
+            i, j = B.transform_board_to_grid(move[0], move[1])
+            actual = B.Rules.is_pawn_eating_valid(B, i, j, B.pawns_w[0])
+            self.assertEqual(expected, actual)
+
+        # Test eating ill placed opponent
+        B.clean_pieces()
+        B.initialize_single_piece('p', 'w', B.transform_board_to_grid('d', '3'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('d', '4'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('c', '3'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('c', '2'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('d', '2'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('e', '2'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('e', '3'))
+
+        movements = ['d4', 'c3', 'c2', 'd2', 'e2', 'e3']
+        expected = False
+        for move in movements:
+            i, j = B.transform_board_to_grid(move[0], move[1])
+            actual = B.Rules.is_pawn_eating_valid(B, i, j, B.pawns_w[0])
+            self.assertEqual(expected, actual)
+
+        # Test eating well placed empty square
+        B.clean_pieces()
+        B.initialize_single_piece('p', 'w', B.transform_board_to_grid('d', '3'))
+
+        movements = ['c4', 'e4']
+        expected = False
+        for move in movements:
+            i, j = B.transform_board_to_grid(move[0], move[1])
+            actual = B.Rules.is_pawn_eating_valid(B, i, j, B.pawns_w[0])
+            self.assertEqual(expected, actual)
+
+        # And test eating itself
+        move = 'd3'
+        i, j = B.transform_board_to_grid(move[0], move[1])
+        expected = False
+        actual = B.Rules.is_pawn_eating_valid(B, i, j, B.pawns_w[0])
+        self.assertEqual(expected, actual)
+
+    def test_white_rook_eating_rules(self):
+        B = cb.ChessBoard()
+        B.clean_pieces()
+
+        B.initialize_single_piece('r', 'w', B.transform_board_to_grid('d', '3'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('a', '3'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('d', '1'))
+        B.initialize_single_piece('p', 'w', B.transform_board_to_grid('h', '3'))
+        B.initialize_single_piece('p', 'w', B.transform_board_to_grid('d', '6'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('e', '4'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('d', '8'))
+
+
+        # Test eating well placed opponent
+        movements = ['a3', 'd1']
+        expected = True
+        for move in movements:
+            i, j = B.transform_board_to_grid(move[0], move[1])
+            actual = B.Rules.is_rook_eating_valid(B, i, j, B.rooks_w[0])
+            self.assertEqual(expected, actual)
+
+        # Test eating well placed same color
+        movements = ['h3', 'd6']
+        expected = False
+        for move in movements:
+            i, j = B.transform_board_to_grid(move[0], move[1])
+            actual = B.Rules.is_rook_eating_valid(B, i, j, B.rooks_w[0])
+            self.assertEqual(expected, actual)
+
+        # Test eating well placed empty square
+        move = 'd5'
+        expected = False
+        i, j = B.transform_board_to_grid(move[0], move[1])
+        actual = B.Rules.is_rook_eating_valid(B, i, j, B.rooks_w[0])
+        self.assertEqual(expected, actual)
+
+        # Test eating ill placed opponent
+        move = 'e4'
+        expected = False
+        i, j = B.transform_board_to_grid(move[0], move[1])
+        actual = B.Rules.is_rook_eating_valid(B, i, j, B.rooks_w[0])
+        self.assertEqual(expected, actual)
+
+        # Test blocked eating
+        move = 'd8'
+        expected = False
+        i, j = B.transform_board_to_grid(move[0], move[1])
+        actual = B.Rules.is_rook_eating_valid(B, i, j, B.rooks_w[0])
+        self.assertEqual(expected, actual)
+
+        #Test eating itself
+        move = 'd3'
+        expected = False
+        i, j = B.transform_board_to_grid(move[0], move[1])
+        actual = B.Rules.is_rook_eating_valid(B, i, j, B.rooks_w[0])
+        self.assertEqual(expected, actual)
+
+
+
     def test_bishop_movement_rules(self):
         b = cb.ChessBoard()
         
