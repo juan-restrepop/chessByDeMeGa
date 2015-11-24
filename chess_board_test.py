@@ -390,6 +390,12 @@ class TestChessBoard(unittest.TestCase):
         actual = B.Rules.is_knight_eating_valid(B, i, j, B.knights_w[0])
         self.assertEqual(expected, actual)
 
+        # Test eating one self
+        expected = True
+        i, j = B.transform_board_to_grid('d', '6')
+        actual = B.Rules.is_knight_eating_valid(B, i, j, B.knights_w)
+        self.assertEqual(expected, actual)
+
     def test_white_queen_eating_rules(self):
         B = cb.ChessBoard()
         B.clean_pieces()
@@ -432,6 +438,13 @@ class TestChessBoard(unittest.TestCase):
 
         # Test blocked eating
         move = 'e8'
+        i, j = B.transform_board_to_grid(move[0], move[1])
+        expected = False
+        actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w)
+        self.assertEqual(expected, actual)
+
+        # Test eating itself
+        move = 'e4'
         i, j = B.transform_board_to_grid(move[0], move[1])
         expected = False
         actual = B.Rules.is_queen_eating_valid(B, i, j, B.queen_w)
