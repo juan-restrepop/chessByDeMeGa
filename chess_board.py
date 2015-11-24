@@ -476,3 +476,9 @@ class MovementRules(object):
                         or \
                         (abs(i - i_origin) == 2) and (abs(j - j_origin) == 1)
         return False
+
+    def is_queen_eating_valid(self, board, i, j, queen):
+        return False
+
+    def is_pawn_eating_valid(selfself, board, i, j, pawn):
+        return False
