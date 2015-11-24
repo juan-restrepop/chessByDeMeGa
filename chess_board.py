@@ -322,6 +322,83 @@ class ChessBoard(object):
         return (grid_columns_to_board_columns[j], grid_lines_to_board_lines[i])
 
 class MovementRules(object):
+
+    def is_lateral_move_valid(self, board,  i_origin, j_origin, i_end, j_end):
+        free_path = True
+        if j_end > j_origin: # movement to the right
+            temp_j = j_origin + 1
+            while free_path and (temp_j <=j_end):
+                free_path = board.is_square_free(i_origin, temp_j)
+                temp_j += 1
+        elif j_end < j_origin: # movement to the left
+            temp_j = j_origin - 1
+            while free_path and (temp_j >= j_end):
+                free_path = board.is_square_free(i_origin, temp_j)
+                temp_j -= 1
+        else:
+            return False
+        return free_path# to liberty
+
+    def is_vertical_move_valid(self, board, i_origin, j_origin, i_end, j_end):
+        free_path = True
+        if i_end > i_origin:# movement down
+            temp_i = i_origin + 1
+            while free_path and (temp_i <= i_end):
+                free_path = board.is_square_free(temp_i, j_origin)
+                temp_i += 1
+        elif i_end < i_origin:# movement up
+            temp_i = i_origin - 1
+            while free_path and (temp_i >= i_end):
+                free_path = board.is_square_free(temp_i, j_origin)
+                temp_i -= 1
+        else:
+            return False
+        return free_path# to liberty
+
+    def is_diagonal_move_valid(self, board, i_origin, j_origin, i_end, j_end):
+        if abs(i_end - i_origin) and (j_end - j_origin):
+            free_path = True
+
+            if (i_end > i_origin) and (j_end > j_origin):# move down and to the right
+                temp_i = i_origin + 1
+                temp_j = j_origin + 1
+                while free_path and (temp_i <= i_end):
+                    free_path = board.is_square_free(temp_i, temp_j)
+                    temp_i += 1
+                    temp_j += 1
+
+            elif (i_end > i_origin) and (j_end < j_origin):# move down and to the left
+                temp_i = i_origin + 1
+                temp_j = j_origin - 1
+                while free_path and (temp_i <= i_end):
+                    free_path = board.is_square_free(temp_i, temp_j)
+                    temp_i += 1
+                    temp_j -= 1
+
+            elif (i_end < i_origin) and (j_end < j_origin):# move up and to the left
+                temp_i = i_origin - 1
+                temp_j = j_origin - 1
+                while free_path and (temp_i >= i_end):
+                    free_path = board.is_square_free(temp_i, temp_j)
+                    temp_i -= 1
+                    temp_j -= 1
+
+            elif (i_end < i_origin) and (j_end > j_origin):# move up and to the right
+                temp_i = i_origin - 1
+                temp_j = j_origin + 1
+                while free_path and (temp_i >= i_end):
+                    free_path = board.is_square_free(temp_i, temp_j)
+                    temp_i -= 1
+                    temp_j += 1
+
+            return free_path
+        else:
+            return False
+
+
+
+        return free_path
+
     ## Simple movement rules
     def is_pawn_movement_valid(self, board, i, j, pawn, player = 'white'):
         i_origin, j_origin = pawn.coordinates
@@ -361,49 +438,7 @@ class MovementRules(object):
 
     def is_bishop_movement_valid(self, board, i, j, bishop):
         i_origin, j_origin = bishop.coordinates
-
-        if abs(i - i_origin) == abs(j - j_origin):
-            free_path = True
-
-            if (i > i_origin) and (j > j_origin):
-                # move down and to the right
-                temp_i = i_origin + 1
-                temp_j = j_origin + 1
-                while free_path and (temp_i <= i):
-                    free_path = board.is_square_free(temp_i, temp_j)
-                    temp_i = temp_i + 1
-                    temp_j = temp_j + 1
-
-            elif (i > i_origin) and (j < j_origin):
-                # move down and to the left
-                temp_i = i_origin + 1
-                temp_j = j_origin - 1
-                while free_path and (temp_i <= i):
-                    free_path = board.is_square_free(temp_i, temp_j)
-                    temp_i = temp_i + 1
-                    temp_j = temp_j - 1
-
-            elif (i < i_origin) and (j < j_origin):
-                # move up and to the left
-                temp_i = i_origin - 1
-                temp_j = j_origin - 1
-                while free_path and (temp_i >= i):
-                    free_path = board.is_square_free(temp_i, temp_j)
-                    temp_i = temp_i - 1
-                    temp_j = temp_j - 1
-
-            elif (i < i_origin) and (j > j_origin):
-                # move up and to the right
-                temp_i = i_origin - 1
-                temp_j = j_origin + 1
-                while free_path and (temp_i >= i):
-                    free_path = board.is_square_free(temp_i, temp_j)
-                    temp_i = temp_i - 1
-                    temp_j = temp_j + 1
-
-            return free_path
-
-        return False
+        return self.is_diagonal_move_valid(board, i_origin, j_origin, i, j)
 
     def is_rook_movement_valid(self, board, i, j, rook):
         # TODO: The rook should eat if final square is occupied
@@ -412,40 +447,12 @@ class MovementRules(object):
 
         free_path = True
         if (i == i_origin):
-
-            if j > j_origin:
-                # rook moves to the right
-                temp_j = j_origin + 1
-                while free_path and (temp_j <= j):
-                    free_path = board.is_square_free(i, temp_j)
-                    temp_j = temp_j + 1
-
-            elif j < j_origin:
-                # rook moves to the left
-                temp_j = j_origin - 1
-                while free_path and (temp_j >= j):
-                    free_path = board.is_square_free(i, temp_j)
-                    temp_j = temp_j - 1
-
+            free_path = self.is_lateral_move_valid(board, i_origin, j_origin, i, j)
         elif (j == j_origin):
-
-            if i > i_origin:
-                # rook moves down
-                temp_i = i_origin + 1
-                while free_path and (temp_i <= i):
-                    free_path = board.is_square_free(temp_i, j)
-                    temp_i = temp_i + 1
-
-            elif i < i_origin:
-                # rook moves up
-                temp_i = i_origin - 1
-                while free_path and (temp_i >= i):
-                    free_path = board.is_square_free(temp_i, j)
-                    temp_i = temp_i - 1
+            free_path = self.is_vertical_move_valid(board, i_origin, j_origin, i, j)
         else:
             return False
-
-        return free_path # to liberty
+        return free_path
 
     def is_queen_movement_valid(self, board, i, j, queen):
         return self.is_rook_movement_valid(board, i, j, queen) or self.is_bishop_movement_valid(board, i, j, queen)
@@ -609,34 +616,20 @@ class MovementRules(object):
 
                     if j > j_origin:
                         # rook moves to the right
-                        temp_j = j_origin + 1
-                        while free_path and (temp_j < j):
-                            free_path = board.is_square_free(i, temp_j)
-                            temp_j = temp_j + 1
-
+                        free_path = self.is_lateral_move_valid(board, i_origin, j_origin, i, j - 1)
                     elif j < j_origin:
                         # rook moves to the left
-                        temp_j = j_origin - 1
-                        while free_path and (temp_j > j):
-                            free_path = board.is_square_free(i, temp_j)
-                            temp_j = temp_j - 1
+                        free_path = self.is_lateral_move_valid(board, i_origin, j_origin, i, j + 1)
 
                 elif (j == j_origin):
-
                     if i > i_origin:
                         # rook moves down
-                        temp_i = i_origin + 1
-                        while free_path and (temp_i < i):
-                            free_path = board.is_square_free(temp_i, j)
-                            temp_i = temp_i + 1
-
+                        free_path = self.is_vertical_move_valid(board, i_origin, j_origin, i - 1, j)
                     elif i < i_origin:
                         # rook moves up
-                        temp_i = i_origin - 1
-                        while free_path and (temp_i > i):
-                            free_path = board.is_square_free(temp_i, j)
-                            temp_i = temp_i - 1
+                        free_path = self.is_vertical_move_valid(board, i_origin, j_origin, i + 1, j)
+
                 else:
                     return False
 
-                return free_path # to liberty
+                return free_path
