@@ -495,6 +495,9 @@ class MovementRules(object):
                 return ((abs(i - i_origin) == 1) and (abs(j - j_origin) <= 1)
                         or
                         (abs(j - j_origin) == 1) and (abs(i - i_origin) <= 1))
+        return False
 
 
+    def is_bishop_eating_valid(self, board, i, j, bishop):
+        i_origin, j_origin = bishop.coordinates
         return False
