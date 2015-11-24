@@ -322,6 +322,23 @@ class ChessBoard(object):
         return (grid_columns_to_board_columns[j], grid_lines_to_board_lines[i])
 
 class MovementRules(object):
+
+    def is_lateral_move_valid(self, board,  i_origin, j_origin, i_end, j_end):
+        free_path = True
+        if j_end > j_origin: # movement to the right
+            temp_j = j_origin + 1
+            while free_path and (temp_j <=j_end):
+                free_path = board.is_square_free(i_origin, temp_j)
+                temp_j += 1
+        elif j_end < j_origin: # movement to the left
+            temp_j = j_origin - 1
+            while free_path and (temp_j >= j_end):
+                free_path = board.is_square_free(i_origin, temp_j)
+                temp_j -= 1
+        else:
+            return False
+        return free_path # to liberty
+    
     ## Simple movement rules
     def is_pawn_movement_valid(self, board, i, j, pawn, player = 'white'):
         i_origin, j_origin = pawn.coordinates
