@@ -356,6 +356,41 @@ class TestChessBoard(unittest.TestCase):
         actual = b.move_pawn_to('d', '4')
         self.assertEqual(expected, actual)
 
+    def test_white_knight_eating_rules(self):
+        B = cb.ChessBoard()
+        B.clean_pieces()
+
+        B.initialize_single_piece('n', 'w', B.transform_board_to_grid('d', '6'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('c', '8'))
+        B.initialize_single_piece('p', 'w', B.transform_board_to_grid('e', '8'))
+        B.initialize_single_piece('p', 'w', B.transform_board_to_grid('e', '6'))
+
+        # Test eating well placed opponent
+        expected = True
+        i, j = B.transform_board_to_grid('c', '8')
+        actual = B.Rules.is_knight_eating_valid(B, i, j, B.knights_w[0])
+        self.assertEqual(expected, actual)
+
+        # Test eating well placed same color
+        expected = False
+        i, j = B.transform_board_to_grid('e', '8')
+        actual = B.Rules.is_knight_eating_valid(B, i, j, B.knights_w[0])
+        self.assertEqual(expected, actual)
+
+        # Test eating empty well placed square
+        expected = False
+        i, j = B.transform_board_to_grid('f', '5')
+        actual = B.Rules.is_knight_eating_valid(B, i, j, B.knights_w[0])
+        self.assertEqual(expected, actual)
+
+        # Test eating ill placed opponent
+        expected = False
+        i, j = B.transform_board_to_grid('e', '6')
+        actual = B.Rules.is_knight_eating_valid(B, i, j, B.knights_w[0])
+        self.assertEqual(expected, actual)
+
+
+
 
     def test_bishop_movement_rules(self):
         b = cb.ChessBoard()
