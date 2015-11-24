@@ -337,8 +337,24 @@ class MovementRules(object):
                 temp_j -= 1
         else:
             return False
-        return free_path # to liberty
-    
+        return free_path# to liberty
+
+    def is_vertical_move_valid(self, board, i_origin, j_origin, i_end, j_end):
+        free_path = True
+        if i_end > i_origin:# movement down
+            temp_i = i_origin + 1
+            while free_path and (temp_i <= i_end):
+                free_path = board.is_square_free(temp_i, j_origin)
+                temp_i += 1
+        elif i_end < i_origin:# movement up
+            temp_i = i_origin - 1
+            while free_path and (temp_i >= i_end):
+                free_path = board.is_square_free(temp_i, j_origin)
+                temp_i -= 1
+        else:
+            return False
+        return free_path# to liberty
+
     ## Simple movement rules
     def is_pawn_movement_valid(self, board, i, j, pawn, player = 'white'):
         i_origin, j_origin = pawn.coordinates
