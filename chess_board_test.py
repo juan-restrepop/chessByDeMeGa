@@ -393,7 +393,7 @@ class TestChessBoard(unittest.TestCase):
         # Test eating one self
         expected = True
         i, j = B.transform_board_to_grid('d', '6')
-        actual = B.Rules.is_knight_eating_valid(B, i, j, B.knights_w)
+        actual = B.Rules.is_knight_eating_valid(B, i, j, B.knights_w[0])
         self.assertEqual(expected, actual)
 
     def test_white_queen_eating_rules(self):
