@@ -4,7 +4,7 @@ class ChessGame(object):
 
     column_names = ['a','b','c','d','e','f','g','h']
     line_names = ['1','2','3','4','5','6','7','8']
-    player = 'black'
+    player = 'white'
 
     def __init__(self):
         self.board = chess_board.ChessBoard()
@@ -16,7 +16,8 @@ class ChessGame(object):
             stay_in_game = self.read_user_move()        
 
     def read_user_move(self):
-        new_move_str = raw_input("Please enter a new move: \ntype 'q' to quit the game\n")
+        print "%s player's turn." % self.player
+        new_move_str = raw_input("Please enter a new move: (type 'q' to quit the game) \n")
         
         return(self.parse_user_move(new_move_str))
 
