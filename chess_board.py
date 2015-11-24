@@ -482,7 +482,7 @@ class MovementRules(object):
     def is_queen_eating_valid(self, board, i, j, queen):
         return False
 
-    def is_pawn_eating_valid(selfself, board, i, j, pawn, player = 'white'):
+    def is_pawn_eating_valid(self, board, i, j, pawn, player = 'white'):
         i_origin, j_origin = pawn.coordinates
         if (i == i_origin) and (j == j_origin):
             return False
@@ -503,3 +503,6 @@ class MovementRules(object):
                 else:
                     return False
             return False
+
+    def is_rook_eating_valid(self, board, i, j, rook):
+        return False
