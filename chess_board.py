@@ -476,3 +476,25 @@ class MovementRules(object):
                         or \
                         (abs(i - i_origin) == 2) and (abs(j - j_origin) == 1)
         return False
+
+    def is_king_eating_valid(self, board, i, j, king):
+        i_origin, j_origin = king.coordinates
+
+        if i == i_origin and j == j_origin:
+            return False
+
+        elif board.is_square_free(i, j):
+            return False
+
+        else:
+            victim = board.get_piece_in_square(i, j)
+
+            if victim.color == king.color:
+                return False
+            else:
+                return ((abs(i - i_origin) == 1) and (abs(j - j_origin) <= 1)
+                        or
+                        (abs(j - j_origin) == 1) and (abs(i - i_origin) <= 1))
+
+
+        return False
