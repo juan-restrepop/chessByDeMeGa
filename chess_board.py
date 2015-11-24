@@ -482,5 +482,24 @@ class MovementRules(object):
     def is_queen_eating_valid(self, board, i, j, queen):
         return False
 
-    def is_pawn_eating_valid(selfself, board, i, j, pawn):
-        return False
+    def is_pawn_eating_valid(selfself, board, i, j, pawn, player = 'white'):
+        i_origin, j_origin = pawn.coordinates
+        if (i == i_origin) and (j == j_origin):
+            return False
+        elif board.is_square_free(i, j):
+            return False
+        else:
+            victim = board.get_piece_in_square(i, j)
+            if pawn.color == victim.color:
+                return False
+            elif player == 'white':
+                if (i_origin - i) == 1 and (abs(j - j_origin) == 1):
+                    return True
+                else:
+                    return False
+            elif player == 'black':
+                if (i - i_origin == 1) and (abs(j - j_origin) == 1):
+                    return True
+                else:
+                    return False
+            return False
