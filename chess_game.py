@@ -111,17 +111,10 @@ class ChessGame(object):
             print 'case not valid, not a chess piece'
             return False
 
-
         if self.validate_eat_case(input_move):
             print 'Valid eat case'
             return True
 
-        '''
-        if not self.piece_eats(input_move):
-            if not self.validate_normal_case(input_move):
-                print 'case not valid try again'
-                return False
-        '''
         if self.validate_move_case(input_move):
             print 'Valid move case'
             return True
@@ -145,8 +138,7 @@ class ChessGame(object):
         if not self.is_user_move_valid(input_move):
             return True
 
-        checked = self.is_check(input_move)
-        if checked:
+        if self.is_check(input_move):
             input_move = input_move[:-1]
 
         promotion,input_move,promoted_to = self.is_promotion(input_move)
