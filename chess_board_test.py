@@ -1005,7 +1005,7 @@ class TestChessBoard(unittest.TestCase):
         b = cb.ChessBoard()
 
         # accepted eating
-        for kind, color, coords in  [('p', 'b', ['e','2']),
+        for kind, color, coords in  [('p', 'b', ['c','6']),
                                      ('q', 'b', ['f','3']),
                                      ('b', 'b', ['h','7']),
                                      ('r', 'b', ['a','8']),
@@ -1026,20 +1026,6 @@ class TestChessBoard(unittest.TestCase):
         actual = b.Rules.is_bishop_eating_valid(b, i, j, b.bishops_w[0])
         self.assertEqual(expected, actual, msg = 'suicidal bishop')
         
-        # forbidden kill teamate
-        i, j  = b.transform_board_to_grid('c','6')
-        b.initialize_single_piece('p', 'w', [i, j])
-        expected = False
-        actual = b.Rules.is_bishop_eating_valid(b, i, j, b.bishops_w[0])
-        self.assertEqual(expected, actual, msg = 'bishop killing teamate')
-
-        # forbidden blocked
-        i, j  = b.transform_board_to_grid('a','8')
-        b.initialize_single_piece('q', 'b', [i, j])
-        expected = False
-        actual = b.Rules.is_bishop_eating_valid(b, i, j, b.bishops_w[0])
-        self.assertEqual(expected, actual, msg = "bishop shouldn't  eat at (a,8), someone in the same path" )
-
         # forbidden displacement
         i, j  = b.transform_board_to_grid('h','4')
         b.initialize_single_piece('p', 'b', [i, j])
@@ -1047,6 +1033,19 @@ class TestChessBoard(unittest.TestCase):
         actual = b.Rules.is_bishop_eating_valid(b, i, j, b.bishops_w[0])
         self.assertEqual(expected, actual, msg = "bishop shouldn't  eat at (h,4), forbidden displacement" )
 
+        # forbidden kill teamate
+        i, j  = b.transform_board_to_grid('g','6')
+        b.initialize_single_piece('p', 'w', [i, j])
+        expected = False
+        actual = b.Rules.is_bishop_eating_valid(b, i, j, b.bishops_w[0])
+        self.assertEqual(expected, actual, msg = 'bishop killing teamate')
+
+        # forbidden blocked
+        i, j  = b.transform_board_to_grid('h','7')
+        b.initialize_single_piece('q', 'b', [i, j])
+        expected = False
+        actual = b.Rules.is_bishop_eating_valid(b, i, j, b.bishops_w[0])
+        self.assertEqual(expected, actual, msg = "bishop shouldn't  eat at (h,7), someone in the same path" )
 
 if __name__ == '__main__':
     unittest.main()
