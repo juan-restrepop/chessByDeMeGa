@@ -30,6 +30,12 @@ class ChessBoard(object):
                      self.bishops_w + self.bishops_b + \
                      self.knights_w + self.knights_b)
 
+    def get_all_black_pieces(self):
+        return (self.pawns_b + self.knights_b + self.bishops_b + self.rooks_b + self.queen_b + self.king_w)
+
+    def get_all_white_pieces(self):
+        return (self.pawns_w + self.knights_w + self.bishops_w + self.rooks_w + self.queen_w + self.king_w)
+
     def get_piece_in_square(self, i, j):
         for piece in self.get_all_pieces():
             if piece.coordinates == [i, j]:
