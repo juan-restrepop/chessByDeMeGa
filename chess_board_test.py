@@ -199,164 +199,6 @@ class TestChessBoard(unittest.TestCase):
             self.assertEqual(expected, piece_coordinates)
 
 
-    def test_black_pawn_movement_rules(self):
-        # forbidden
-        b = cb.ChessBoard()
-        b.clean_pieces()
-
-        moves = [['d','7'],['f','7'], # lateral
-                 ['d','6'],['f','6'], # fwd-diagonal
-                 ['c','8'],['d','8'],['e','8'], # backwards
-                 ['e','4'],           # fwd, more than 2
-                 ['e','7']]           # in-place
-
-        expected = False
-        for move in moves:
-            b.clean_pieces()
-            b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '7'))
-            actual = b.move_pawn_to(move[0],move[1],'black')
-            self.assertEqual(actual,expected)
-
-        # forbidden: more than 2 in line < 7
-        b.clean_pieces()
-        expected = False
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '6'))
-        move = ['e','4']
-        actual  = b.move_pawn_to(move[0],move[1],'black')
-        self.assertEqual(actual,expected)
-        
-        # accepted: single and double in the starting line
-        expected = True
-        moves = [['e','6'],['e','5']]
-
-        for move in moves:
-            b.clean_pieces()
-            b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '7'))
-            actual  = b.move_pawn_to(move[0],move[1],'black')
-            self.assertEqual(actual,expected)
-
-        # accepted: single elsewhere
-        expected = True
-        b.clean_pieces()
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '4'))
-        actual  = b.move_pawn_to('e','3','black')
-        self.assertEqual(actual,expected)
-
-    def test_black_pawn_blocked_movement(self):
-        b = cb.ChessBoard()
-
-        b.clean_pieces()
-        expected = False
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '7'))
-        b.initialize_single_piece('n', 'w', b.transform_board_to_grid('e', '6'))
-
-        actual  = b.move_pawn_to('e','6','black')
-        self.assertEqual(expected, actual)
-
-        actual  = b.move_pawn_to('e','5','black')
-        self.assertEqual(expected, actual)
-
-        b.clean_pieces()
-        expected = False
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '6'))
-        b.initialize_single_piece('n', 'w', b.transform_board_to_grid('e', '5'))
-        actual  = b.move_pawn_to('e','5','black')
-        self.assertEqual(expected, actual)
-
-    def test_white_pawn_movement_rules(self):
-        b = cb.ChessBoard()
-
-        ## Initialize white pawn on 'd2'
-        b.clean_pieces()
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '2'))
-
-        ## Test forbidden moves
-        # Test forbidden forward-diagonal moves
-        expected = False
-        for move in [['e','3'], ['c','3']]:
-            actual = b.move_pawn_to(move[0], move[1])
-            self.assertEqual(expected, actual)
-
-        # Test forbidden lateral moves
-        expected = False
-        for move in [['e','2'], ['c','2']]:
-            actual = b.move_pawn_to(move[0], move[1])
-            self.assertEqual(expected, actual)
-
-        # Test forbidden backwards moves
-        expected = False
-        for move in [['e','1'], ['c','1'], ['d', '1']]:
-            actual = b.move_pawn_to(move[0], move[1])
-            self.assertEqual(expected, actual)
-
-        # Test forbidden forward move longer than 2
-        expected = False
-        actual = b.move_pawn_to('d', '5')
-        self.assertEqual(expected, actual)
-
-        # Test forbidden in-place move
-        expected = False
-        b.clean_pieces()
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '2'))
-        actual = b.move_pawn_to('d', '2')
-        self.assertEqual(expected, actual)
-
-        ## Test approved moves if initial position
-        # simple initial move
-        b.clean_pieces()
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '2'))
-
-        expected = True
-        actual = b.move_pawn_to('d','3')
-        self.assertEqual(expected, actual)
-
-        # double initial move
-        b.clean_pieces()
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '2'))
-
-        expected = True
-        actual = b.move_pawn_to('d','4')
-        self.assertEqual(expected, actual)
-
-        ## Test approved moves
-        # simple move
-        b.clean_pieces()
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '4'))
-
-        expected = True
-        actual = b.move_pawn_to('d','5')
-        self.assertEqual(expected, actual)
-
-        # double move
-        b.clean_pieces()
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '4'))
-
-        expected = False
-        actual = b.move_pawn_to('d','6')
-        self.assertEqual(expected, actual)
-
-    def test_white_pawn_blocked_movement_rules(self):
-        b = cb.ChessBoard()
-
-        ## Initialize white pawn on 'd2' and black knight on 'd3'
-        b.clean_pieces()
-        b.initialize_single_piece('p', 'w', [6, 3])
-        b.initialize_single_piece('n', 'b', [5, 3])
-
-        expected = False
-        actual = b.move_pawn_to('d', '3')
-        self.assertEqual(expected, actual)
-
-        ## Initialize white pawn on 'd2' and black knight on 'd3'
-        b.clean_pieces()
-        b.initialize_single_piece('p', 'w', [6, 3])
-        b.initialize_single_piece('n', 'b', [5, 3])
-
-        expected = False
-        actual = b.move_pawn_to('d', '4')
-        self.assertEqual(expected, actual)
-
-
     def test_white_knight_eating_rules(self):
         B = cb.ChessBoard()
         B.clean_pieces()
@@ -523,12 +365,12 @@ class TestChessBoard(unittest.TestCase):
         B.initialize_single_piece('p', 'b', B.transform_board_to_grid('d', '1'))
         B.initialize_single_piece('p', 'w', B.transform_board_to_grid('h', '3'))
         B.initialize_single_piece('p', 'w', B.transform_board_to_grid('d', '6'))
-        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('e', '4'))
+        B.initialize_single_piece('p', 'b', B.transform_board_to_grid('d', '4'))
         B.initialize_single_piece('p', 'b', B.transform_board_to_grid('d', '8'))
 
 
         # Test eating well placed opponent
-        movements = ['a3', 'd1']
+        movements = ['a3', 'd1', 'd4']
         expected = True
         for move in movements:
             i, j = B.transform_board_to_grid(move[0], move[1])
@@ -571,7 +413,255 @@ class TestChessBoard(unittest.TestCase):
         actual = B.Rules.is_rook_eating_valid(B, i, j, B.rooks_w[0])
         self.assertEqual(expected, actual)
 
+    def test_white_king_eating_rules(self):
+        b = cb.ChessBoard()
 
+        # accepted eating
+        for kind, color, coords in  [('p', 'b', ['e','3']),
+                                     ('q', 'b', ['e','5']),
+                                     ('b', 'b', ['d','3']),
+                                     ('r', 'b', ['f','5']),
+                                     ('b', 'b', ['f','4'])
+                                    ]:
+
+            b.clean_pieces()
+            b.initialize_single_piece('k','w',b.transform_board_to_grid('e','4'))
+            i,j = b.transform_board_to_grid(coords[0],coords[1])
+            b.initialize_single_piece(kind,color,[i,j])
+            expected = True
+            actual = b.Rules.is_king_eating_valid(b,i,j,b.king_w[0])
+            self.assertEqual(expected, actual, msg = 'unable to eat %s at %s %s' %(kind, coords[0], coords[1]))
+
+        # forbidden eating of same team (in the king case is the same test for forbidden blocked displacement)
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('e','4'))
+        i,j = b.transform_board_to_grid('e', '3')
+        b.initialize_single_piece('p', 'w', [i, j])
+        expected = False
+        actual = b.Rules.is_king_eating_valid(b, i , j, b.king_w[0])
+        self.assertEqual(expected, actual, msg = 'eating same team piece')
+
+        # forbidden eating of empty square
+        i,j = b.transform_board_to_grid('e', '5')
+        expected = False
+        actual = b.Rules.is_king_eating_valid(b, i, j, b.king_w[0])
+        self.assertEqual(expected, actual, msg = 'eating nobody')
+
+        # forbidden suicide
+        i,j = b.transform_board_to_grid('e','4')
+        expected = False
+        actual = b.Rules.is_king_eating_valid(b,i,j,b.king_w[0])
+        self.assertEqual(expected, actual, msg = 'suicidal king')
+
+        # forbidden king displacement
+        i,j = b.transform_board_to_grid('h','4')
+        expected = False
+        actual = b.Rules.is_king_eating_valid(b,i,j,b.king_w[0])
+        self.assertEqual(expected, actual, msg = 'thy majesty is going way to far')
+
+    def test_white_bishop_eating_rules(self):
+        b = cb.ChessBoard()
+
+        # accepted eating
+        for kind, color, coords in  [('p', 'b', ['c','6']),
+                                     ('q', 'b', ['f','3']),
+                                     ('b', 'b', ['h','7']),
+                                     ('r', 'b', ['a','8']),
+                                    ]:
+            b.clean_pieces()
+            b.initialize_single_piece('b', 'w', b.transform_board_to_grid('e', '4'))
+            i,j = b.transform_board_to_grid(coords[0], coords[1])
+            b.initialize_single_piece(kind, color, [i, j])
+            expected = True
+            actual = b.Rules.is_bishop_eating_valid(b, i, j, b.bishops_w[0])
+            self.assertEqual(expected,actual, msg = 'unable to eat %s at %s %s' %(kind, coords[0], coords[1]))
+
+        # forbidden suicide
+        b.clean_pieces()
+        i,j = b.transform_board_to_grid('e','4')
+        b.initialize_single_piece('b', 'w', [i, j])
+        expected = False
+        actual = b.Rules.is_bishop_eating_valid(b, i, j, b.bishops_w[0])
+        self.assertEqual(expected, actual, msg = 'suicidal bishop')
+
+        # forbidden displacement
+        i, j  = b.transform_board_to_grid('h','4')
+        b.initialize_single_piece('p', 'b', [i, j])
+        expected = False
+        actual = b.Rules.is_bishop_eating_valid(b, i, j, b.bishops_w[0])
+        self.assertEqual(expected, actual, msg = "bishop shouldn't  eat at (h,4), forbidden displacement" )
+
+        # forbidden kill teamate
+        i, j  = b.transform_board_to_grid('g','6')
+        b.initialize_single_piece('p', 'w', [i, j])
+        expected = False
+        actual = b.Rules.is_bishop_eating_valid(b, i, j, b.bishops_w[0])
+        self.assertEqual(expected, actual, msg = 'bishop killing teamate')
+
+        # forbidden blocked
+        i, j  = b.transform_board_to_grid('h','7')
+        b.initialize_single_piece('q', 'b', [i, j])
+        expected = False
+        actual = b.Rules.is_bishop_eating_valid(b, i, j, b.bishops_w[0])
+        self.assertEqual(expected, actual, msg = "bishop shouldn't  eat at (h,7), someone in the same path" )
+
+
+    def test_black_pawn_movement_rules(self):
+        # forbidden
+        b = cb.ChessBoard()
+        b.clean_pieces()
+
+        moves = [['d','7'],['f','7'], # lateral
+                 ['d','6'],['f','6'], # fwd-diagonal
+                 ['c','8'],['d','8'],['e','8'], # backwards
+                 ['e','4'],           # fwd, more than 2
+                 ['e','7']]           # in-place
+
+        expected = False
+        for move in moves:
+            b.clean_pieces()
+            b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '7'))
+            actual = b.move_pawn_to(move[0],move[1],'black')
+            self.assertEqual(actual,expected)
+
+        # forbidden: more than 2 in line < 7
+        b.clean_pieces()
+        expected = False
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '6'))
+        move = ['e','4']
+        actual  = b.move_pawn_to(move[0],move[1],'black')
+        self.assertEqual(actual,expected)
+
+        # accepted: single and double in the starting line
+        expected = True
+        moves = [['e','6'],['e','5']]
+
+        for move in moves:
+            b.clean_pieces()
+            b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '7'))
+            actual  = b.move_pawn_to(move[0],move[1],'black')
+            self.assertEqual(actual,expected)
+
+        # accepted: single elsewhere
+        expected = True
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '4'))
+        actual  = b.move_pawn_to('e','3','black')
+        self.assertEqual(actual,expected)
+
+    def test_black_pawn_blocked_movement(self):
+        b = cb.ChessBoard()
+
+        b.clean_pieces()
+        expected = False
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '7'))
+        b.initialize_single_piece('n', 'w', b.transform_board_to_grid('e', '6'))
+
+        actual  = b.move_pawn_to('e','6','black')
+        self.assertEqual(expected, actual)
+
+        actual  = b.move_pawn_to('e','5','black')
+        self.assertEqual(expected, actual)
+
+        b.clean_pieces()
+        expected = False
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '6'))
+        b.initialize_single_piece('n', 'w', b.transform_board_to_grid('e', '5'))
+        actual  = b.move_pawn_to('e','5','black')
+        self.assertEqual(expected, actual)
+
+    def test_white_pawn_movement_rules(self):
+        b = cb.ChessBoard()
+
+        ## Initialize white pawn on 'd2'
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '2'))
+
+        ## Test forbidden moves
+        # Test forbidden forward-diagonal moves
+        expected = False
+        for move in [['e','3'], ['c','3']]:
+            actual = b.move_pawn_to(move[0], move[1])
+            self.assertEqual(expected, actual)
+
+        # Test forbidden lateral moves
+        expected = False
+        for move in [['e','2'], ['c','2']]:
+            actual = b.move_pawn_to(move[0], move[1])
+            self.assertEqual(expected, actual)
+
+        # Test forbidden backwards moves
+        expected = False
+        for move in [['e','1'], ['c','1'], ['d', '1']]:
+            actual = b.move_pawn_to(move[0], move[1])
+            self.assertEqual(expected, actual)
+
+        # Test forbidden forward move longer than 2
+        expected = False
+        actual = b.move_pawn_to('d', '5')
+        self.assertEqual(expected, actual)
+
+        # Test forbidden in-place move
+        expected = False
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '2'))
+        actual = b.move_pawn_to('d', '2')
+        self.assertEqual(expected, actual)
+
+        ## Test approved moves if initial position
+        # simple initial move
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '2'))
+
+        expected = True
+        actual = b.move_pawn_to('d','3')
+        self.assertEqual(expected, actual)
+
+        # double initial move
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '2'))
+
+        expected = True
+        actual = b.move_pawn_to('d','4')
+        self.assertEqual(expected, actual)
+
+        ## Test approved moves
+        # simple move
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '4'))
+
+        expected = True
+        actual = b.move_pawn_to('d','5')
+        self.assertEqual(expected, actual)
+
+        # double move
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '4'))
+
+        expected = False
+        actual = b.move_pawn_to('d','6')
+        self.assertEqual(expected, actual)
+
+    def test_white_pawn_blocked_movement_rules(self):
+        b = cb.ChessBoard()
+
+        ## Initialize white pawn on 'd2' and black knight on 'd3'
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', [6, 3])
+        b.initialize_single_piece('n', 'b', [5, 3])
+
+        expected = False
+        actual = b.move_pawn_to('d', '3')
+        self.assertEqual(expected, actual)
+
+        ## Initialize white pawn on 'd2' and black knight on 'd3'
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', [6, 3])
+        b.initialize_single_piece('n', 'b', [5, 3])
+
+        expected = False
+        actual = b.move_pawn_to('d', '4')
+        self.assertEqual(expected, actual)
 
     def test_bishop_movement_rules(self):
         b = cb.ChessBoard()
@@ -937,6 +1027,7 @@ class TestChessBoard(unittest.TestCase):
             actual = b.move_queen_to(move[0], move[1], 'black')
             self.assertEqual(expected, actual)
 
+
     def test_transform_coords(self):
         b = cb.ChessBoard()
 
@@ -954,98 +1045,6 @@ class TestChessBoard(unittest.TestCase):
             self.assertEqual(line, new_line)
             self.assertEqual(i, new_i)
             self.assertEqual(j, new_j)
-
-    def test_white_king_eating_rules(self):
-        b = cb.ChessBoard()
-
-        # accepted eating
-        for kind, color, coords in  [('p', 'b', ['e','3']),
-                                     ('q', 'b', ['e','5']),
-                                     ('b', 'b', ['d','3']),
-                                     ('r', 'b', ['f','5']),
-                                     ('b', 'b', ['f','4'])
-                                    ]:
-
-            b.clean_pieces()
-            b.initialize_single_piece('k','w',b.transform_board_to_grid('e','4'))
-            i,j = b.transform_board_to_grid(coords[0],coords[1])
-            b.initialize_single_piece(kind,color,[i,j])
-            expected = True
-            actual = b.Rules.is_king_eating_valid(b,i,j,b.king_w[0])
-            self.assertEqual(expected, actual, msg = 'unable to eat %s at %s %s' %(kind, coords[0], coords[1]))
-
-        # forbidden eating of same team (in the king case is the same test for forbidden blocked displacement)
-        b.clean_pieces()
-        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('e','4'))
-        i,j = b.transform_board_to_grid('e', '3')
-        b.initialize_single_piece('p', 'w', [i, j])
-        expected = False
-        actual = b.Rules.is_king_eating_valid(b, i , j, b.king_w[0])
-        self.assertEqual(expected, actual, msg = 'eating same team piece')
-
-        # forbidden eating of empty square
-        i,j = b.transform_board_to_grid('e', '5')
-        expected = False
-        actual = b.Rules.is_king_eating_valid(b, i, j, b.king_w[0])
-        self.assertEqual(expected, actual, msg = 'eating nobody')
-
-        # forbidden suicide
-        i,j = b.transform_board_to_grid('e','4')
-        expected = False
-        actual = b.Rules.is_king_eating_valid(b,i,j,b.king_w[0])
-        self.assertEqual(expected, actual, msg = 'suicidal king')
-
-        # forbidden king displacement
-        i,j = b.transform_board_to_grid('h','4')
-        expected = False
-        actual = b.Rules.is_king_eating_valid(b,i,j,b.king_w[0])
-        self.assertEqual(expected, actual, msg = 'thy majesty is going way to far')
-
-    def test_white_bishop_eating_rules(self):
-        b = cb.ChessBoard()
-
-        # accepted eating
-        for kind, color, coords in  [('p', 'b', ['c','6']),
-                                     ('q', 'b', ['f','3']),
-                                     ('b', 'b', ['h','7']),
-                                     ('r', 'b', ['a','8']),
-                                    ]:
-            b.clean_pieces()
-            b.initialize_single_piece('b', 'w', b.transform_board_to_grid('e', '4'))
-            i,j = b.transform_board_to_grid(coords[0], coords[1])
-            b.initialize_single_piece(kind, color, [i, j])
-            expected = True 
-            actual = b.Rules.is_bishop_eating_valid(b, i, j, b.bishops_w[0])
-            self.assertEqual(expected,actual, msg = 'unable to eat %s at %s %s' %(kind, coords[0], coords[1]))
-
-        # forbidden suicide
-        b.clean_pieces()
-        i,j = b.transform_board_to_grid('e','4')
-        b.initialize_single_piece('b', 'w', [i, j])
-        expected = False
-        actual = b.Rules.is_bishop_eating_valid(b, i, j, b.bishops_w[0])
-        self.assertEqual(expected, actual, msg = 'suicidal bishop')
-        
-        # forbidden displacement
-        i, j  = b.transform_board_to_grid('h','4')
-        b.initialize_single_piece('p', 'b', [i, j])
-        expected = False
-        actual = b.Rules.is_bishop_eating_valid(b, i, j, b.bishops_w[0])
-        self.assertEqual(expected, actual, msg = "bishop shouldn't  eat at (h,4), forbidden displacement" )
-
-        # forbidden kill teamate
-        i, j  = b.transform_board_to_grid('g','6')
-        b.initialize_single_piece('p', 'w', [i, j])
-        expected = False
-        actual = b.Rules.is_bishop_eating_valid(b, i, j, b.bishops_w[0])
-        self.assertEqual(expected, actual, msg = 'bishop killing teamate')
-
-        # forbidden blocked
-        i, j  = b.transform_board_to_grid('h','7')
-        b.initialize_single_piece('q', 'b', [i, j])
-        expected = False
-        actual = b.Rules.is_bishop_eating_valid(b, i, j, b.bishops_w[0])
-        self.assertEqual(expected, actual, msg = "bishop shouldn't  eat at (h,7), someone in the same path" )
 
 if __name__ == '__main__':
     unittest.main()
