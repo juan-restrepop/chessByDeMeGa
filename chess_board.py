@@ -520,54 +520,25 @@ class MovementRules(object):
             victim = board.get_piece_in_square(i, j)
 
             if victim.color == bishop.color:
-                    return False
+                return False
 
             elif abs(i - i_origin) == abs(j - j_origin):
 
                 go_get_it = True
+                if abs(i_origin - i) == 1:# Piece to be captured is next to rhe rook
+                    return go_get_it
 
-                if (i > i_origin) and (j > j_origin):
-                    # move down and to the right
-                    temp_i = i_origin + 1
-                    temp_j = j_origin + 1
-                    while go_get_it and (temp_i < i):
-                        go_get_it = board.is_square_free(temp_i, temp_j)
-                        temp_i = temp_i + 1
-                        temp_j = temp_j + 1
-                    if go_get_it and temp_i == i:
-                        go_get_it = ( not board.is_square_free(temp_i, temp_j) ) 
-                elif (i > i_origin) and (j < j_origin):
-                    # move down and to the left
-                    temp_i = i_origin + 1
-                    temp_j = j_origin - 1
-                    while go_get_it and (temp_i < i):
-                        go_get_it = board.is_square_free(temp_i, temp_j)
-                        temp_i = temp_i + 1
-                        temp_j = temp_j - 1
-                    if go_get_it and temp_i == i:
-                        go_get_it = ( not board.is_square_free(temp_i, temp_j) ) 
+                elif (i >= i_origin) and (j >= j_origin):# move down and to the right before capturing
+                    go_get_it = self.is_diagonal_move_valid(board, i_origin, j_origin, i - 1, j - 1)
 
-                elif (i < i_origin) and (j < j_origin):
-                    # move up and to the left
-                    temp_i = i_origin - 1
-                    temp_j = j_origin - 1
-                    while go_get_it and (temp_i > i):
-                        go_get_it = board.is_square_free(temp_i, temp_j)
-                        temp_i = temp_i - 1
-                        temp_j = temp_j - 1
-                    if go_get_it and temp_i == i:
-                        go_get_it = ( not board.is_square_free(temp_i, temp_j) ) 
+                elif (i >= i_origin) and (j <= j_origin):# move down and to the left before capturing
+                    go_get_it = self.is_diagonal_move_valid(board, i_origin, j_origin, i - 1, j + 1)
 
-                elif (i < i_origin) and (j > j_origin):
-                    # move up and to the right
-                    temp_i = i_origin - 1
-                    temp_j = j_origin + 1
-                    while go_get_it and (temp_i > i):
-                        go_get_it = board.is_square_free(temp_i, temp_j)
-                        temp_i = temp_i - 1
-                        temp_j = temp_j + 1
-                    if go_get_it and temp_i == i:
-                        go_get_it = ( not board.is_square_free(temp_i, temp_j) ) 
+                elif (i <= i_origin) and (j <= j_origin):# move up and to the left before capturing
+                    go_get_it = self.is_diagonal_move_valid(board, i_origin, j_origin, i + 1, j + 1)
+
+                elif (i <= i_origin) and (j >= j_origin):# move up and to the right before capturing
+                    go_get_it = self.is_diagonal_move_valid(board, i_origin, j_origin, i + 1, j - 1)
 
                 return go_get_it
 
@@ -614,20 +585,19 @@ class MovementRules(object):
             else:
                 free_path = True
                 if (i == i_origin):
-
-                    if j > j_origin:
-                        # rook moves to the right
+                    if abs(j_origin - j) == 1:# Piece to be captured is next to the rook
+                        return free_path
+                    elif j > j_origin:# rook moves to the right before capturing
                         free_path = self.is_lateral_move_valid(board, i_origin, j_origin, i, j - 1)
-                    elif j < j_origin:
-                        # rook moves to the left
+                    elif j < j_origin:# rook moves to the left before capturing
                         free_path = self.is_lateral_move_valid(board, i_origin, j_origin, i, j + 1)
 
                 elif (j == j_origin):
-                    if i > i_origin:
-                        # rook moves down
+                    if abs(i_origin - i) == 1:# Piece to be captured is next to the rook
+                        return free_path
+                    if i > i_origin:# rook moves down before capturing
                         free_path = self.is_vertical_move_valid(board, i_origin, j_origin, i - 1, j)
-                    elif i < i_origin:
-                        # rook moves up
+                    elif i < i_origin:# rook moves up before capturing
                         free_path = self.is_vertical_move_valid(board, i_origin, j_origin, i + 1, j)
 
                 else:
