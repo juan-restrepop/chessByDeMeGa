@@ -625,7 +625,7 @@ class MovementRules(object):
                 checked = True
 
         for knight in board.knights_b:
-            if self.is_knight_movement_valid(board, i_king, j_king, knight):
+            if self.is_knight_eating_valid(board, i_king, j_king, knight):
                 i,j = knight.coordinates
                 col, line = board.transform_grid_to_board(i,j)
                 print "white king under attack by dark knight at (%s, %s)" %(col, line)
