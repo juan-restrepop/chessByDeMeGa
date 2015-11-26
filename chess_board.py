@@ -610,3 +610,53 @@ class MovementRules(object):
                     return False
 
                 return free_path
+
+    def is_white_king_under_attack(self, board):
+
+        i_king, j_king = board.king_w[0].coordinates
+
+        checked = False
+
+        for bishop in board.bishops_b:
+            if self.is_bishop_eating_valid(board, i_king, j_king, bishop):
+                i,j = bishop.coordinates
+                col, line = board.transform_grid_to_board(i,j)
+                print "white king under attack by black bishop at (%s, %s)" %(col, line)
+                checked = True
+
+        for knight in board.knights_b:
+            if self.is_knight_movement_valid(board, i_king, j_king, knight):
+                i,j = knight.coordinates
+                col, line = board.transform_grid_to_board(i,j)
+                print "white king under attack by dark knight at (%s, %s)" %(col, line)
+                checked = True
+
+        for rook in board.rooks_b:
+            if self.is_rook_eating_valid(board, i_king, j_king, rook):
+                i,j = rook.coordinates
+                col, line = board.transform_grid_to_board(i,j)
+                print "white king under attack by black rook at (%s, %s)" %(col, line)
+                checked = True
+
+        for queen in board.queen_b:
+            if self.is_queen_eating_valid(board, i_king, j_king, queen):
+                i,j = queen.coordinates
+                col, line = board.transform_grid_to_board(i,j)
+                print "white king under attack by black queen at (%s, %s)" %(col, line)
+                checked = True
+
+        for pawn in board.pawns_b:
+            if self.is_pawn_eating_valid(board, i_king, j_king, pawn, 'black'):
+                i,j = pawn.coordinates
+                col, line = board.transform_grid_to_board(i,j)
+                print "white king under attack by black pawn at (%s, %s)" %(col, line)
+                checked = True
+
+        if self.is_king_eating_valid(board, i_king, j_king, board.king_w[0]):
+                i,j = pawn.coordinates
+                col, line = board.transform_grid_to_board(i,j)
+                print "white king under attack by black king at (%s, %s), Warning: This shouldn't happen!" %(col, line)
+                checked = True
+
+        return checked
+
