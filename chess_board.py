@@ -625,23 +625,33 @@ class MovementRules(object):
 
                 return free_path
 
-    def is_white_king_under_attack(self, board):
+    def is_king_under_attack(self, board, kings_color = 'white'):
 
-        i_king, j_king = board.king_w[0].coordinates
+        if kings_color == 'white':
+            opponent = 'black'
+            the_king = board.king_w[0]
+            attackers = board.get_all_black_pieces()
+
+        else:
+            opponent = 'white'
+            the_king = board.king_b[0]
+            attackers = board.get_all_white_pieces()
+
+        i_king, j_king = the_king.coordinates
 
         checked = False
 
-        for piece in board.get_all_black_pieces():
+        for piece in attackers:
             eating_func =  getattr(board.Rules, board.map_piece_to_eating(piece.kind))
             if piece.kind != 'p':
                 if eating_func(board, i_king, j_king, piece):
                     col, line = board.get_piece_coords(piece)
-                    print "white king under attack by black %s at (%s,%s)" % (piece.kind,col,line)
+                    print "%s king under attack by %s  %s at (%s,%s)" % (kings_color, opponent, piece.kind,col,line)
                     checked = True
             else:
-                if eating_func(board, i_king, j_king, piece, 'black'):
+                if eating_func(board, i_king, j_king, piece, opponent):
                     col, line = board.get_piece_coords(piece)
-                    print "white king under attack by black %s at (%s,%s)" % (piece.kind,col,line)
+                    print "%s king under attack by %s %s at (%s,%s)" % (kings_color, opponent, piece.kind,col,line)
                     checked = True
 
         return checked
