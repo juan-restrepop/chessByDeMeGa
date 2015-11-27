@@ -201,6 +201,16 @@ class ChessBoard(object):
         else:
             return None
 
+    def map_piece_to_eating(self,kind):
+
+        map_piece_2_eat = { 'k':'is_king_eating_valid',
+                                'b':'is_bishop_eating_valid',
+                                'n':'is_knight_eating_valid',
+                                'r':'is_rook_eating_valid',
+                                'p':'is_pawn_eating_valid',
+                                'q':'is_queen_eating_valid' }
+
+        return map_piece_2_eat.get(kind)
 
     def move_pawn_to(self, col, line, player='white'):
         # TODO: Handle 'en passant' capture
@@ -621,15 +631,8 @@ class MovementRules(object):
 
         checked = False
 
-        map_piece_to_eating = { 'k':'is_king_eating_valid',
-                                'b':'is_bishop_eating_valid',
-                                'n':'is_knight_eating_valid',
-                                'r':'is_rook_eating_valid',
-                                'p':'is_pawn_eating_valid',
-                                'q':'is_queen_eating_valid' }
-
         for piece in board.get_all_black_pieces():
-            eating_func =  getattr(board.Rules, map_piece_to_eating.get(piece.kind))
+            eating_func =  getattr(board.Rules, board.map_piece_to_eating(piece.kind))
             if piece.kind != 'p':
                 if eating_func(board, i_king, j_king, piece):
                     col, line = board.get_piece_coords(piece)
