@@ -617,46 +617,27 @@ class MovementRules(object):
 
         checked = False
 
-        for bishop in board.bishops_b:
-            if self.is_bishop_eating_valid(board, i_king, j_king, bishop):
-                i,j = bishop.coordinates
-                col, line = board.transform_grid_to_board(i,j)
-                print "white king under attack by black bishop at (%s, %s)" %(col, line)
-                checked = True
+        map_piece_to_eating = { 'k':'is_king_eating_valid',
+                                'b':'is_bishop_eating_valid',
+                                'n':'is_knight_eating_valid',
+                                'r':'is_rook_eating_valid',
+                                'p':'is_pawn_eating_valid',
+                                'q':'is_queen_eating_valid' }
 
-        for knight in board.knights_b:
-            if self.is_knight_eating_valid(board, i_king, j_king, knight):
-                i,j = knight.coordinates
-                col, line = board.transform_grid_to_board(i,j)
-                print "white king under attack by dark knight at (%s, %s)" %(col, line)
-                checked = True
-
-        for rook in board.rooks_b:
-            if self.is_rook_eating_valid(board, i_king, j_king, rook):
-                i,j = rook.coordinates
-                col, line = board.transform_grid_to_board(i,j)
-                print "white king under attack by black rook at (%s, %s)" %(col, line)
-                checked = True
-
-        for queen in board.queen_b:
-            if self.is_queen_eating_valid(board, i_king, j_king, queen):
-                i,j = queen.coordinates
-                col, line = board.transform_grid_to_board(i,j)
-                print "white king under attack by black queen at (%s, %s)" %(col, line)
-                checked = True
-
-        for pawn in board.pawns_b:
-            if self.is_pawn_eating_valid(board, i_king, j_king, pawn, 'black'):
-                i,j = pawn.coordinates
-                col, line = board.transform_grid_to_board(i,j)
-                print "white king under attack by black pawn at (%s, %s)" %(col, line)
-                checked = True
-
-        if self.is_king_eating_valid(board, i_king, j_king, board.king_w[0]):
-                i,j = pawn.coordinates
-                col, line = board.transform_grid_to_board(i,j)
-                print "white king under attack by black king at (%s, %s), Warning: This shouldn't happen!" %(col, line)
-                checked = True
+        for piece in board.get_all_black_pieces():
+            eating_func =  getattr(board.Rules, map_piece_to_eating.get(piece.kind))
+            if piece.kind != 'p':
+                if eating_func(board, i_king, j_king, piece):
+                    i,j = piece.coordinates
+                    col, line = board.transform_grid_to_board(i,j)
+                    print "white king under attack by black %s at (%s,%s)" % (piece.kind,col,line)
+                    checked = True
+            else:
+                if eating_func(board, i_king, j_king, piece, 'black'):
+                    i,j = piece.coordinates
+                    col, line = board.transform_grid_to_board(i,j)
+                    print "white king under attack by black %s at (%s,%s)" % (piece.kind,col,line)
+                    checked = True
 
         return checked
 
