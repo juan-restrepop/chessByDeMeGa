@@ -42,6 +42,10 @@ class ChessBoard(object):
                 return piece
         return []
 
+    def get_piece_coords(self, piece):
+        i, j = piece.coordinates
+        col, line = self.transform_grid_to_board(i, j)
+        return col, line
 
     def initialize_board(self):
         self.grid = list()
@@ -628,14 +632,12 @@ class MovementRules(object):
             eating_func =  getattr(board.Rules, map_piece_to_eating.get(piece.kind))
             if piece.kind != 'p':
                 if eating_func(board, i_king, j_king, piece):
-                    i,j = piece.coordinates
-                    col, line = board.transform_grid_to_board(i,j)
+                    col, line = board.get_piece_coords(piece)
                     print "white king under attack by black %s at (%s,%s)" % (piece.kind,col,line)
                     checked = True
             else:
                 if eating_func(board, i_king, j_king, piece, 'black'):
-                    i,j = piece.coordinates
-                    col, line = board.transform_grid_to_board(i,j)
+                    col, line = board.get_piece_coords(piece)
                     print "white king under attack by black %s at (%s,%s)" % (piece.kind,col,line)
                     checked = True
 
