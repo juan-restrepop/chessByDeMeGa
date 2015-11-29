@@ -1028,6 +1028,40 @@ class TestChessBoard(unittest.TestCase):
             self.assertEqual(expected, actual)
 
 
+    def test_is_king_under_attack(self):
+        b = cb.ChessBoard()
+
+        pieces = [['r','w','a','4'],
+                  ['b','w','a','1'],
+                  ['n','w','c','2'],
+                  ['q','w','d','8'],
+                  ['p','w','e','3'],
+                  ['p','w','c','3']]
+
+        for piece, color, col, line in pieces:
+            b.clean_pieces()
+            b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '4'))
+            b.initialize_single_piece(piece, color, b.transform_board_to_grid(col, line))
+            actual  = b.Rules.is_king_under_attack(b, 'black')
+            expected = True
+            self.assertEqual(expected, actual, msg= 'Error while attempting check with %s at (%s,%s)' % (piece, col, line))
+
+            pieces = [['r','b','a','5'],
+                      ['b','b','b','1'],
+                      ['n','b','e','3'],
+                      ['q','b','f','8'],
+                      ['p','b','e','6'],
+                      ['p','b','g','6']]
+
+        for piece, color, col, line in pieces:
+            b.clean_pieces()
+            b.initialize_single_piece('k', 'w', b.transform_board_to_grid('f', '5'))
+            b.initialize_single_piece(piece, color, b.transform_board_to_grid(col, line))
+            actual  = b.Rules.is_king_under_attack(b, 'white')
+            expected = True
+            self.assertEqual(expected, actual, msg= 'Error while attempting check with %s at (%s,%s)' % (piece, col, line))
+
+
     def test_transform_coords(self):
         b = cb.ChessBoard()
 
