@@ -243,19 +243,7 @@ class ChessBoard(object):
 
 
     def move_pawn_to(self, col, line, player='white'):
-        # TODO: Handle 'en passant' capture
-
-        accepted_move = False
-        i, j = self.transform_board_to_grid(col, line)
-        pawn_list = self.list_to_update(player, self.pawns_w, self.pawns_b)
-
-        for k in range(len(pawn_list)):
-            if self.Rules.is_pawn_movement_valid(self, i, j, pawn_list[k], player):
-                self.piece_mover(pawn_list[k], i, j)
-                accepted_move = True
-                break
-
-        return accepted_move
+        return self.piece_mover('p', col, line, player)
 
     def move_bishop_to(self, col, line, player='white'):
         # we work only with white
