@@ -735,7 +735,6 @@ class TestChessBoard(unittest.TestCase):
         blocking_piece = ['f','2']
         move = blocking_piece
         b.initialize_single_piece('p', 'w', b.transform_board_to_grid(blocking_piece[0],blocking_piece[1] ))
-        b.print_board()
         expected = False
         actual = b.piece_mover('b',blocking_piece[0],blocking_piece[1], 'black')
         self.assertEqual(expected, actual, msg= 'Error while attempting move bishop  to (%s,%s)' % (move[0], move[1]))
