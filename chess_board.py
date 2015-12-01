@@ -265,9 +265,9 @@ class ChessBoard(object):
                             'n': ['is_knight_movement_valid', 'knights_w', 'knights_b'],
                             'r': ['is_rook_movement_valid', 'rooks_w', 'rooks_b'],
                             'p': ['is_pawn_movement_valid', 'pawns_w', 'pawns_b']}
-
         return map_piece_2_move[kind]
 
+<<<<<<< HEAD
 
     def move_pawn_to(self, col, line, player='white'):
         return self.piece_mover('p', col, line, player)
@@ -289,6 +289,17 @@ class ChessBoard(object):
 
     # Eating pieces
     def map_piece_to_eating(self,kind):
+=======
+    def transform_board_to_grid(self,col,line):
+        columns_to_grid = {'a': 0,
+                           'b': 1,
+                           'c': 2,
+                           'd': 3,
+                           'e': 4,
+                           'f': 5,
+                           'g': 6,
+                           'h': 7}
+>>>>>>> 6b3ec153bfc1226e5314ae02a32840a293805701
 
         map_piece_2_eat = { 'k':'is_king_eating_valid',
                                 'b':'is_bishop_eating_valid',
@@ -337,7 +348,7 @@ class MovementRules(object):
         return free_path# to liberty
 
     def is_diagonal_move_valid(self, board, i_origin, j_origin, i_end, j_end):
-        if abs(i_end - i_origin) and (j_end - j_origin):
+        if abs(i_end - i_origin) == abs(j_end - j_origin):
             free_path = True
 
             if (i_end > i_origin) and (j_end > j_origin):# move down and to the right
@@ -436,7 +447,7 @@ class MovementRules(object):
         return free_path
 
     def is_queen_movement_valid(self, board, i, j, queen, player = 'white'):
-        return self.is_rook_movement_valid(board, i, j, queen) or self.is_bishop_movement_valid(board, i, j, queen)
+        return self.is_rook_movement_valid(board, i, j, queen, player) or self.is_bishop_movement_valid(board, i, j, queen, player)
 
     def is_knight_movement_valid(self, board, i, j, knight, player = 'white'):
         # TODO: The knight should eat if final square is occupied

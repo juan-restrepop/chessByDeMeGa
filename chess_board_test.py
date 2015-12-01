@@ -519,10 +519,9 @@ class TestChessBoard(unittest.TestCase):
 
         expected = False
         for move in moves:
-            i, j = b.transform_board_to_grid(move[0], move[1])
             b.clean_pieces()
             b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '7'))
-            actual = b.Rules.is_pawn_movement_valid(b, i, j, b.pawns_b[0], 'black')
+            actual = b.piece_mover('p',move[0],move[1],'black')
             self.assertEqual(actual,expected)
 
         # forbidden: more than 2 in line < 7
@@ -530,8 +529,7 @@ class TestChessBoard(unittest.TestCase):
         expected = False
         b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '6'))
         move = ['e','4']
-        i, j =b.transform_board_to_grid(move[0], move[1])
-        actual = b.Rules.is_pawn_movement_valid(b, i, j, b.pawns_b[0], 'black')
+        actual  = b.piece_mover('p',move[0],move[1],'black')
         self.assertEqual(actual,expected)
 
         # accepted: single and double in the starting line
@@ -539,20 +537,16 @@ class TestChessBoard(unittest.TestCase):
         moves = [['e', '6'], ['e', '5']]
 
         for move in moves:
-            i, j = b.transform_board_to_grid(move[0], move[1])
             b.clean_pieces()
             b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '7'))
-            actual = b.Rules.is_pawn_movement_valid(b, i, j, b.pawns_b[0], 'black')
-            print 'Failed movement to %s%s' % (move[0], move[1])
-            self.assertEqual(actual, expected)
-
+            actual  = b.piece_mover('p',move[0],move[1],'black')
+            self.assertEqual(actual,expected)
 
         # accepted: single elsewhere
         expected = True
         b.clean_pieces()
         b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '4'))
-        i, j = b.transform_board_to_grid('e', '3')
-        actual = b.Rules.is_pawn_movement_valid(b, i, j, b.pawns_b[0], 'black')
+        actual  = b.piece_mover('p','e','3','black')
         self.assertEqual(actual,expected)
 
     def test_black_pawn_blocked_movement(self):
@@ -563,17 +557,17 @@ class TestChessBoard(unittest.TestCase):
         b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '7'))
         b.initialize_single_piece('n', 'w', b.transform_board_to_grid('e', '6'))
 
-        actual  = b.move_pawn_to('e','6','black')
+        actual  = b.piece_mover('p','e','6','black')
         self.assertEqual(expected, actual)
 
-        actual  = b.move_pawn_to('e','5','black')
+        actual  = b.piece_mover('p','e','5','black')
         self.assertEqual(expected, actual)
 
         b.clean_pieces()
         expected = False
         b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '6'))
         b.initialize_single_piece('n', 'w', b.transform_board_to_grid('e', '5'))
-        actual  = b.move_pawn_to('e','5','black')
+        actual  = b.piece_mover('p','e','5','black')
         self.assertEqual(expected, actual)
 
     def test_white_pawn_movement_rules(self):
@@ -587,31 +581,31 @@ class TestChessBoard(unittest.TestCase):
         # Test forbidden forward-diagonal moves
         expected = False
         for move in [['e','3'], ['c','3']]:
-            actual = b.move_pawn_to(move[0], move[1])
+            actual = b.piece_mover('p',move[0], move[1], 'white')
             self.assertEqual(expected, actual)
 
         # Test forbidden lateral moves
         expected = False
         for move in [['e','2'], ['c','2']]:
-            actual = b.move_pawn_to(move[0], move[1])
+            actual = b.piece_mover('p',move[0], move[1], 'white')
             self.assertEqual(expected, actual)
 
         # Test forbidden backwards moves
         expected = False
         for move in [['e','1'], ['c','1'], ['d', '1']]:
-            actual = b.move_pawn_to(move[0], move[1])
+            actual = b.piece_mover('p',move[0], move[1], 'white')
             self.assertEqual(expected, actual)
 
         # Test forbidden forward move longer than 2
         expected = False
-        actual = b.move_pawn_to('d', '5')
+        actual = b.piece_mover('p','d', '5', 'white')
         self.assertEqual(expected, actual)
 
         # Test forbidden in-place move
         expected = False
         b.clean_pieces()
         b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '2'))
-        actual = b.move_pawn_to('d', '2')
+        actual = b.piece_mover('p','d', '2', 'white')
         self.assertEqual(expected, actual)
 
         ## Test approved moves if initial position
@@ -620,7 +614,7 @@ class TestChessBoard(unittest.TestCase):
         b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '2'))
 
         expected = True
-        actual = b.move_pawn_to('d','3')
+        actual = b.piece_mover('p','d','3', 'white')
         self.assertEqual(expected, actual)
 
         # double initial move
@@ -628,7 +622,7 @@ class TestChessBoard(unittest.TestCase):
         b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '2'))
 
         expected = True
-        actual = b.move_pawn_to('d','4')
+        actual = b.piece_mover('p','d','4', 'white')
         self.assertEqual(expected, actual)
 
         ## Test approved moves
@@ -637,7 +631,7 @@ class TestChessBoard(unittest.TestCase):
         b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '4'))
 
         expected = True
-        actual = b.move_pawn_to('d','5')
+        actual = b.piece_mover('p','d','5', 'white')
         self.assertEqual(expected, actual)
 
         # double move
@@ -645,7 +639,7 @@ class TestChessBoard(unittest.TestCase):
         b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '4'))
 
         expected = False
-        actual = b.move_pawn_to('d','6')
+        actual = b.piece_mover('p','d','6', 'white')
         self.assertEqual(expected, actual)
 
     def test_white_pawn_blocked_movement_rules(self):
@@ -657,7 +651,7 @@ class TestChessBoard(unittest.TestCase):
         b.initialize_single_piece('n', 'b', [5, 3])
 
         expected = False
-        actual = b.move_pawn_to('d', '3')
+        actual = b.piece_mover('p','d', '3','white')
         self.assertEqual(expected, actual)
 
         ## Initialize white pawn on 'd2' and black knight on 'd3'
@@ -666,7 +660,7 @@ class TestChessBoard(unittest.TestCase):
         b.initialize_single_piece('n', 'b', [5, 3])
 
         expected = False
-        actual = b.move_pawn_to('d', '4')
+        actual = b.piece_mover('p','d', '4','white')
         self.assertEqual(expected, actual)
 
     def test_bishop_movement_rules(self):
@@ -680,14 +674,14 @@ class TestChessBoard(unittest.TestCase):
             b.clean_pieces()
             b.initialize_single_piece('b', 'w', [4, 4])
             expected = True
-            actual = b.move_bishop_to(move[0],move[1], 'white')
+            actual = b.piece_mover('b',move[0],move[1], 'white')
             self.assertEqual(expected, actual)
 
             # Test black bishop on 'e4'
             b.clean_pieces()
             b.initialize_single_piece('b', 'b', [4, 4])
             expected = True
-            actual = b.move_bishop_to(move[0],move[1], 'black')
+            actual = b.piece_mover('b',move[0],move[1], 'black')
             self.assertEqual(expected, actual)
 
         ## Unaccepted moves : left, right, up, down
@@ -698,14 +692,14 @@ class TestChessBoard(unittest.TestCase):
             b.clean_pieces()
             b.initialize_single_piece('b', 'w', [4, 4])
             expected = False
-            actual = b.move_bishop_to(move[0],move[1], 'white')
+            actual = b.piece_mover('b',move[0],move[1], 'white')
             self.assertEqual(expected, actual)
 
             # Test black bishop on 'e4'
             b.clean_pieces()
             b.initialize_single_piece('b', 'b', [4, 4])
             expected = False
-            actual = b.move_bishop_to(move[0],move[1], 'black')
+            actual = b.piece_mover('b',move[0],move[1], 'black')
             self.assertEqual(expected, actual)
 
     def test_bishop_blocked_movement_rules(self):
@@ -723,16 +717,27 @@ class TestChessBoard(unittest.TestCase):
             b.initialize_single_piece('b', 'w', [4, 4])
             b.initialize_single_piece('p', 'b', blocking_piece)
             expected = False
-            actual = b.move_bishop_to(move[0],move[1], 'white')
-            self.assertEqual(expected, actual)
+            actual = b.piece_mover('b',move[0],move[1], 'white')
+            self.assertEqual(expected, actual, msg= 'Error while attempting move bishop  to (%s,%s)' % (move[0], move[1]))
 
             # Test black bishop on 'e4'
             b.clean_pieces()
             b.initialize_single_piece('b', 'b', [4, 4])
             b.initialize_single_piece('p', 'w', blocking_piece)
             expected = False
-            actual = b.move_bishop_to(move[0],move[1], 'black')
-            self.assertEqual(expected, actual)
+            actual = b.piece_mover('b',move[0],move[1], 'black')
+            self.assertEqual(expected, actual, msg= 'Error while attempting move bishop  to (%s,%s)' % (move[0], move[1]))
+
+        b.clean_pieces()
+        
+        # Do not accept a forbidden movement to an occupied place!
+        b.initialize_single_piece('b', 'b', b.transform_board_to_grid('c','1'))
+        blocking_piece = ['f','2']
+        move = blocking_piece
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid(blocking_piece[0],blocking_piece[1] ))
+        expected = False
+        actual = b.piece_mover('b',blocking_piece[0],blocking_piece[1], 'black')
+        self.assertEqual(expected, actual, msg= 'Error while attempting move bishop  to (%s,%s)' % (move[0], move[1]))
 
     def test_knight_movement_rules(self):
         b = cb.ChessBoard()
@@ -748,7 +753,7 @@ class TestChessBoard(unittest.TestCase):
 
         expected = False
         for move in movements:
-            actual = b.move_knight_to(move[0], move[1], 'white')
+            actual = b.piece_mover('n',move[0], move[1], 'white')
             self.assertEqual(expected, actual)
 
         # Test black knight on 'd4'
@@ -757,7 +762,7 @@ class TestChessBoard(unittest.TestCase):
 
         expected = False
         for move in movements:
-            actual = b.move_knight_to(move[0], move[1], 'black')
+            actual = b.piece_mover('n',move[0], move[1], 'black')
             self.assertEqual(expected, actual)
 
         ## Test approved moves
@@ -774,7 +779,7 @@ class TestChessBoard(unittest.TestCase):
             b.clean_pieces()
             b.initialize_single_piece('n', 'w', [4, 3])
 
-            actual = b.move_knight_to(move[0], move[1], 'white')
+            actual = b.piece_mover('n',move[0], move[1], 'white')
             self.assertEqual(expected, actual)
 
         # Test black knight on 'd4'
@@ -785,7 +790,7 @@ class TestChessBoard(unittest.TestCase):
             b.clean_pieces()
             b.initialize_single_piece('n', 'b', [4, 3])
 
-            actual = b.move_knight_to(move[0], move[1], 'black')
+            actual = b.piece_mover('n',move[0], move[1], 'black')
             self.assertEqual(expected, actual)
 
     def test_knight_blocked_movement_rules(self):
@@ -799,12 +804,12 @@ class TestChessBoard(unittest.TestCase):
 
         # test blocked move
         expected = False
-        actual = b.move_knight_to('d', '4', 'white')
+        actual = b.piece_mover('n','d', '4', 'white')
         self.assertEqual(expected, actual)
 
         # test approved move
         expected = True
-        actual = b.move_knight_to('a', '3', 'white')
+        actual = b.piece_mover('n','a', '3', 'white')
         self.assertEqual(expected, actual)
 
         ## Initialize black knight in 'b1' and white pawns in 'd2' and 'b2'
@@ -815,12 +820,12 @@ class TestChessBoard(unittest.TestCase):
 
         # test blocked move
         expected = False
-        actual = b.move_knight_to('d', '4', 'black')
+        actual = b.piece_mover('n','d', '4', 'black')
         self.assertEqual(expected, actual)
 
         # test approved move
         expected = True
-        actual = b.move_knight_to('a', '3', 'black')
+        actual = b.piece_mover('n','a', '3', 'black')
         self.assertEqual(expected, actual)
 
     def test_rook_movement_rules(self):
@@ -835,7 +840,7 @@ class TestChessBoard(unittest.TestCase):
         b.initialize_single_piece('r', 'w', [4, 4])
         expected = False
         for move in movements:
-            actual = b.move_rook_to(move[0], move[1], 'white')
+            actual = b.piece_mover('r',move[0], move[1], 'white')
             self.assertEqual(expected, actual)
 
         # Test black rook on 'e4'
@@ -843,7 +848,7 @@ class TestChessBoard(unittest.TestCase):
         b.initialize_single_piece('r', 'b', [4, 4])
         expected = False
         for move in movements:
-            actual = b.move_rook_to(move[0], move[1], 'black')
+            actual = b.piece_mover('r',move[0], move[1], 'black')
             self.assertEqual(expected, actual)
 
         ## Test approved moves
@@ -857,13 +862,13 @@ class TestChessBoard(unittest.TestCase):
             # Test white rook on 'e4'
             b.clean_pieces()
             b.initialize_single_piece('r', 'w', [4, 4])
-            actual = b.move_rook_to(move[0], move[1], 'white')
+            actual = b.piece_mover('r',move[0], move[1], 'white')
             self.assertEqual(expected, actual)
 
             # Test black rook on 'e4'
             b.clean_pieces()
             b.initialize_single_piece('r', 'b', [4, 4])
-            actual = b.move_rook_to(move[0], move[1], 'black')
+            actual = b.piece_mover('r',move[0], move[1], 'black')
             self.assertEqual(expected, actual)
 
     def test_rook_blocked_movement_rules(self):
@@ -881,7 +886,7 @@ class TestChessBoard(unittest.TestCase):
             b.initialize_single_piece('p', 'w', [4, 6])
             b.initialize_single_piece('n', 'b', [2, 4])
 
-            actual = b.move_rook_to(move[0], move[1], 'white')
+            actual = b.piece_mover('r',move[0], move[1], 'white')
             self.assertEqual(expected, actual)
 
             # Test black rook on 'e4'
@@ -890,7 +895,7 @@ class TestChessBoard(unittest.TestCase):
             b.initialize_single_piece('p', 'w', [4, 6])
             b.initialize_single_piece('n', 'b', [2, 4])
 
-            actual = b.move_rook_to(move[0], move[1], 'black')
+            actual = b.piece_mover('r',move[0], move[1], 'black')
             self.assertEqual(expected, actual)
 
         ## Test blocked movements
@@ -903,7 +908,7 @@ class TestChessBoard(unittest.TestCase):
             b.initialize_single_piece('p', 'w', [4, 6])
             b.initialize_single_piece('n', 'b', [2, 4])
 
-            actual = b.move_rook_to(move[0], move[1], 'white')
+            actual = b.piece_mover('r',move[0], move[1], 'white')
             self.assertEqual(expected, actual)
 
             # Test black rook on 'e4'
@@ -912,7 +917,7 @@ class TestChessBoard(unittest.TestCase):
             b.initialize_single_piece('p', 'w', [4, 6])
             b.initialize_single_piece('n', 'b', [2, 4])
 
-            actual = b.move_rook_to(move[0], move[1], 'black')
+            actual = b.piece_mover('r',move[0], move[1], 'black')
             self.assertEqual(expected, actual)
 
     def test_king_movement_rules(self):
@@ -928,14 +933,14 @@ class TestChessBoard(unittest.TestCase):
             b.clean_pieces()
             b.initialize_single_piece('k', 'w', [3, 5])
             expected = True
-            actual = b.move_king_to(move[0],move[1], 'white')
+            actual = b.piece_mover('k',move[0],move[1], 'white')
             self.assertEqual(expected, actual)
 
             # Test black king on 'f5'
             b.clean_pieces()
             b.initialize_single_piece('k', 'b', [3, 5])
             expected = True
-            actual = b.move_king_to(move[0],move[1], 'black')
+            actual = b.piece_mover('k',move[0],move[1], 'black')
             self.assertEqual(expected, actual)
         
         ## Unaccepted moves c8,f7,h7,h5,h3,f3,c2
@@ -949,14 +954,14 @@ class TestChessBoard(unittest.TestCase):
             b.clean_pieces()
             b.initialize_single_piece('k', 'w', [3, 5])
             expected = False
-            actual = b.move_king_to(move[0],move[1], 'white')
+            actual = b.piece_mover('k',move[0],move[1], 'white')
             self.assertEqual(expected, actual)
 
             # Test black king on 'f5'
             b.clean_pieces()
             b.initialize_single_piece('k', 'b', [3, 5])
             expected = False
-            actual = b.move_king_to(move[0],move[1], 'black')
+            actual = b.piece_mover('k',move[0],move[1], 'black')
             self.assertEqual(expected, actual)
 
     def test_king_blocked_movement_rules(self):
@@ -976,14 +981,14 @@ class TestChessBoard(unittest.TestCase):
             b.clean_pieces()
             b.initialize_single_piece('k','w',[5,4])
             b.initialize_single_piece('k','w', b.transform_board_to_grid(coords[0],coords[1]))
-            actual = b.move_king_to(coords[0], coords[1], 'white')
+            actual = b.piece_mover('k',coords[0], coords[1], 'white')
             self.assertEqual(expected, actual)
 
             # Test black king on 'e3'
             b.clean_pieces()
             b.initialize_single_piece('k','b',[5,4])
             b.initialize_single_piece('k','w', b.transform_board_to_grid(coords[0],coords[1]))
-            actual = b.move_king_to(coords[0], coords[1], 'black')
+            actual = b.piece_mover('k',coords[0], coords[1], 'black')
             self.assertEqual(expected, actual)
 
     def test_queen_movement_rules(self):
@@ -996,13 +1001,13 @@ class TestChessBoard(unittest.TestCase):
             # Test white queen on 'c4'
             b.clean_pieces()
             b.initialize_single_piece('q', 'w', [4, 2])
-            actual = b.move_queen_to(move[0], move[1], 'white')
+            actual = b.piece_mover('q',move[0], move[1], 'white')
             self.assertEqual(expected, actual)
 
             # Test black queen on 'c4'
             b.clean_pieces()
             b.initialize_single_piece('q', 'b', [4, 2])
-            actual = b.move_queen_to(move[0], move[1], 'black')
+            actual = b.piece_mover('q',move[0], move[1], 'black')
             self.assertEqual(expected, actual)
 
     def test_queen_blocked_movement_rules(self):
@@ -1020,7 +1025,7 @@ class TestChessBoard(unittest.TestCase):
             b.initialize_single_piece('r', 'b', [2, 2])
             b.initialize_single_piece('n', 'b', [1, 5])
 
-            actual = b.move_queen_to(move[0], move[1], 'white')
+            actual = b.piece_mover('q',move[0], move[1], 'white')
             self.assertEqual(expected, actual)
 
             # Test black queen on 'c4'
@@ -1030,7 +1035,7 @@ class TestChessBoard(unittest.TestCase):
             b.initialize_single_piece('r', 'b', [2, 2])
             b.initialize_single_piece('n', 'b', [1, 5])
 
-            actual = b.move_queen_to(move[0], move[1], 'black')
+            actual = b.piece_mover('q',move[0], move[1], 'black')
             self.assertEqual(expected, actual)
 
 
