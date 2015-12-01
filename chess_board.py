@@ -466,7 +466,7 @@ class MovementRules(object):
             else:
                 return False
 
-    def is_king_movement_valid(self, board, i, j, king):
+    def is_king_movement_valid(self, board, i, j, king, player = 'white'):
         i_origin, j_origin = king.coordinates
 
         if ((abs(i - i_origin) == 1) and (abs(j - j_origin) <= 1)
@@ -474,11 +474,11 @@ class MovementRules(object):
             return board.is_square_free(i,j)
         return False
 
-    def is_bishop_movement_valid(self, board, i, j, bishop):
+    def is_bishop_movement_valid(self, board, i, j, bishop,  player = 'white'):
         i_origin, j_origin = bishop.coordinates
         return self.is_diagonal_move_valid(board, i_origin, j_origin, i, j)
 
-    def is_rook_movement_valid(self, board, i, j, rook):
+    def is_rook_movement_valid(self, board, i, j, rook, player = 'white'):
         # TODO: The rook should eat if final square is occupied
         # TODO: Requesting to leave the piece in place should not be considered a valid move
         i_origin, j_origin = rook.coordinates
@@ -492,10 +492,10 @@ class MovementRules(object):
             return False
         return free_path
 
-    def is_queen_movement_valid(self, board, i, j, queen):
+    def is_queen_movement_valid(self, board, i, j, queen, player = 'white'):
         return self.is_rook_movement_valid(board, i, j, queen) or self.is_bishop_movement_valid(board, i, j, queen)
 
-    def is_knight_movement_valid(self, board, i, j, knight):
+    def is_knight_movement_valid(self, board, i, j, knight, player = 'white'):
         # TODO: The knight should eat if final square is occupied
         i_origin, j_origin = knight.coordinates
 
