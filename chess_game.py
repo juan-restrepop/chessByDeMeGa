@@ -195,7 +195,7 @@ class ChessGame(object):
             kind = 'p'
 
         elif self.is_bishop(input_move):
-            kind = 'kind'
+            kind = 'b'
 
         elif self.is_knight(input_move):
             kind = 'n'
@@ -211,7 +211,7 @@ class ChessGame(object):
 
         else:
             return False
-            
+
         return self.board.piece_mover(kind, move_to_col,move_to_line,self.player)
 
 
