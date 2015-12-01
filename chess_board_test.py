@@ -519,9 +519,10 @@ class TestChessBoard(unittest.TestCase):
 
         expected = False
         for move in moves:
+            i, j = b.transform_board_to_grid(move[0], move[1])
             b.clean_pieces()
             b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '7'))
-            actual = b.move_pawn_to(move[0],move[1],'black')
+            actual = b.Rules.is_pawn_movement_valid(b, i, j, b.pawns_b[0], 'black')
             self.assertEqual(actual,expected)
 
         # forbidden: more than 2 in line < 7
@@ -529,24 +530,29 @@ class TestChessBoard(unittest.TestCase):
         expected = False
         b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '6'))
         move = ['e','4']
-        actual  = b.move_pawn_to(move[0],move[1],'black')
+        i, j =b.transform_board_to_grid(move[0], move[1])
+        actual = b.Rules.is_pawn_movement_valid(b, i, j, b.pawns_b[0], 'black')
         self.assertEqual(actual,expected)
 
         # accepted: single and double in the starting line
         expected = True
-        moves = [['e','6'],['e','5']]
+        moves = [['e', '6'], ['e', '5']]
 
         for move in moves:
+            i, j = b.transform_board_to_grid(move[0], move[1])
             b.clean_pieces()
             b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '7'))
-            actual  = b.move_pawn_to(move[0],move[1],'black')
-            self.assertEqual(actual,expected)
+            actual = b.Rules.is_pawn_movement_valid(b, i, j, b.pawns_b[0], 'black')
+            print 'Failed movement to %s%s' % (move[0], move[1])
+            self.assertEqual(actual, expected)
+
 
         # accepted: single elsewhere
         expected = True
         b.clean_pieces()
         b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '4'))
-        actual  = b.move_pawn_to('e','3','black')
+        i, j = b.transform_board_to_grid('e', '3')
+        actual = b.Rules.is_pawn_movement_valid(b, i, j, b.pawns_b[0], 'black')
         self.assertEqual(actual,expected)
 
     def test_black_pawn_blocked_movement(self):

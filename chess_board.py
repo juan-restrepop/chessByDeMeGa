@@ -21,7 +21,7 @@ class ChessBoard(object):
         self.initialize_board_with_pieces()
         self.Rules = MovementRules()
 
-
+    # Get information from board objects
     def get_all_pieces(self):
         return(self.pawns_w + self.pawns_b + \
                      self.king_w + self.king_b + \
@@ -47,6 +47,48 @@ class ChessBoard(object):
         col, line = self.transform_grid_to_board(i, j)
         return col, line
 
+    def transform_board_to_grid(self,col,line):
+        columns_to_grid = {'a': 0,
+                           'b': 1,
+                           'c': 2,
+                           'd': 3,
+                           'e': 4,
+                           'f': 5,
+                           'g': 6,
+                           'h': 7}
+
+        lines_to_grid = {'8': 0,
+                         '7': 1,
+                         '6': 2,
+                         '5': 3,
+                         '4': 4,
+                         '3': 5,
+                         '2': 6,
+                         '1': 7}
+        return [lines_to_grid[line] ,columns_to_grid[col]]
+
+    def transform_grid_to_board(self, i, j):
+        grid_lines_to_board_lines = {0 : '8',
+                                      1 : '7',
+                                      2 : '6',
+                                      3 : '5',
+                                      4 : '4',
+                                      5 : '3',
+                                      6 : '2',
+                                      7 : '1'}
+
+        grid_columns_to_board_columns = {0 : 'a',
+                                         1 : 'b',
+                                         2 : 'c',
+                                         3 : 'd',
+                                         4 : 'e',
+                                         5 : 'f',
+                                         6 : 'g',
+                                         7 : 'h'}
+
+        return (grid_columns_to_board_columns[j], grid_lines_to_board_lines[i])
+
+    # Initialize stuff
     def initialize_board(self):
         self.grid = list()
         for i in range(0,8):
@@ -137,7 +179,6 @@ class ChessBoard(object):
             colCoord = p.coordinates[1]
             self.grid[rowCoord][colCoord] = p.kind
 
-
     def clean_pieces(self):
         self.pawns_w = list()
         self.pawns_b = list()
@@ -189,6 +230,7 @@ class ChessBoard(object):
     def is_square_free(self, i, j):
         return self.grid[i][j] in ['0', '1']
 
+    # Moving pieces around
     def piece_mover(self, kind, col, line, player):
         move_rule_function = getattr(self.Rules, self.map_piece_to_moving(kind)[0])
         white_pieces = getattr(self, self.map_piece_to_moving(kind)[1])
@@ -216,18 +258,6 @@ class ChessBoard(object):
         else:
             return None
 
-
-    def map_piece_to_eating(self,kind):
-
-        map_piece_2_eat = { 'k':'is_king_eating_valid',
-                                'b':'is_bishop_eating_valid',
-                                'n':'is_knight_eating_valid',
-                                'r':'is_rook_eating_valid',
-                                'p':'is_pawn_eating_valid',
-                                'q':'is_queen_eating_valid' }
-
-        return map_piece_2_eat.get(kind)
-
     def map_piece_to_moving(self, kind):
         map_piece_2_move = {'k': ['is_king_movement_valid', 'king_w', 'king_b'],
                             'q': ['is_queen_movement_valid', 'queen_w', 'queen_b'],
@@ -237,9 +267,6 @@ class ChessBoard(object):
                             'p': ['is_pawn_movement_valid', 'pawns_w', 'pawns_b']}
 
         return map_piece_2_move[kind]
-
-
-
 
 
     def move_pawn_to(self, col, line, player='white'):
@@ -259,48 +286,21 @@ class ChessBoard(object):
 
     def move_queen_to(self, col, line, player = 'white'):
         return self.piece_mover('q', col, line, player)
-        
 
-    def transform_board_to_grid(self,col,line):
-        columns_to_grid = {'a': 0,
-                           'b': 1,
-                           'c': 2,
-                           'd': 3,
-                           'e': 4,
-                           'f': 5,
-                           'g': 6,
-                           'h': 7}
+    # Eating pieces
+    def map_piece_to_eating(self,kind):
 
-        lines_to_grid = {'8': 0,
-                         '7': 1,
-                         '6': 2,
-                         '5': 3,
-                         '4': 4,
-                         '3': 5,
-                         '2': 6,
-                         '1': 7}
-        return [lines_to_grid[line] ,columns_to_grid[col]]
+        map_piece_2_eat = { 'k':'is_king_eating_valid',
+                                'b':'is_bishop_eating_valid',
+                                'n':'is_knight_eating_valid',
+                                'r':'is_rook_eating_valid',
+                                'p':'is_pawn_eating_valid',
+                                'q':'is_queen_eating_valid' }
 
-    def transform_grid_to_board(self, i, j):
-        grid_lines_to_board_lines = {0 : '8',
-                                      1 : '7',
-                                      2 : '6',
-                                      3 : '5',
-                                      4 : '4',
-                                      5 : '3',
-                                      6 : '2',
-                                      7 : '1'}
+        return map_piece_2_eat.get(kind)
 
-        grid_columns_to_board_columns = {0 : 'a',
-                                         1 : 'b',
-                                         2 : 'c',
-                                         3 : 'd',
-                                         4 : 'e',
-                                         5 : 'f',
-                                         6 : 'g',
-                                         7 : 'h'}
 
-        return (grid_columns_to_board_columns[j], grid_lines_to_board_lines[i])
+
 
 class MovementRules(object):
 
