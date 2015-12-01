@@ -189,9 +189,24 @@ class ChessBoard(object):
     def is_square_free(self, i, j):
         return self.grid[i][j] in ['0', '1']
 
-    def piece_mover(self, piece, i, j):
-        piece.coordinates = [i, j]
-        self.update_board()
+    def piece_mover(self, kind, col, line, player):
+        move_rule_function = getattr(self.Rules, self.map_piece_to_moving(kind)[0])
+        white_pieces = getattr(self, self.map_piece_to_moving(kind)[1])
+        black_pieces = getattr(self, self.map_piece_to_moving(kind)[2])
+
+        i, j = self.transform_board_to_grid(col, line)
+        pieces_to_move = self.list_to_update(player, white_pieces, black_pieces)
+
+        accepted_move = False
+        for k in range(len(pieces_to_move)):
+            piece = pieces_to_move[k]
+            if move_rule_function(self, i, j, piece, player):
+                pieces_to_move[k].coordinates = [i, j]
+                accepted_move = True
+                self.update_board()
+                break
+
+        return accepted_move
 
     def list_to_update(self, player, list_w, list_b):
         if player == 'white':
@@ -224,23 +239,6 @@ class ChessBoard(object):
         return map_piece_2_move[kind]
 
 
-    def mover_of_pieces(self, kind, col, line, player):
-        move_rule_function = getattr(self.Rules, self.map_piece_to_moving(kind)[0])
-        white_pieces = getattr(self, self.map_piece_to_moving(kind)[1])
-        black_pieces = getattr(self, self.map_piece_to_moving(kind)[2])
-
-        i, j = self.transform_board_to_grid(col, line)
-        pieces_to_move = self.list_to_update(player, white_pieces, black_pieces)
-
-        accepted_move = False
-        for k in range(len(pieces_to_move)):
-            piece = pieces_to_move[k]
-            if move_rule_function(self, i, j, piece, player):
-                self.piece_mover(pieces_to_move[k], i, j)
-                accepted_move = True
-                break
-
-        return accepted_move
 
 
 
