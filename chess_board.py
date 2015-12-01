@@ -235,7 +235,6 @@ class ChessBoard(object):
                             'n': ['is_knight_movement_valid', 'knights_w', 'knights_b'],
                             'r': ['is_rook_movement_valid', 'rooks_w', 'rooks_b'],
                             'p': ['is_pawn_movement_valid', 'pawns_w', 'pawns_b']}
-
         return map_piece_2_move[kind]
 
 
@@ -337,7 +336,7 @@ class MovementRules(object):
         return free_path# to liberty
 
     def is_diagonal_move_valid(self, board, i_origin, j_origin, i_end, j_end):
-        if abs(i_end - i_origin) and (j_end - j_origin):
+        if abs(i_end - i_origin) == abs(j_end - j_origin):
             free_path = True
 
             if (i_end > i_origin) and (j_end > j_origin):# move down and to the right
