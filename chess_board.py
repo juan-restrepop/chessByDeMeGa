@@ -412,7 +412,7 @@ class MovementRules(object):
         return free_path
 
     def is_queen_movement_valid(self, board, i, j, queen, player = 'white'):
-        return self.is_rook_movement_valid(board, i, j, queen) or self.is_bishop_movement_valid(board, i, j, queen)
+        return self.is_rook_movement_valid(board, i, j, queen, player) or self.is_bishop_movement_valid(board, i, j, queen, player)
 
     def is_knight_movement_valid(self, board, i, j, knight, player = 'white'):
         # TODO: The knight should eat if final square is occupied
