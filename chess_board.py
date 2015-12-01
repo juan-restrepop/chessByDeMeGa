@@ -237,29 +237,6 @@ class ChessBoard(object):
                             'p': ['is_pawn_movement_valid', 'pawns_w', 'pawns_b']}
         return map_piece_2_move[kind]
 
-
-
-
-
-    def move_pawn_to(self, col, line, player='white'):
-        return self.piece_mover('p', col, line, player)
-
-    def move_bishop_to(self, col, line, player='white'):
-        return self.piece_mover('b', col, line, player)
-
-    def move_knight_to(self, col, line, player='white'):
-        return self.piece_mover('n', col, line, player)
-
-    def move_rook_to(self, col, line, player='white'):
-        return self.piece_mover('r', col, line, player)
-
-    def move_king_to(self, col, line, player='white'):
-        return self.piece_mover('k', col, line, player)
-
-    def move_queen_to(self, col, line, player = 'white'):
-        return self.piece_mover('q', col, line, player)
-        
-
     def transform_board_to_grid(self,col,line):
         columns_to_grid = {'a': 0,
                            'b': 1,
