@@ -201,6 +201,7 @@ class ChessBoard(object):
         else:
             return None
 
+
     def map_piece_to_eating(self,kind):
 
         map_piece_2_eat = { 'k':'is_king_eating_valid',
@@ -211,6 +212,37 @@ class ChessBoard(object):
                                 'q':'is_queen_eating_valid' }
 
         return map_piece_2_eat.get(kind)
+
+    def map_piece_to_moving(self, kind):
+        map_piece_2_move = {'k': ['is_king_movement_valid', 'king_w', 'king_b'],
+                            'q': ['is_queen_movement_valid', 'queen_w', 'queen_b'],
+                            'b': ['is_bishop_movement_valid', 'bishops_w', 'bishops_b'],
+                            'n': ['is_knight_movement_valid', 'knights_w', 'knights_b'],
+                            'r': ['is_rook_movement_valid', 'rooks_w', 'rooks_b'],
+                            'p': ['is_pawn_movement_valid', 'pawns_w', 'pawns_b']}
+
+        return map_piece_2_move[kind]
+
+
+    def mover_of_pieces(self, kind, col, line, player):
+        move_rule_function = getattr(self.Rules, self.map_piece_to_moving(kind)[0])
+        white_pieces = getattr(self, self.map_piece_to_moving(kind)[1])
+        black_pieces = getattr(self, self.map_piece_to_moving(kind)[2])
+
+        i, j = self.transform_board_to_grid(col, line)
+        pieces_to_move = self.list_to_update(player, white_pieces, black_pieces)
+
+        accepted_move = False
+        for k in range(len(pieces_to_move)):
+            piece = pieces_to_move[k]
+            if move_rule_function(self, i, j, piece, player):
+                self.piece_mover(pieces_to_move[k], i, j)
+                accepted_move = True
+                break
+
+        return accepted_move
+
+
 
     def move_pawn_to(self, col, line, player='white'):
         # TODO: Handle 'en passant' capture
