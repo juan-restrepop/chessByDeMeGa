@@ -246,77 +246,20 @@ class ChessBoard(object):
         return self.piece_mover('p', col, line, player)
 
     def move_bishop_to(self, col, line, player='white'):
-        # we work only with white
-
-        accepted_move = False
-        i,j  = self.transform_board_to_grid(col,line)
-        bishop_list =self.list_to_update(player,self.bishops_w,self.bishops_b)
-
-        for k in range(len(bishop_list)):
-            if self.Rules.is_bishop_movement_valid(self, i, j, bishop_list[k]):
-                self.piece_mover(bishop_list[k], i, j)
-                accepted_move = True
-                break
-
-        return accepted_move
+        return self.piece_mover('b', col, line, player)
 
     def move_knight_to(self, col, line, player='white'):
-        # we work only with white
-
-        accepted_move = False
-        i,j = self.transform_board_to_grid(col, line)
-        knight_list =self.list_to_update(player,self.knights_w,self.knights_b)
-
-        for k in range(len(knight_list)):
-            if self.Rules.is_knight_movement_valid(self, i, j, knight_list[k]):
-                self.piece_mover(knight_list[k], i, j)
-                accepted_move = True
-                break
-
-        return accepted_move
+        return self.piece_mover('n', col, line, player)
 
     def move_rook_to(self, col, line, player='white'):
-        # we work only with white
-
-        accepted_move = False
-        i,j  = self.transform_board_to_grid(col,line)
-        rook_list = self.list_to_update(player, self.rooks_w, self.rooks_b)
-
-        for k in range(len(rook_list)):
-            if self.Rules.is_rook_movement_valid(self, i, j, rook_list[k]):
-                self.piece_mover(rook_list[k], i, j)
-                accepted_move = True
-                break
-
-        return accepted_move
+        return self.piece_mover('r', col, line, player)
 
     def move_king_to(self, col, line, player='white'):
-        # we work only with white
-        accepted_move = False
-        i,j = self.transform_board_to_grid(col,line)
-        king_list = self.list_to_update(player, self.king_w, self.king_b)
-
-        if self.Rules.is_king_movement_valid(self, i, j, king_list[0]):
-            self.piece_mover(king_list[0], i, j)
-            accepted_move = True
-
-        return accepted_move
+        return self.piece_mover('k', col, line, player)
 
     def move_queen_to(self, col, line, player = 'white'):
-        #we work only with white
-
-        accepted_move = False
-        i,j = self.transform_board_to_grid(col, line)
-        queen_list = self.list_to_update(player,self.queen_w,self.queen_b)
-
-        for k in range(len(queen_list)):
-            if self.Rules.is_queen_movement_valid(self, i, j, queen_list[k]):
-                self.piece_mover(queen_list[k], i, j)
-                accepted_move = True
-                break
-
-        return accepted_move
-
+        return self.piece_mover('q', col, line, player)
+        
 
     def transform_board_to_grid(self,col,line):
         columns_to_grid = {'a': 0,
