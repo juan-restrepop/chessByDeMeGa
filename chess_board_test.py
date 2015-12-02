@@ -1069,104 +1069,6 @@ class TestChessBoard(unittest.TestCase):
         actual = b.color_augmented_grid()
         self.assertEqual(expected, actual)
 
-    def test_bishop_movement(self):
-        b = cb.ChessBoard()
-        b_ref = cb.ChessBoard()
-
-        b.clean_pieces()
-        b_ref.clean_pieces()
-        # Test good move
-
-        b.initialize_single_piece('b', 'b', [ 4, 4])
-        move  = b.transform_grid_to_board(5,5)
-        b.piece_mover('b',move[0],move[1], 'black')
-
-        b_ref.initialize_single_piece('b', 'b', [5, 5])
-        expected = b_ref.color_augmented_grid()
-        actual = b.color_augmented_grid()
-        self.assertEqual(expected, actual)
-        
-        # Test bad move
-        b = cb.ChessBoard()
-        b_ref = cb.ChessBoard()
-
-        b.clean_pieces()
-        b_ref.clean_pieces()
-
-        b.initialize_single_piece('b', 'b', [ 4, 4])
-        move  = b.transform_grid_to_board(5,4)
-        b.piece_mover('b',move[0],move[1], 'black')
-
-        b_ref.initialize_single_piece('b', 'b', [4, 4])
-
-        expected = b_ref.color_augmented_grid()
-        actual = b.color_augmented_grid()
-        self.assertEqual(expected, actual)
-
-    def test_white_pawn_movement(self):
-        b = cb.ChessBoard()
-        b_ref = cb.ChessBoard()
-
-        b.clean_pieces()
-        b_ref.clean_pieces()
-
-        # Test good move 'white' pawn
-
-        b.initialize_single_piece('p', 'w', [ 4, 4])
-        move  = b.transform_grid_to_board(3,4)
-        b.piece_mover('p',move[0],move[1], 'white')
-        b_ref.initialize_single_piece('p', 'w', [3, 4])
-
-        expected = b_ref.color_augmented_grid()
-        actual = b.color_augmented_grid()
-        self.assertEqual(expected, actual)
-
-
-        b.clean_pieces()
-        b_ref.clean_pieces()
-
-        # Test bad move 'white' pawn
-
-        b.initialize_single_piece('p', 'w', [ 4, 4])
-        move  = b.transform_grid_to_board(2,4)
-        b.piece_mover('p',move[0],move[1], 'white')
-        b_ref.initialize_single_piece('p', 'w', [4, 4])
-
-        expected = b_ref.color_augmented_grid()
-        actual = b.color_augmented_grid()
-        self.assertEqual(expected, actual)
-
-    def test_black_pawn_movement(self):
-        b = cb.ChessBoard()
-        b_ref = cb.ChessBoard()
-
-        b.clean_pieces()
-        b_ref.clean_pieces()
-
-        # Test good move 'white' pawn
-        b.initialize_single_piece('p', 'b', [ 4, 4])
-        move  = b.transform_grid_to_board(5,4)
-        b.piece_mover('p',move[0],move[1], 'black')
-        b_ref.initialize_single_piece('p', 'b', [5, 4])
-
-        expected = b_ref.color_augmented_grid()
-        actual = b.color_augmented_grid()
-        self.assertEqual(expected, actual)
-
-
-        b.clean_pieces()
-        b_ref.clean_pieces()
-
-        # Test bad move 'white' pawn
-
-        b.initialize_single_piece('p', 'b', [ 4, 4])
-        move  = b.transform_grid_to_board( 6,4)
-        b.piece_mover('p',move[0],move[1], 'black')
-        b_ref.initialize_single_piece('p', 'b', [4, 4])
-
-        expected = b_ref.color_augmented_grid()
-        actual = b.color_augmented_grid()
-        self.assertEqual(expected, actual)
 
     def test_is_king_under_attack(self):
         b = cb.ChessBoard()
@@ -1219,6 +1121,89 @@ class TestChessBoard(unittest.TestCase):
             self.assertEqual(line, new_line)
             self.assertEqual(i, new_i)
             self.assertEqual(j, new_j)
+
+    def test_bishop_movement(self):
+        b = cb.ChessBoard()
+        b_ref = cb.ChessBoard()
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        # Test good bishop move
+        b.initialize_single_piece('b', 'b', [ 4, 4])
+        move  = b.transform_grid_to_board(5,5)
+        b.piece_mover('b',move[0],move[1], 'black')
+        b_ref.initialize_single_piece('b', 'b', [5, 5])
+        # assert good bishop move
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual)
+        
+        # Test bad bishop move
+        b = cb.ChessBoard()
+        b_ref = cb.ChessBoard()
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        b.initialize_single_piece('b', 'b', [ 4, 4])
+        move  = b.transform_grid_to_board(5,4)
+        b.piece_mover('b',move[0],move[1], 'black')
+        b_ref.initialize_single_piece('b', 'b', [4, 4])
+        # assert bad bishop move
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual)
+
+    def test_white_pawn_movement(self):
+        b = cb.ChessBoard()
+        b_ref = cb.ChessBoard()
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        # Test good move 'white' pawn
+        b.initialize_single_piece('p', 'w', [ 4, 4])
+        move  = b.transform_grid_to_board(3,4)
+        b.piece_mover('p',move[0],move[1], 'white')
+        b_ref.initialize_single_piece('p', 'w', [3, 4])
+        # assert wpm
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual)
+
+        # Test good move 'white' pawn
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        b.initialize_single_piece('p', 'w', [ 4, 4])
+        move  = b.transform_grid_to_board(2,4)
+        b.piece_mover('p',move[0],move[1], 'white')
+        b_ref.initialize_single_piece('p', 'w', [4, 4])
+        # assert bad pm
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual)
+
+    def test_black_pawn_movement(self):
+        b = cb.ChessBoard()
+        b_ref = cb.ChessBoard()
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        # Test good move 'black' pawn
+        b.initialize_single_piece('p', 'b', [ 4, 4])
+        move  = b.transform_grid_to_board(5,4)
+        b.piece_mover('p',move[0],move[1], 'black')
+        b_ref.initialize_single_piece('p', 'b', [5, 4])
+        #assert black pawn good move
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual)
+        # Test bad move 'white' pawn
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        b.initialize_single_piece('p', 'b', [ 4, 4])
+        move  = b.transform_grid_to_board( 6,4)
+        b.piece_mover('p',move[0],move[1], 'black')
+        b_ref.initialize_single_piece('p', 'b', [4, 4])
+        #assert black pawn bad move
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual)
+
 
 if __name__ == '__main__':
     unittest.main()
