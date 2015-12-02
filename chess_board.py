@@ -179,6 +179,20 @@ class ChessBoard(object):
             colCoord = p.coordinates[1]
             self.grid[rowCoord][colCoord] = p.kind
 
+    def color_augmented_grid(self):
+        grid = list()
+        for i in range(8):
+            grid.append(list())
+            for j in range(8):
+                grid[i].append(str((j + i) % 2))
+
+        for p in self.get_all_pieces():
+            rowCoord = p.coordinates[0]
+            colCoord = p.coordinates[1]
+            grid[rowCoord][colCoord] = p.kind + p.color
+
+        return grid
+
     def clean_pieces(self):
         self.pawns_w = list()
         self.pawns_b = list()
@@ -563,6 +577,7 @@ class MovementRules(object):
                     return False
 
                 return free_path
+
 
     def is_king_under_attack(self, board, kings_color = 'white'):
 
