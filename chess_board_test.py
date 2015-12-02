@@ -1103,7 +1103,7 @@ class TestChessBoard(unittest.TestCase):
         actual = b.color_augmented_grid()
         self.assertEqual(expected, actual)
 
-    def test_pawn_movement(self):
+    def test_white_pawn_movement(self):
         b = cb.ChessBoard()
         b_ref = cb.ChessBoard()
 
@@ -1116,6 +1116,21 @@ class TestChessBoard(unittest.TestCase):
         move  = b.transform_grid_to_board(3,4)
         b.piece_mover('p',move[0],move[1], 'white')
         b_ref.initialize_single_piece('p', 'w', [3, 4])
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual)
+
+
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        # Test bad move 'white' pawn
+
+        b.initialize_single_piece('p', 'w', [ 4, 4])
+        move  = b.transform_grid_to_board(2,4)
+        b.piece_mover('p',move[0],move[1], 'white')
+        b_ref.initialize_single_piece('p', 'w', [4, 4])
 
         expected = b_ref.color_augmented_grid()
         actual = b.color_augmented_grid()
