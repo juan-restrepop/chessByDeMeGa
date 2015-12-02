@@ -1069,6 +1069,96 @@ class TestChessBoard(unittest.TestCase):
         actual = b.color_augmented_grid()
         self.assertEqual(expected, actual)
 
+    def test_rook_movement(self):
+        b = cb.ChessBoard()
+        b_ref = cb.ChessBoard()
+
+        # Test good move
+        good_move = b.transform_grid_to_board(4, 6)
+        b.clean_pieces()
+        b.initialize_single_piece('r', 'b', [4, 4])
+        b.piece_mover('r', good_move[0], good_move[1], 'black')
+
+        b_ref.clean_pieces()
+        b_ref.initialize_single_piece('r', 'b', [4, 6])
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual)
+
+        # Test bad move
+        bad_move = b.transform_grid_to_board(5, 5)
+        b.clean_pieces()
+        b.initialize_single_piece('r', 'b', [4, 4])
+        b.piece_mover('r', bad_move[0], bad_move[1], 'black')
+
+        b_ref.clean_pieces()
+        b_ref.initialize_single_piece('r', 'b', [4, 4])
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual)
+
+    def test_queen_movement(self):
+        b = cb.ChessBoard()
+        b_ref = cb.ChessBoard()
+
+        # Test good move
+        good_move = b.transform_grid_to_board(6, 6)
+        b.clean_pieces()
+        b.initialize_single_piece('q', 'b', [4, 4])
+        b.piece_mover('q', good_move[0], good_move[1], 'black')
+
+        b_ref.clean_pieces()
+        b_ref.initialize_single_piece('q', 'b', [6, 6])
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual)
+
+        # Test bad move
+        bad_move = b.transform_grid_to_board(7, 5)
+        b.clean_pieces()
+        b.initialize_single_piece('q', 'b', [4, 4])
+        b.piece_mover('q', bad_move[0], bad_move[1], 'black')
+
+        b_ref.clean_pieces()
+        b_ref.initialize_single_piece('q', 'b', [4, 4])
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual)
+
+    def test_king_movement(self):
+        b = cb.ChessBoard()
+        b_ref = cb.ChessBoard()
+
+        # Test good move
+        good_move = b.transform_grid_to_board(5, 4)
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'b', [4, 4])
+        b.piece_mover('k', good_move[0], good_move[1], 'black')
+
+        b_ref.clean_pieces()
+        b_ref.initialize_single_piece('k', 'b', [5, 4])
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual)
+
+        # Test bad move
+        bad_move = b.transform_grid_to_board(7, 5)
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'b', [4, 4])
+        b.piece_mover('k', bad_move[0], bad_move[1], 'black')
+
+        b_ref.clean_pieces()
+        b_ref.initialize_single_piece('k', 'b', [4, 4])
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual)
+
 
     def test_is_king_under_attack(self):
         b = cb.ChessBoard()
