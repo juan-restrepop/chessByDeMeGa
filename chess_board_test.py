@@ -1069,7 +1069,38 @@ class TestChessBoard(unittest.TestCase):
         actual = b.color_augmented_grid()
         self.assertEqual(expected, actual)
 
+    def test_bishop_movement(self):
+        b = cb.ChessBoard()
+        b_ref = cb.ChessBoard()
 
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        # Test good move
+
+        b.initialize_single_piece('b', 'b', [ 4, 4])
+        move  = b.transform_grid_to_board(5,5)
+        b.piece_mover('b',move[0],move[1], 'black')
+
+        b_ref.initialize_single_piece('b', 'b', [5, 5])
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual)
+        
+        # Test bad move
+        b = cb.ChessBoard()
+        b_ref = cb.ChessBoard()
+
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        b.initialize_single_piece('b', 'b', [ 4, 4])
+        move  = b.transform_grid_to_board(5,4)
+        b.piece_mover('b',move[0],move[1], 'black')
+
+        b_ref.initialize_single_piece('b', 'b', [4, 4])
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual)
 
     def test_is_king_under_attack(self):
         b = cb.ChessBoard()
