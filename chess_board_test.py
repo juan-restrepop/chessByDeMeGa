@@ -198,7 +198,7 @@ class TestChessBoard(unittest.TestCase):
             expected = coords
             self.assertEqual(expected, piece_coordinates)
 
-
+    # Test eating rules
     def test_white_knight_eating_rules(self):
         B = cb.ChessBoard()
         B.clean_pieces()
@@ -505,7 +505,7 @@ class TestChessBoard(unittest.TestCase):
         actual = b.Rules.is_bishop_eating_valid(b, i, j, b.bishops_w[0])
         self.assertEqual(expected, actual, msg = "bishop shouldn't  eat at (h,7), someone in the same path" )
 
-
+    # Test movement rules
     def test_black_pawn_movement_rules(self):
         # forbidden
         b = cb.ChessBoard()
@@ -1037,6 +1037,38 @@ class TestChessBoard(unittest.TestCase):
 
             actual = b.piece_mover('q',move[0], move[1], 'black')
             self.assertEqual(expected, actual)
+
+    # Test if move correctly done
+    def test_knight_movement(self):
+        b = cb.ChessBoard()
+        b_ref = cb.ChessBoard()
+
+        # Test good move
+        good_move = b.transform_grid_to_board(5, 6)
+        b.clean_pieces()
+        b.initialize_single_piece('n', 'b', [4, 4])
+        b.piece_mover('n', good_move[0], good_move[1], 'black')
+
+        b_ref.clean_pieces()
+        b_ref.initialize_single_piece('n', 'b', [5, 6])
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual)
+
+        # Test bad move
+        bad_move = b.transform_grid_to_board(5, 4)
+        b.clean_pieces()
+        b.initialize_single_piece('n', 'b', [4, 4])
+        b.piece_mover('n', bad_move[0], bad_move[1], 'black')
+
+        b_ref.clean_pieces()
+        b_ref.initialize_single_piece('n', 'b', [4, 4])
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual)
+
 
 
     def test_is_king_under_attack(self):
