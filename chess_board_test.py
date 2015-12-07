@@ -1038,7 +1038,61 @@ class TestChessBoard(unittest.TestCase):
             actual = b.piece_mover('q',move[0], move[1], 'black')
             self.assertEqual(expected, actual)
 
-    # Test if move correctly done
+
+    def test_is_king_under_attack(self):
+        b = cb.ChessBoard()
+
+        pieces = [['r','w','a','4'],
+                  ['b','w','a','1'],
+                  ['n','w','c','2'],
+                  ['q','w','d','8'],
+                  ['p','w','e','3'],
+                  ['p','w','c','3']]
+
+        for piece, color, col, line in pieces:
+            b.clean_pieces()
+            b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '4'))
+            b.initialize_single_piece(piece, color, b.transform_board_to_grid(col, line))
+            actual  = b.Rules.is_king_under_attack(b, 'black')
+            expected = True
+            self.assertEqual(expected, actual, msg= 'Error while attempting check with %s at (%s,%s)' % (piece, col, line))
+
+            pieces = [['r','b','a','5'],
+                      ['b','b','b','1'],
+                      ['n','b','e','3'],
+                      ['q','b','f','8'],
+                      ['p','b','e','6'],
+                      ['p','b','g','6']]
+
+        for piece, color, col, line in pieces:
+            b.clean_pieces()
+            b.initialize_single_piece('k', 'w', b.transform_board_to_grid('f', '5'))
+            b.initialize_single_piece(piece, color, b.transform_board_to_grid(col, line))
+            actual  = b.Rules.is_king_under_attack(b, 'white')
+            expected = True
+            self.assertEqual(expected, actual, msg= 'Error while attempting check with %s at (%s,%s)' % (piece, col, line))
+
+
+    def test_transform_coords(self):
+        b = cb.ChessBoard()
+
+        board_cols = ['a','b','c','d','e','f','g','h']
+        grid_cols = [0, 1, 2, 3, 4, 5, 6, 7]
+
+        board_lines = ['8', '7', '6', '5', '4', '3', '2', '1']
+        grid_lines = [0, 1, 2, 3, 4, 5, 6, 7]
+
+        for (col, line, i, j) in zip(board_cols, board_lines, grid_lines, grid_cols):
+            new_col, new_line = b.transform_grid_to_board(i, j)
+            new_i, new_j = b.transform_board_to_grid(col, line)
+
+            self.assertEqual(col, new_col)
+            self.assertEqual(line, new_line)
+            self.assertEqual(i, new_i)
+            self.assertEqual(j, new_j)
+
+
+    # Test if moves are  correctly done
     def test_knight_movement(self):
         b = cb.ChessBoard()
         b_ref = cb.ChessBoard()
@@ -1159,59 +1213,6 @@ class TestChessBoard(unittest.TestCase):
         actual = b.color_augmented_grid()
         self.assertEqual(expected, actual)
 
-
-    def test_is_king_under_attack(self):
-        b = cb.ChessBoard()
-
-        pieces = [['r','w','a','4'],
-                  ['b','w','a','1'],
-                  ['n','w','c','2'],
-                  ['q','w','d','8'],
-                  ['p','w','e','3'],
-                  ['p','w','c','3']]
-
-        for piece, color, col, line in pieces:
-            b.clean_pieces()
-            b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '4'))
-            b.initialize_single_piece(piece, color, b.transform_board_to_grid(col, line))
-            actual  = b.Rules.is_king_under_attack(b, 'black')
-            expected = True
-            self.assertEqual(expected, actual, msg= 'Error while attempting check with %s at (%s,%s)' % (piece, col, line))
-
-            pieces = [['r','b','a','5'],
-                      ['b','b','b','1'],
-                      ['n','b','e','3'],
-                      ['q','b','f','8'],
-                      ['p','b','e','6'],
-                      ['p','b','g','6']]
-
-        for piece, color, col, line in pieces:
-            b.clean_pieces()
-            b.initialize_single_piece('k', 'w', b.transform_board_to_grid('f', '5'))
-            b.initialize_single_piece(piece, color, b.transform_board_to_grid(col, line))
-            actual  = b.Rules.is_king_under_attack(b, 'white')
-            expected = True
-            self.assertEqual(expected, actual, msg= 'Error while attempting check with %s at (%s,%s)' % (piece, col, line))
-
-
-    def test_transform_coords(self):
-        b = cb.ChessBoard()
-
-        board_cols = ['a','b','c','d','e','f','g','h']
-        grid_cols = [0, 1, 2, 3, 4, 5, 6, 7]
-
-        board_lines = ['8', '7', '6', '5', '4', '3', '2', '1']
-        grid_lines = [0, 1, 2, 3, 4, 5, 6, 7]
-
-        for (col, line, i, j) in zip(board_cols, board_lines, grid_lines, grid_cols):
-            new_col, new_line = b.transform_grid_to_board(i, j)
-            new_i, new_j = b.transform_board_to_grid(col, line)
-
-            self.assertEqual(col, new_col)
-            self.assertEqual(line, new_line)
-            self.assertEqual(i, new_i)
-            self.assertEqual(j, new_j)
-
     def test_bishop_movement(self):
         b = cb.ChessBoard()
         b_ref = cb.ChessBoard()
@@ -1246,11 +1247,13 @@ class TestChessBoard(unittest.TestCase):
         b_ref = cb.ChessBoard()
         b.clean_pieces()
         b_ref.clean_pieces()
+        
         # Test good move 'white' pawn
         b.initialize_single_piece('p', 'w', [ 4, 4])
         move  = b.transform_grid_to_board(3,4)
         b.piece_mover('p',move[0],move[1], 'white')
         b_ref.initialize_single_piece('p', 'w', [3, 4])
+
         # assert wpm
         expected = b_ref.color_augmented_grid()
         actual = b.color_augmented_grid()
@@ -1263,6 +1266,7 @@ class TestChessBoard(unittest.TestCase):
         move  = b.transform_grid_to_board(2,4)
         b.piece_mover('p',move[0],move[1], 'white')
         b_ref.initialize_single_piece('p', 'w', [4, 4])
+
         # assert bad pm
         expected = b_ref.color_augmented_grid()
         actual = b.color_augmented_grid()
@@ -1273,15 +1277,18 @@ class TestChessBoard(unittest.TestCase):
         b_ref = cb.ChessBoard()
         b.clean_pieces()
         b_ref.clean_pieces()
+
         # Test good move 'black' pawn
         b.initialize_single_piece('p', 'b', [ 4, 4])
         move  = b.transform_grid_to_board(5,4)
         b.piece_mover('p',move[0],move[1], 'black')
         b_ref.initialize_single_piece('p', 'b', [5, 4])
+
         #assert black pawn good move
         expected = b_ref.color_augmented_grid()
         actual = b.color_augmented_grid()
         self.assertEqual(expected, actual)
+
         # Test bad move 'white' pawn
         b.clean_pieces()
         b_ref.clean_pieces()
@@ -1289,6 +1296,7 @@ class TestChessBoard(unittest.TestCase):
         move  = b.transform_grid_to_board( 6,4)
         b.piece_mover('p',move[0],move[1], 'black')
         b_ref.initialize_single_piece('p', 'b', [4, 4])
+
         #assert black pawn bad move
         expected = b_ref.color_augmented_grid()
         actual = b.color_augmented_grid()
