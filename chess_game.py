@@ -157,7 +157,8 @@ class ChessGame(object):
 
         accepted_move = self.move_piece_to(input_move, move_to_col, move_to_line)
 
-        self.board.Rules.is_king_under_attack(self.board) #prints when any king is checked
+        self.board.Rules.is_king_under_attack(self.board) #prints when white king is checked
+        self.board.Rules.is_king_under_attack(self.board,'black') #when black king is checked
         if accepted_move:
             out_str = self.print_move(input_move, move_to_col, move_to_line)
             print("Your move is : " + input_move + '. ' + out_str)
