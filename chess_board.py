@@ -552,7 +552,16 @@ class MovementRules(object):
     def is_en_passant_eating_valid(self, board, i, j, pawn, player='white'):
         i_origin, j_origin = pawn.coordinates
         if player == 'white':
-            return False
+            if not(i_origin != 3 and i == 2 and (abs(j - j_origin) == 1)):
+                return False
+            else:
+                if board.is_square_free(i - 2, j):
+                    return False
+                else:
+                    piece_behind = board.get_piece_in_square(i + 1, j)
+                    return piece_behind.kind == 'p' and piece_behind.color == 'b' and board.previous_state_grid[i - 1][j]
+
+
         elif player == 'black':
             return False
         return False
