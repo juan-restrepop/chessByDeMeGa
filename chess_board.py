@@ -532,7 +532,7 @@ class MovementRules(object):
         if (i == i_origin) and (j == j_origin):
             return False
         elif board.is_square_free(i, j):
-            return False
+            return self.is_en_passant_eating_valid(board, i, j, pawn, player)
         else:
             victim = board.get_piece_in_square(i, j)
             if pawn.color == victim.color:
