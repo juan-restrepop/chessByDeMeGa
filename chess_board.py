@@ -562,7 +562,14 @@ class MovementRules(object):
                     return victim.kind == 'p' and victim.color == 'b' and board.previous_state_grid[1][j] == 'pb'
 
         elif player == 'black':
-            return False
+            if not(i_origin == 4 and i == 5 and (abs(j - j_origin) == 1)):
+                return False
+            else:
+                if board.is_square_free(4, j):
+                    return False
+                else:
+                    victim = board.get_piece_in_square(4, j)
+                    return victim.kind == 'p' and victim.color == 'w' and board.previous_state_grid[6][j] == 'pw'
         return False
 
     def is_rook_eating_valid(self, board, i, j, rook):
