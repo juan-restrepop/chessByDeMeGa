@@ -1391,6 +1391,23 @@ class TestChessBoard(unittest.TestCase):
         actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_b[0], 'black')
         self.assertEqual(expected,actual, msg = "cxe3 capture shouldn't be allowed")
 
+    def test_black_pawn_enpassant_eating_complex(self):
+        b = cb.ChessBoard()
+        b.clean_pieces()
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('c', '5'))
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('c', '4'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('d', '6'))
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('b', '2'))
+
+        b.piece_mover('p','b','4', 'white')
+        b.piece_mover('r','a','5', 'black')
+        b.piece_mover('r','d','8', 'white')
+        i,j = b.transform_board_to_grid('b', '3')
+        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_b[0], 'black')
+        expected = False
+        self.assertEqual(expected,actual, msg= "cxb3 capture should be forbidden (late capture)")
+
+
 
 
 if __name__ == '__main__':
