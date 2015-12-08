@@ -544,6 +544,14 @@ class MovementRules(object):
                     return False
             return False
 
+    def is_en_passant_eating_valid(self, board, i, j, pawn, player='white'):
+        i_origin, j_origin = pawn.coordinates
+        if player == 'white':
+            return False
+        elif player == 'black':
+            return False
+        return False
+
     def is_rook_eating_valid(self, board, i, j, rook):
         i_origin, j_origin = rook.coordinates
 
