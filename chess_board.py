@@ -180,6 +180,9 @@ class ChessBoard(object):
             colCoord = p.coordinates[1]
             self.grid[rowCoord][colCoord] = p.kind
 
+    def update_previous_state(self):
+        self.previous_state_grid = self.color_augmented_grid()
+
     def color_augmented_grid(self):
         grid = list()
         for i in range(8):
