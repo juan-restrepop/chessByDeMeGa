@@ -261,6 +261,7 @@ class ChessBoard(object):
         for k in range(len(pieces_to_move)):
             piece = pieces_to_move[k]
             if move_rule_function(self, i, j, piece, player):
+                self.update_previous_state()
                 pieces_to_move[k].coordinates = [i, j]
                 accepted_move = True
                 self.update_board()
