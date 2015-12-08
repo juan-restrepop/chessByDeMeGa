@@ -2,6 +2,7 @@ import pieces
 
 class ChessBoard(object):
     grid = list()
+    previous_state_grid = list()
     pawns_w = list()
     pawns_b = list()
     rooks_w = list()
