@@ -1420,7 +1420,7 @@ class TestChessBoard(unittest.TestCase):
 
         expected = b_ref.color_augmented_grid()
         actual = b.color_augmented_grid()
-        self.assertEqual(expected, actual)
+        self.assertEqual(expected, actual, msg ='should capture enemy')
 
         #forbidden capture 1 ()
         b.clean_pieces()
@@ -1430,6 +1430,7 @@ class TestChessBoard(unittest.TestCase):
         b.piece_eater('n','f','6', 'white')
         b_ref.initialize_single_piece('n', 'w',b.transform_board_to_grid('e','4') )
         b_ref.initialize_single_piece('p', 'w',b.transform_board_to_grid('f','6') )
+
         expected = b_ref.color_augmented_grid()
         actual = b.color_augmented_grid()
         self.assertEqual(expected, actual, msg= "shouldn't capture teamate ")
@@ -1442,9 +1443,52 @@ class TestChessBoard(unittest.TestCase):
         b.piece_eater('n','g','6', 'white')
         b_ref.initialize_single_piece('n', 'w',b.transform_board_to_grid('e','4') )
         b_ref.initialize_single_piece('b', 'b',b.transform_board_to_grid('g','6') )
+
         expected = b_ref.color_augmented_grid()
         actual = b.color_augmented_grid()
         self.assertEqual(expected, actual, msg =  "shouldn't capture in after forbidden move")
+
+    def test_white_bishop_capture(self):
+        b = cb.ChessBoard()
+        b.clean_pieces()
+        b_ref = cb.ChessBoard()
+        b_ref.clean_pieces()
+        # allowed capture
+        b.initialize_single_piece('b', 'w',b.transform_board_to_grid('d','4') )
+        b.initialize_single_piece('p', 'b',b.transform_board_to_grid('g','7') )
+        b.piece_eater('b','g','7', 'white')
+        b_ref.initialize_single_piece('b', 'w', b.transform_board_to_grid('g','7') )
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg =  'should capture enemy')
+
+        #forbidden capture 1 
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        b.initialize_single_piece('b', 'w',b.transform_board_to_grid('d','4') )
+        b.initialize_single_piece('q', 'w',b.transform_board_to_grid('c','3') )
+        b.piece_eater('b','c','3', 'white')
+        b_ref.initialize_single_piece('b', 'w',b.transform_board_to_grid('d','4') )
+        b_ref.initialize_single_piece('q', 'w',b.transform_board_to_grid('c','3') )
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg= "shouldn't capture teamate ")
+
+        #forbidden capture 2
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        b.initialize_single_piece('b', 'w',b.transform_board_to_grid('d','4') )
+        b.initialize_single_piece('b', 'b',b.transform_board_to_grid('d','5') )
+        b.piece_eater('b','d','5', 'white')
+        b_ref.initialize_single_piece('b', 'w',b.transform_board_to_grid('d','4') )
+        b_ref.initialize_single_piece('b', 'b',b.transform_board_to_grid('d','5') )
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg =  "shouldn't capture in after forbidden move")
+
 
 if __name__ == '__main__':
     unittest.main()
