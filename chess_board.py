@@ -249,7 +249,7 @@ class ChessBoard(object):
             if player =='white':
                 i = 3
             else:
-                j = 4
+                i = 4
         victim = self.get_piece_in_square(i,j)
 
         if victim is not None:
