@@ -138,8 +138,8 @@ class TestChessGame(unittest.TestCase):
     def test_parse_pawn_coordinates(self):
         c = cg.ChessGame()
 
-        expected = [('a','2'),
-                    ('b','2')]
+        expected = [('a','2', None, None),
+                    ('b','2', None, None)]
 
         test_cases = ['a2','axb2']
 
@@ -152,8 +152,8 @@ class TestChessGame(unittest.TestCase):
     def test_parse_main_pieces_coordinates(self):
         c = cg.ChessGame()
 
-        expected = [('f','2'),
-                    ('b','3')]
+        expected = [('f','2', None, None),
+                    ('b','3', None, None)]
 
         test_cases = ['Bf2','Qxb3']
 

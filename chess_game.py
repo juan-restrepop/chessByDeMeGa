@@ -172,12 +172,12 @@ class ChessGame(object):
             return True
 
         move_to_col, move_to_line = None, None
-
+        col_filter, line_filter = None,None
         if self.is_pawn(input_move):
-            move_to_col, move_to_line = self.parse_pawn_coordinates(input_move)
+            move_to_col, move_to_line, col_filter, line_filter = self.parse_pawn_coordinates(input_move)
 
         if self.is_main_piece(input_move):
-            move_to_col, move_to_line = self.parse_main_pieces_coordinates(input_move)
+            move_to_col, move_to_line, col_filter, line_filter = self.parse_main_pieces_coordinates(input_move)
 
         accepted_move = self.move_piece_to(input_move, move_to_col, move_to_line)
 
@@ -206,10 +206,10 @@ class ChessGame(object):
 
 
     def parse_pawn_coordinates(self, input_move):
-        return input_move[-2],input_move[-1]
+        return input_move[-2],input_move[-1], None, None
 
     def parse_main_pieces_coordinates(self, input_move):
-        return input_move[-2],input_move[-1]
+        return input_move[-2],input_move[-1], None, None
 
     def piece_eats(self, input_move):
         return self.validate_eat_case(input_move)
