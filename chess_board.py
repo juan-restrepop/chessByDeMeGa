@@ -289,12 +289,12 @@ class ChessBoard(object):
 
     # Eating pieces
     def map_piece_to_eating(self, kind):
-        map_piece_2_eat = {'k':'is_king_eating_valid',
-                           'b':'is_bishop_eating_valid',
-                           'n':'is_knight_eating_valid',
-                           'r':'is_rook_eating_valid',
-                           'p':'is_pawn_eating_valid',
-                           'q':'is_queen_eating_valid'}
+        map_piece_2_eat = {'k': ['is_king_eating_valid', 'king_w', 'king_b'],
+                            'q': ['is_queen_eating_valid', 'queen_w', 'queen_b'],
+                            'b': ['is_bishop_eating_valid', 'bishops_w', 'bishops_b'],
+                            'n': ['is_knight_eating_valid', 'knights_w', 'knights_b'],
+                            'r': ['is_rook_eating_valid', 'rooks_w', 'rooks_b'],
+                            'p': ['is_pawn_eating_valid', 'pawns_w', 'pawns_b']}
 
         return map_piece_2_eat.get(kind)
 
@@ -624,7 +624,7 @@ class MovementRules(object):
         checked = False
 
         for piece in attackers:
-            eating_func =  getattr(board.Rules, board.map_piece_to_eating(piece.kind))
+            eating_func =  getattr(board.Rules, board.map_piece_to_eating(piece.kind)[0])
             if piece.kind != 'p':
                 if eating_func(board, i_king, j_king, piece):
                     col, line = board.get_piece_coords(piece)
