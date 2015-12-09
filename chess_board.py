@@ -270,49 +270,39 @@ class ChessBoard(object):
                     del victims[numba]
                     break
 
-    # Moving pieces around
-    def piece_mover(self, kind, col, line, player):
-        move_rule_function = getattr(self.Rules, self.map_piece_to_moving(kind)[0])
-        white_pieces = getattr(self, self.map_piece_to_moving(kind)[1])
-        black_pieces = getattr(self, self.map_piece_to_moving(kind)[2])
+    def piece_manager(self, kind, col, line, player, capture = False):
+        if not capture:
+            manage_function_str,white_pieces_str,black_pieces_str = self.map_piece_to_moving(kind)
+        elif capture:
+            manage_function_str,white_pieces_str,black_pieces_str = self.map_piece_to_eating(kind)
+
+        move_rule_function = getattr(self.Rules, manage_function_str)
+        white_pieces = getattr(self, white_pieces_str)
+        black_pieces = getattr(self, black_pieces_str)
 
         i, j = self.transform_board_to_grid(col, line)
         pieces_to_move = self.list_to_update(player, white_pieces, black_pieces)
-
         accepted_move = False
+        
         for k in range(len(pieces_to_move)):
             piece = pieces_to_move[k]
             if move_rule_function(self, i, j, piece, player):
                 self.update_previous_state()
+                if capture:
+                    self.capture(i, j, player)
                 pieces_to_move[k].coordinates = [i, j]
                 accepted_move = True
                 self.update_board()
                 break
-
         return accepted_move
+
+    # Moving pieces around
+    def piece_mover(self, kind, col, line, player):
+        return self.piece_manager(kind, col, line, player, False)
 
         # capturing pieces around
     def piece_eater(self, kind, col, line, player):
-        move_capture_function = getattr(self.Rules, self.map_piece_to_eating(kind)[0])
-        white_pieces = getattr(self, self.map_piece_to_eating(kind)[1])
-        black_pieces = getattr(self, self.map_piece_to_eating(kind)[2])
-
-        i, j = self.transform_board_to_grid(col, line)
-        attackers = self.list_to_update(player, white_pieces, black_pieces)
-
-        accepted_capture = False
-        for k in range(len(attackers)):
-            predator = attackers[k]
-
-            if move_capture_function(self, i, j, predator, player):
-                self.update_previous_state()
-                self.capture(i, j, player)
-                attackers[k].coordinates = [i, j]
-                accepted_capture = True
-                self.update_board()
-                break
-
-        return accepted_capture
+        return self.piece_manager(kind, col, line, player, True)
 
     def list_to_update(self, player, list_w, list_b):
         if player == 'white':
