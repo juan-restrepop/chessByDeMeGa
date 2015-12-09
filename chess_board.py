@@ -32,7 +32,7 @@ class ChessBoard(object):
                      self.knights_w + self.knights_b)
 
     def get_all_black_pieces(self):
-        return (self.pawns_b + self.knights_b + self.bishops_b + self.rooks_b + self.queen_b + self.king_w)
+        return (self.pawns_b + self.knights_b + self.bishops_b + self.rooks_b + self.queen_b + self.king_b)
 
     def get_all_white_pieces(self):
         return (self.pawns_w + self.knights_w + self.bishops_w + self.rooks_w + self.queen_w + self.king_w)
@@ -98,18 +98,12 @@ class ChessBoard(object):
                 self.grid[i].append(str((j + i) % 2))
 
     def initialize_single_piece(self, kind, color, coordinates):
-        dic_piece_to_piece_lists = {'wp': self.pawns_w,
-                                    'bp': self.pawns_b,
-                                    'wr': self.rooks_w,
-                                    'br': self.rooks_b,
-                                    'wb': self.bishops_w,
-                                    'bb': self.bishops_b,
-                                    'wn': self.knights_w,
-                                    'bn': self.knights_b,
-                                    'wq': self.queen_w,
-                                    'bq': self.queen_b,
-                                    'wk': self.king_w,
-                                    'bk': self.king_b}
+        dic_piece_to_piece_lists = {'wp': self.pawns_w,'bp': self.pawns_b,
+                                    'wr': self.rooks_w,'br': self.rooks_b,
+                                    'wb': self.bishops_w,'bb': self.bishops_b,
+                                    'wn': self.knights_w,'bn': self.knights_b,
+                                    'wq': self.queen_w,'bq': self.queen_b,
+                                    'wk': self.king_w,'bk': self.king_b}
 
         # Check function input
         if not(kind in ['p', 'k', 'q', 'b', 'r', 'n']):
@@ -248,21 +242,31 @@ class ChessBoard(object):
     def is_square_free(self, i, j):
         return self.grid[i][j] in ['0', '1']
 
-    def capture(self, i, j, victims_list, player):
+    def capture(self, i, j, player):
         # capture once eating is valid
-        if not self.is_square_free(i,j): 
-            # regular capture
-            victim = self.get_piece_in_square(i,j)
-        else:
+        if self.is_square_free(i,j): 
             # en passant
             if player =='white':
-                victim = self.get_piece_in_square(3,j)
+                i = 3
             else:
-                victim = self.get_piece_in_square(4,j)
+                j = 4
+        victim = self.get_piece_in_square(i,j)
 
-        for i, piece in enumerate(victims_list):
-            if piece.coordinates == victim.coordinates:
-                del victims_list[i]
+        map_kind_2_lists= {'k': [ self.king_w, self.king_b],
+                            'q': [ self.queen_w, self.queen_b],
+                            'b': [ self.bishops_w, self.bishops_b],
+                            'n': [ self.knights_w, self.knights_b],
+                            'r': [ self.rooks_w, self.rooks_b],
+                            'p': [ self.pawns_w, self.pawns_b]}
+
+        if player == 'white':
+            victims = self.list_to_update('black', map_kind_2_lists[victim.kind][0], map_kind_2_lists[victim.kind][1] )
+        if player == 'black':
+            victims = self.list_to_update('white', map_kind_2_lists[victim.kind][0], map_kind_2_lists[victim.kind][1] )
+
+        for numba, piece in enumerate(victims):
+            if [i, j] == piece.coordinates:
+                del victims[numba]
                 break
 
     # Moving pieces around
@@ -293,7 +297,7 @@ class ChessBoard(object):
         black_pieces = getattr(self, self.map_piece_to_eating(kind)[2])
 
         i, j = self.transform_board_to_grid(col, line)
-        attackers,victims = self.list_to_update_capture(player, white_pieces, black_pieces)
+        attackers = self.list_to_update(player, white_pieces, black_pieces)
 
         accepted_capture = False
         for k in range(len(attackers)):
@@ -301,7 +305,7 @@ class ChessBoard(object):
 
             if move_capture_function(self, i, j, predator, player):
                 self.update_previous_state()
-                self.capture(i, j, victims, player)
+                self.capture(i, j, player)
                 attackers[k].coordinates = [i, j]
                 accepted_capture = True
                 self.update_board()
@@ -316,17 +320,6 @@ class ChessBoard(object):
             return list_b
         else:
             return None
-
-    def list_to_update_capture(self, player, list_w,list_b):
-        if player == 'white':
-            attackers = list_w
-            victims =  list_b
-        elif player =='black':
-            attackers = list_b
-            victims = list_w
-        else:
-            return None, None
-        return attackers, victims
 
     def map_piece_to_moving(self, kind):
         map_piece_2_move = {'k': ['is_king_movement_valid', 'king_w', 'king_b'],
