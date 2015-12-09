@@ -1529,6 +1529,47 @@ class TestChessBoard(unittest.TestCase):
         expected = b_ref.color_augmented_grid()
         actual = b.color_augmented_grid()
         self.assertEqual(expected, actual, msg =  "shouldn't capture after forbidden move")
+
+    def test_white_queen_capture(self):
+        b = cb.ChessBoard()
+        b.clean_pieces()
+        b_ref = cb.ChessBoard()
+        b_ref.clean_pieces()
+        # allowed capture
+        b.initialize_single_piece('q', 'w',b.transform_board_to_grid('d','5') )
+        b.initialize_single_piece('p', 'b',b.transform_board_to_grid('b','3') )
+        b.piece_eater('q','b','3', 'white')
+        b_ref.initialize_single_piece('q', 'w', b.transform_board_to_grid('b','3') )
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg = 'should capture enemy')
+
+        #forbidden capture 1 
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        b.initialize_single_piece('q', 'w',b.transform_board_to_grid('d','5') )
+        b.initialize_single_piece('q', 'w',b.transform_board_to_grid('d','3') )
+        b.piece_eater('q','d','3', 'white')
+        b_ref.initialize_single_piece('q', 'w',b.transform_board_to_grid('d','5') )
+        b_ref.initialize_single_piece('q', 'w',b.transform_board_to_grid('d','3') )
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg= "shouldn't capture teamate ")
+
+        #forbidden capture 2
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        b.initialize_single_piece('q', 'w',b.transform_board_to_grid('d','5') )
+        b.initialize_single_piece('b', 'b',b.transform_board_to_grid('e','7') )
+        b.piece_eater('q','e','7', 'white')
+        b_ref.initialize_single_piece('q', 'w',b.transform_board_to_grid('d','5') )
+        b_ref.initialize_single_piece('b', 'b',b.transform_board_to_grid('e','7') )
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg =  "shouldn't capture after forbidden move")
 if __name__ == '__main__':
     unittest.main()
 
