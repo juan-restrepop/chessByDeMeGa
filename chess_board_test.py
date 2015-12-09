@@ -1667,6 +1667,58 @@ class TestChessBoard(unittest.TestCase):
         actual = b.color_augmented_grid()
         self.assertEqual(expected, actual, msg= "should capture en passant ")
 
+    def test_black_pawn_capture(self):
+        b = cb.ChessBoard()
+        b.clean_pieces()
+        b_ref = cb.ChessBoard()
+        b_ref.clean_pieces()
+        # allowed capture
+        b.initialize_single_piece('p', 'b',b.transform_board_to_grid('c','6') )
+        b.initialize_single_piece('b', 'w',b.transform_board_to_grid('d','5') )
+        b.piece_eater('p','d','5', 'black')
+        b_ref.initialize_single_piece('p', 'b', b.transform_board_to_grid('d','5') )
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg = 'should capture enemy')
+
+        #forbidden capture 1
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        b.initialize_single_piece('p', 'b',b.transform_board_to_grid('c','6') )
+        b.initialize_single_piece('q', 'b',b.transform_board_to_grid('b','5') )
+        b.piece_eater('p','b','5', 'black')
+        b_ref.initialize_single_piece('p', 'b',b.transform_board_to_grid('c','6') )
+        b_ref.initialize_single_piece('q', 'b',b.transform_board_to_grid('b','5') )
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg= "shouldn't capture teamate ")
+
+        #forbidden capture 2
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        b.initialize_single_piece('p', 'b',b.transform_board_to_grid('c','6') )
+        b.initialize_single_piece('b', 'w',b.transform_board_to_grid('d','6') )
+        b.piece_eater('p','d','6', 'black')
+        b_ref.initialize_single_piece('p', 'b',b.transform_board_to_grid('c','6') )
+        b_ref.initialize_single_piece('b', 'w',b.transform_board_to_grid('d','6') )
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg =  "shouldn't capture after forbidden move")
+
+        #accepted  capture en passant
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        b.initialize_single_piece('p', 'b',b.transform_board_to_grid('c','4') )
+        b.initialize_single_piece('p', 'w',b.transform_board_to_grid('b','2') )
+        b.piece_mover('p','b','4', 'white')
+        b.piece_eater('p','b','3', 'black')
+        b_ref.initialize_single_piece('p', 'b',b.transform_board_to_grid('b','3') )
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg= "should capture en passant ")
 
 if __name__ == '__main__':
     unittest.main()
