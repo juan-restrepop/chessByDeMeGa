@@ -103,9 +103,20 @@ class ChessGame(object):
             return input_move[1] in self.line_names
 
         elif self.is_main_piece(input_move):
-            if len(input_move) != 3:
+
+            if self.are_coordinates_valid(input_move[-2], input_move[-1]):
+                return ( len(input_move) == 3
+                        or
+                        ( input_move[1] in self.column_names + self.line_names 
+                        and 
+                        len(input_move) == 4 )
+                        or
+                        ( self.are_coordinates_valid(input_move[1], input_move[2]) 
+                        and 
+                        len(input_move) == 5 )
+                        )
+            else:
                 return False
-            return self.are_coordinates_valid(input_move[1], input_move[2])
         return False
 
     def is_valid_promotion(self, input_promotion):
