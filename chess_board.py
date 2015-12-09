@@ -270,7 +270,8 @@ class ChessBoard(object):
                     del victims[numba]
                     break
 
-    def piece_manager(self, kind, col, line, player, capture = False):
+        # manage = move or capture
+    def piece_manager(self, kind, col, line, player, capture = False, orig_col_filter = None, orig_line_filter = None):
         if not capture:
             manage_function_str,white_pieces_str,black_pieces_str = self.map_piece_to_moving(kind)
         elif capture:
@@ -283,7 +284,13 @@ class ChessBoard(object):
         i, j = self.transform_board_to_grid(col, line)
         pieces_to_move = self.list_to_update(player, white_pieces, black_pieces)
         accepted_move = False
-        
+
+        if (orig_col_filter is not None) and (orig_col_filter in ['a','b','c','d','e','f','g','h'] ) : 
+            pieces_to_move = [ piece for piece in pieces_to_move if (self.get_piece_coords(piece)[0] ) == orig_col_filter ]
+
+        if (orig_line_filter is not None)  and (orig_line_filter in ['1','2','3','4','5','6','7','8'] ) : 
+            pieces_to_move = [ piece for piece in pieces_to_move if (self.get_piece_coords(piece)[1] ) == orig_line_filter ]
+
         for k in range(len(pieces_to_move)):
             piece = pieces_to_move[k]
             if move_rule_function(self, i, j, piece, player):
@@ -296,13 +303,13 @@ class ChessBoard(object):
                 break
         return accepted_move
 
-    # Moving pieces around
-    def piece_mover(self, kind, col, line, player):
-        return self.piece_manager(kind, col, line, player, False)
+        # moving pieces around
+    def piece_mover(self, kind, col, line, player, orig_col_filter = None, orig_line_filter = None):
+        return self.piece_manager(kind, col, line, player, False, orig_col_filter, orig_line_filter)
 
         # capturing pieces around
-    def piece_eater(self, kind, col, line, player):
-        return self.piece_manager(kind, col, line, player, True)
+    def piece_eater(self, kind, col, line, player, orig_col_filter = None, orig_line_filter = None):
+        return self.piece_manager(kind, col, line, player, True, orig_col_filter, orig_line_filter)
 
     def list_to_update(self, player, list_w, list_b):
         if player == 'white':
