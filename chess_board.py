@@ -248,6 +248,23 @@ class ChessBoard(object):
     def is_square_free(self, i, j):
         return self.grid[i][j] in ['0', '1']
 
+    def capture(self, i, j, victims_list, player):
+        # capture once eating is valid
+        if not self.is_square_free(i,j): 
+            # regular capture
+            victim = self.get_piece_in_square(i,j)
+        else:
+            # en passant
+            if player =='white':
+                victim = self.get_piece_in_square(3,j)
+            else:
+                victim = self.get_piece_in_square(4,j)
+
+        for i, piece in enumerate(victims_list):
+            if piece.coordinates == victim.coordinates:
+                del victims_list[i]
+                break
+
     # Moving pieces around
     def piece_mover(self, kind, col, line, player):
         move_rule_function = getattr(self.Rules, self.map_piece_to_moving(kind)[0])
@@ -284,6 +301,7 @@ class ChessBoard(object):
 
             if move_capture_function(self, i, j, predator, player):
                 self.update_previous_state()
+                self.capture(i, j, victims, player)
                 attackers[k].coordinates = [i, j]
                 accepted_capture = True
                 self.update_board()
