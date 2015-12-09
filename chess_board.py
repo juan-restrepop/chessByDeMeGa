@@ -295,7 +295,7 @@ class ChessBoard(object):
         i, j = self.transform_board_to_grid(col, line)
         attackers,victims = self.list_to_update_capture(player, white_pieces, black_pieces)
 
-        accepted_move = False
+        accepted_capture = False
         for k in range(len(attackers)):
             predator = attackers[k]
 
