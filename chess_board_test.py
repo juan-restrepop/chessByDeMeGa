@@ -1617,17 +1617,13 @@ class TestChessBoard(unittest.TestCase):
         b.clean_pieces()
         b_ref = cb.ChessBoard()
         b_ref.clean_pieces()
+
         # allowed capture
         b.initialize_single_piece('p', 'w',b.transform_board_to_grid('b','2') )
         b.initialize_single_piece('q', 'b',b.transform_board_to_grid('c','3') )
-        print 'before'
-        b.print_board()
         b.piece_eater('p','c','3', 'white')
-        print 'after'
-        b.print_board() 
         b_ref.initialize_single_piece('p', 'w', b.transform_board_to_grid('c','3') )
-        print 'actual'
-        b_ref.print_board() 
+ 
         expected = b_ref.color_augmented_grid()
         actual = b.color_augmented_grid()
         self.assertEqual(expected, actual, msg = 'should capture enemy')
