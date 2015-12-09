@@ -269,6 +269,28 @@ class ChessBoard(object):
 
         return accepted_move
 
+        # Moving pieces around
+    def piece_eater(self, kind, col, line, player):
+        move_rule_function = getattr(self.Rules, self.map_piece_to_eating(kind)[0])
+        white_pieces = getattr(self, self.map_piece_to_eating(kind)[1])
+        black_pieces = getattr(self, self.map_piece_to_eating(kind)[2])
+
+        i, j = self.transform_board_to_grid(col, line)
+        attackers = self.list_to_update_capture(player, white_pieces, black_pieces)
+
+        accepted_move = False
+        for k in range(len(pieces_to_move)):
+            piece = attackers[k]
+
+            if move_rule_function(self, i, j, piece, player):
+                self.update_previous_state()
+                attackers[k].coordinates = [i, j]
+                accepted_capture = True
+                self.update_board()
+                break
+
+        return accepted_capture
+
     def list_to_update(self, player, list_w, list_b):
         if player == 'white':
             return list_w
