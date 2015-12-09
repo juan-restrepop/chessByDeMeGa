@@ -269,20 +269,20 @@ class ChessBoard(object):
 
         return accepted_move
 
-        # Moving pieces around
+        # capturing pieces around
     def piece_eater(self, kind, col, line, player):
-        move_rule_function = getattr(self.Rules, self.map_piece_to_eating(kind)[0])
+        move_capture_function = getattr(self.Rules, self.map_piece_to_eating(kind)[0])
         white_pieces = getattr(self, self.map_piece_to_eating(kind)[1])
         black_pieces = getattr(self, self.map_piece_to_eating(kind)[2])
 
         i, j = self.transform_board_to_grid(col, line)
-        attackers = self.list_to_update_capture(player, white_pieces, black_pieces)
+        attackers,victims = self.list_to_update_capture(player, white_pieces, black_pieces)
 
         accepted_move = False
         for k in range(len(pieces_to_move)):
-            piece = attackers[k]
+            predator = attackers[k]
 
-            if move_rule_function(self, i, j, piece, player):
+            if move_capture_function(self, i, j, predator, player):
                 self.update_previous_state()
                 attackers[k].coordinates = [i, j]
                 accepted_capture = True
@@ -298,6 +298,17 @@ class ChessBoard(object):
             return list_b
         else:
             return None
+
+    def list_to_update_capture(self, player, list_w,list_b):
+        if player == 'white':
+            attackers = list_w
+            victims =  list_b
+        elif player =='black':
+            attackers = list_b
+            victims = list_w
+        else:
+            return None, None
+        return attackers, victims
 
     def map_piece_to_moving(self, kind):
         map_piece_2_move = {'k': ['is_king_movement_valid', 'king_w', 'king_b'],
