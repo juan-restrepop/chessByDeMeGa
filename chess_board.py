@@ -41,7 +41,7 @@ class ChessBoard(object):
         for piece in self.get_all_pieces():
             if piece.coordinates == [i, j]:
                 return piece
-        return []
+        return None
 
     def get_piece_coords(self, piece):
         i, j = piece.coordinates
@@ -252,22 +252,23 @@ class ChessBoard(object):
                 j = 4
         victim = self.get_piece_in_square(i,j)
 
-        map_kind_2_lists= {'k': [ self.king_w, self.king_b],
-                            'q': [ self.queen_w, self.queen_b],
-                            'b': [ self.bishops_w, self.bishops_b],
-                            'n': [ self.knights_w, self.knights_b],
-                            'r': [ self.rooks_w, self.rooks_b],
-                            'p': [ self.pawns_w, self.pawns_b]}
+        if victim is not None:
+            map_kind_2_lists= {'k': [ self.king_w, self.king_b],
+                                'q': [ self.queen_w, self.queen_b],
+                                'b': [ self.bishops_w, self.bishops_b],
+                                'n': [ self.knights_w, self.knights_b],
+                                'r': [ self.rooks_w, self.rooks_b],
+                                'p': [ self.pawns_w, self.pawns_b]}
 
-        if player == 'white':
-            victims = self.list_to_update('black', map_kind_2_lists[victim.kind][0], map_kind_2_lists[victim.kind][1] )
-        if player == 'black':
-            victims = self.list_to_update('white', map_kind_2_lists[victim.kind][0], map_kind_2_lists[victim.kind][1] )
+            if player == 'white':
+                victims = self.list_to_update('black', map_kind_2_lists[victim.kind][0], map_kind_2_lists[victim.kind][1] )
+            if player == 'black':
+                victims = self.list_to_update('white', map_kind_2_lists[victim.kind][0], map_kind_2_lists[victim.kind][1] )
 
-        for numba, piece in enumerate(victims):
-            if [i, j] == piece.coordinates:
-                del victims[numba]
-                break
+            for numba, piece in enumerate(victims):
+                if [i, j] == piece.coordinates:
+                    del victims[numba]
+                    break
 
     # Moving pieces around
     def piece_mover(self, kind, col, line, player):
