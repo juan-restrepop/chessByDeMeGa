@@ -296,7 +296,7 @@ class ChessBoard(object):
         attackers,victims = self.list_to_update_capture(player, white_pieces, black_pieces)
 
         accepted_move = False
-        for k in range(len(pieces_to_move)):
+        for k in range(len(attackers)):
             predator = attackers[k]
 
             if move_capture_function(self, i, j, predator, player):
@@ -498,7 +498,7 @@ class MovementRules(object):
         return False
 
     ## Eating Rules
-    def is_knight_eating_valid(self, board, i, j, knight):
+    def is_knight_eating_valid(self, board, i, j, knight, player = 'white'):
         i_origin, j_origin = knight.coordinates
 
         if (i == i_origin) and (j == j_origin):
@@ -515,7 +515,7 @@ class MovementRules(object):
                         (abs(i - i_origin) == 2) and (abs(j - j_origin) == 1)
         return False
 
-    def is_king_eating_valid(self, board, i, j, king):
+    def is_king_eating_valid(self, board, i, j, king, player = 'white'):
         i_origin, j_origin = king.coordinates
 
         if i == i_origin and j == j_origin:
@@ -535,7 +535,7 @@ class MovementRules(object):
                         (abs(j - j_origin) == 1) and (abs(i - i_origin) <= 1))
         return False
 
-    def is_bishop_eating_valid(self, board, i, j, bishop):
+    def is_bishop_eating_valid(self, board, i, j, bishop, player = 'white'):
         i_origin, j_origin = bishop.coordinates
 
         if i == i_origin and j == j_origin:
@@ -573,9 +573,9 @@ class MovementRules(object):
 
             return False
 
-    def is_queen_eating_valid(self, board, i, j, queen):
-        return ( self.is_rook_eating_valid(board, i, j, queen)
-               or self.is_bishop_eating_valid(board, i, j, queen) )
+    def is_queen_eating_valid(self, board, i, j, queen, player = 'white'):
+        return ( self.is_rook_eating_valid(board, i, j, queen, player)
+               or self.is_bishop_eating_valid(board, i, j, queen, player) )
 
     def is_pawn_eating_valid(self, board, i, j, pawn, player = 'white'):
         # TODO: handle 'en passant' pawn capture
@@ -623,7 +623,7 @@ class MovementRules(object):
                     return victim.kind == 'p' and victim.color == 'w' and board.previous_state_grid[6][j] == 'pw'
         return False
 
-    def is_rook_eating_valid(self, board, i, j, rook):
+    def is_rook_eating_valid(self, board, i, j, rook, player = 'white'):
         i_origin, j_origin = rook.coordinates
 
         if i == i_origin and j == j_origin:
