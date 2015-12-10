@@ -180,10 +180,10 @@ class ChessGame(object):
         if self.is_main_piece(input_move):
             move_to_col, move_to_line, col_filter, line_filter = self.parse_main_pieces_coordinates(input_move)
 
-        if promotion:
-            self.board.promote( col, line, player, promoted_to )
-
         accepted_move = self.move_piece_to(input_move, move_to_col, move_to_line, col_filter, line_filter)
+
+        if promotion:
+            self.board.promote( move_to_col, move_to_line, self.player, promoted_to )
 
         self.board.Rules.is_king_under_attack(self.board) #prints when white king is checked
         self.board.Rules.is_king_under_attack(self.board,'black') #when black king is checked
