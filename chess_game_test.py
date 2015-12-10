@@ -153,9 +153,14 @@ class TestChessGame(unittest.TestCase):
         c = cg.ChessGame()
 
         expected = [('f','2', None, None),
-                    ('b','3', None, None)]
+                    ('b','3', None, None),
+                    ('f','2', None, '3'),
+                    ('g','4', 'a', None),
+                    ('h','3', 'c', '3') ,
+                    ('f','4', 'd', None), 
+                    ('h','8', 'a', '1')]
 
-        test_cases = ['Bf2','Qxb3']
+        test_cases = ['Bf2','Qxb3', 'B3f2', 'Bag4', 'Rc3h3','Qdxf4', 'Qa1xh8' ]
 
         for k in range(len(test_cases)):
             input_move = test_cases[k]

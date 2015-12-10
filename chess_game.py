@@ -77,19 +77,19 @@ class ChessGame(object):
     def validate_eat_case(self, input_move):
         if len(input_move) >= 4:
             if input_move[-3] == 'x':
-                if self.are_coordinates_valid(input_move[-2],input_move[-1]):
+                if self.are_coordinates_valid(input_move[-2], input_move[-1]):
                     return (  ( len(input_move) == 4 
                                 and (self.is_pawn(input_move) or self.is_main_piece(input_move)) 
                                 ) 
                             or 
                               ( len(input_move) == 5 
-                                and (self.is_pawn(input_move) or self.is_main_piece(input_move)) 
-                                and (input_move[1] in self.column_names + self.line_names )      
+                                and ( self.is_main_piece(input_move))
+                                and ( input_move[1] in self.column_names + self.line_names )
                                 )
                             or
                               ( len(input_move) == 6 
-                                and (self.is_pawn(input_move) or self.is_main_piece(input_move)) 
-                                and (self.are_coordinates_valid(input_move[1], input_move[2] ) ) 
+                                and ( self.is_main_piece(input_move))
+                                and ( self.are_coordinates_valid(input_move[1], input_move[2]) )
                                 )
                             )
 
