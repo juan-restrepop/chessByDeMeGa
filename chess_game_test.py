@@ -191,13 +191,17 @@ class TestChessGame(unittest.TestCase):
         c = cg.ChessGame()
 
         expected = True
-        actual = c.is_valid_promotion('Q')
-        self.assertEqual(expected,actual)
+        actual = c.is_valid_promotion('a8', 'Q')
+        self.assertEqual(expected,actual, msg = 'should be valid here')
+
+        expected = True
+        actual = c.is_valid_promotion('b1', 'N')
+        self.assertEqual(expected,actual, msg = 'should be valid here too')
 
         expected = False
         for new_piece in ['a','b','c','d','e','f','g','h','K']:
-            actual = c.is_valid_promotion(new_piece)
-            self.assertEqual(expected,actual)
+            actual = c.is_valid_promotion('a8',new_piece)
+            self.assertEqual(expected,actual, msg = 'no way this is valid')
 
 
 if __name__ == '__main__':

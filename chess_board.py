@@ -340,6 +340,24 @@ class ChessBoard(object):
 
         return map_piece_2_eat.get(kind)
 
+    def promote(self,  col, line, player, promoted_to ):
+        i, j = self.transform_board_to_grid(col,line)
+        piece = self.get_piece_in_square(i, j)
+
+        lucky_pawns = self.list_to_update(player, self.pawns_w, self.pawns_b) 
+
+        for pawn in lucky_pawns:
+            if pawn.coordinates == [i, j]:
+                del lucky_pawns[k]
+                break
+
+        if player == 'white':
+            color = 'w'
+        else:
+            color = 'b'
+
+        self.initialize_single_piece(promoted_to.lower(), color, i, j)
+
 
 class MovementRules(object):
 

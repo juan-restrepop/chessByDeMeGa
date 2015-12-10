@@ -119,8 +119,8 @@ class ChessGame(object):
                 return False
         return False
 
-    def is_valid_promotion(self, input_promotion):
-        return input_promotion in ['B','N','R','Q']
+    def is_valid_promotion(self, input_move, promoted_to):
+        return input_move[1] in [ '1','8' ] and promoted_to in ['B','N','R','Q']
 
     def is_user_move_valid(self, input_move):
 
@@ -168,7 +168,7 @@ class ChessGame(object):
 
         promotion,input_move,promoted_to = self.is_promotion(input_move)
 
-        if promotion and not self.is_valid_promotion(promoted_to):
+        if promotion and not self.is_valid_promotion(input_move, promoted_to):
             return True
 
         move_to_col, move_to_line = None, None
@@ -179,6 +179,9 @@ class ChessGame(object):
 
         if self.is_main_piece(input_move):
             move_to_col, move_to_line, col_filter, line_filter = self.parse_main_pieces_coordinates(input_move)
+
+        if promotion:
+            self.board.promote( col, line, player, promoted_to )
 
         accepted_move = self.move_piece_to(input_move, move_to_col, move_to_line, col_filter, line_filter)
 
