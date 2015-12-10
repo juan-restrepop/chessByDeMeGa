@@ -1750,7 +1750,42 @@ class TestChessBoard(unittest.TestCase):
         self.assertEqual(expected, actual, msg= "should promote balck pawn to a knight in (d,1) ")
 
         # forbidden white
+        b = cb.ChessBoard()
+        b.clean_pieces()
+        b_ref = cb.ChessBoard()
+        b_ref.clean_pieces()
 
+        bad_configs = [ ( 'c','8', 'q', 'black', 'Q'), 
+                        ( 'c','7', 'q', 'white', 'Q'),
+                        ( 'd','1', 'q', 'white', 'Q')]
+
+        for col,line,kind, color , promote_to in bad_configs:
+            b.initialize_single_piece( 'p', 'w', b.transform_board_to_grid(col,line) )
+            b.promote(col,line,color, promote_to)
+            b_ref.initialize_single_piece( 'p','w',b.transform_board_to_grid(col,line) )
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg= "white pawn should not be promoted, %s"%line)
+
+        # forbidden black
+        b = cb.ChessBoard()
+        b.clean_pieces()
+        b_ref = cb.ChessBoard()
+        b_ref.clean_pieces()
+
+        bad_configs = [ ( 'd','1', 'q', 'white', 'Q'), 
+                        ( 'd','2', 'q', 'black', 'Q'),
+                        ( 'd','8', 'q', 'black', 'Q')]
+
+        for col,line,kind, color , promote_to in bad_configs:
+            b.initialize_single_piece( 'p', 'w', b.transform_board_to_grid(col,line) )
+            b.promote(col,line,color, promote_to)
+            b_ref.initialize_single_piece( 'p','w',b.transform_board_to_grid(col,line) )
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg= "white pawn should not be promoted, %s"%line)
 
 
 

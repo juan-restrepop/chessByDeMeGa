@@ -344,6 +344,9 @@ class ChessBoard(object):
         i, j = self.transform_board_to_grid(col,line)
         piece = self.get_piece_in_square(i, j)
 
+        if ( player == 'white' and line != '8' ) or ( player == 'black' and line != '1'):
+            return
+
         lucky_pawns = self.list_to_update(player, self.pawns_w, self.pawns_b) 
 
         for k, pawn in enumerate(lucky_pawns):
@@ -358,6 +361,7 @@ class ChessBoard(object):
             color = 'b'
 
         self.initialize_single_piece(promoted_to.lower(), color, [i, j])
+        return
 
 
 class MovementRules(object):
