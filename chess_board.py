@@ -346,17 +346,18 @@ class ChessBoard(object):
 
         lucky_pawns = self.list_to_update(player, self.pawns_w, self.pawns_b) 
 
-        for pawn in lucky_pawns:
+        for k, pawn in enumerate(lucky_pawns):
             if pawn.coordinates == [i, j]:
                 del lucky_pawns[k]
                 break
+        self.update_board()        
 
         if player == 'white':
             color = 'w'
         else:
             color = 'b'
 
-        self.initialize_single_piece(promoted_to.lower(), color, i, j)
+        self.initialize_single_piece(promoted_to.lower(), color, [i, j])
 
 
 class MovementRules(object):
