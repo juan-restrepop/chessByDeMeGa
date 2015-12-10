@@ -1720,6 +1720,44 @@ class TestChessBoard(unittest.TestCase):
         actual = b.color_augmented_grid()
         self.assertEqual(expected, actual, msg= "should capture en passant ")
 
+    def test_promote(self):
+        # accepted white
+        b = cb.ChessBoard()
+        b.clean_pieces()
+        b_ref = cb.ChessBoard()
+        b_ref.clean_pieces()
+
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('c','8') )
+        b.promote('c','8','white', 'Q')
+        b_ref.initialize_single_piece('q','w',b.transform_board_to_grid('c','8'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg= "should promote white pawn to a queen in (c,8) ")
+
+        # accepted black
+        b = cb.ChessBoard()
+        b.clean_pieces()
+        b_ref = cb.ChessBoard()
+        b_ref.clean_pieces()
+
+        b.initialize_single_piece('p', 'b',b.transform_board_to_grid('d','1') )
+        b.promote('d','1','black', 'N')
+        b_ref.initialize_single_piece('n','b',b.transform_board_to_grid('d','1'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg= "should promote balck pawn to a knight in (d,1) ")
+
+        # forbidden white
+
+
+
+
+
+
+        
+
 if __name__ == '__main__':
     unittest.main()
 
