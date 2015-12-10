@@ -247,7 +247,7 @@ class ChessGame(object):
     def piece_eats(self, input_move):
         return self.validate_eat_case(input_move)
 
-    def move_piece_to(self, input_move, move_to_col, move_to_line):
+    def move_piece_to(self, input_move, move_to_col, move_to_line, col_filter = None, line_filter = None):
         
         if self.is_pawn(input_move):
             kind = 'p'
@@ -270,9 +270,9 @@ class ChessGame(object):
         else:
             return False
         if self.piece_eats(input_move):
-            return self.board.piece_eater(kind, move_to_col,move_to_line,self.player)
+            return self.board.piece_eater(kind, move_to_col,move_to_line,self.player, orig_col_filter = col_filter, orig_line_filter = line_filter)
         else:
-            return self.board.piece_mover(kind, move_to_col,move_to_line,self.player)
+            return self.board.piece_mover(kind, move_to_col,move_to_line,self.player, orig_col_filter = col_filter, orig_line_filter = line_filter)
 
 
     def print_move(self, input_move, move_to_col, move_to_line):
