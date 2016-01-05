@@ -208,7 +208,6 @@ class ChessBoard(object):
 
         self.update_board()
 
-
     def get_bishop_walk_color(self, some_bishop):
         return self.get_square_color(some_bishop.coordinates[0],
                                      some_bishop.coordinates[1])
@@ -242,6 +241,16 @@ class ChessBoard(object):
 
     def is_square_free(self, i, j):
         return self.grid[i][j] in ['0', '1']
+
+    def map_kind_to_lists(self, kind):
+        map_kind_2_lists= {'k': [ self.king_w, self.king_b],
+                                'q': [ self.queen_w, self.queen_b],
+                                'b': [ self.bishops_w, self.bishops_b],
+                                'n': [ self.knights_w, self.knights_b],
+                                'r': [ self.rooks_w, self.rooks_b],
+                                'p': [ self.pawns_w, self.pawns_b]}
+
+        return map_kind_2_lists.get(kind)
 
     def capture(self, i, j, player):
         # capture once eating is valid
@@ -370,7 +379,7 @@ class MovementRules(object):
     def create_board_copy(self, board):
         return copy.copy(board)
 
- 
+    
     def is_lateral_move_valid(self, board,  i_origin, j_origin, i_end, j_end):
         free_path = True
         if j_end > j_origin: # movement to the right
