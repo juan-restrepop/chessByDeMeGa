@@ -280,22 +280,7 @@ class ChessBoard(object):
         victim = self.get_piece_in_square(i,j)
 
         if victim is not None:
-            map_kind_2_lists= {'k': [ self.king_w, self.king_b],
-                                'q': [ self.queen_w, self.queen_b],
-                                'b': [ self.bishops_w, self.bishops_b],
-                                'n': [ self.knights_w, self.knights_b],
-                                'r': [ self.rooks_w, self.rooks_b],
-                                'p': [ self.pawns_w, self.pawns_b]}
-
-            if player == 'white':
-                victims = self.list_to_update('black', self.map_kind_to_lists(victim.kind)[0], self.map_kind_to_lists(victim.kind)[1])
-            if player == 'black':
-                victims = self.list_to_update('white', self.map_kind_to_lists(victim.kind)[0], self.map_kind_to_lists(victim.kind)[1])
-
-            for numba, piece in enumerate(victims):
-                if [i, j] == piece.coordinates:
-                    del victims[numba]
-                    break
+            self.clean_single_piece(victim)
 
         # manage = move or capture
     def piece_manager(self, kind, col, line, player, capture = False, orig_col_filter = None, orig_line_filter = None):
@@ -396,7 +381,7 @@ class MovementRules(object):
     def create_board_copy(self, board):
         return copy.copy(board)
 
-   
+
     def is_lateral_move_valid(self, board,  i_origin, j_origin, i_end, j_end):
         free_path = True
         if j_end > j_origin: # movement to the right
