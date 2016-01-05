@@ -208,6 +208,14 @@ class ChessBoard(object):
 
         self.update_board()
 
+    def clean_single_piece(self, piece):
+        piece_list = self.map_piece_to_list(piece)
+        i, j = piece.coordinates
+        for numba, temp_piece in enumerate(piece_list):
+            if [i, j] == temp_piece.coordinates:
+                del piece_list[numba]
+                break
+
     def get_bishop_walk_color(self, some_bishop):
         return self.get_square_color(some_bishop.coordinates[0],
                                      some_bishop.coordinates[1])
