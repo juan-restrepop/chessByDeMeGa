@@ -271,9 +271,9 @@ class ChessBoard(object):
                                 'p': [ self.pawns_w, self.pawns_b]}
 
             if player == 'white':
-                victims = self.list_to_update('black', map_kind_2_lists[victim.kind][0], map_kind_2_lists[victim.kind][1] )
+                victims = self.list_to_update('black', self.map_kind_to_lists(victim.kind)[0], self.map_kind_to_lists(victim.kind)[1])
             if player == 'black':
-                victims = self.list_to_update('white', map_kind_2_lists[victim.kind][0], map_kind_2_lists[victim.kind][1] )
+                victims = self.list_to_update('white', self.map_kind_to_lists(victim.kind)[0], self.map_kind_to_lists(victim.kind)[1])
 
             for numba, piece in enumerate(victims):
                 if [i, j] == piece.coordinates:
@@ -379,7 +379,7 @@ class MovementRules(object):
     def create_board_copy(self, board):
         return copy.copy(board)
 
-    
+
     def is_lateral_move_valid(self, board,  i_origin, j_origin, i_end, j_end):
         free_path = True
         if j_end > j_origin: # movement to the right
