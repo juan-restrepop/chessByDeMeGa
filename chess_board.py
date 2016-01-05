@@ -1,4 +1,5 @@
 import pieces
+import copy
 
 class ChessBoard(object):
     grid = list()
@@ -366,6 +367,10 @@ class ChessBoard(object):
 
 class MovementRules(object):
 
+    def create_board_copy(self, board):
+        return copy.copy(board)
+    
+
     def is_lateral_move_valid(self, board,  i_origin, j_origin, i_end, j_end):
         free_path = True
         if j_end > j_origin: # movement to the right
@@ -669,6 +674,10 @@ class MovementRules(object):
                     return False
 
                 return free_path
+
+    ## Castling Rules
+    def is_king_castling_valid(self, board, player='white', castling='short'):
+        return None
 
 
     def is_king_under_attack(self, board, kings_color = 'white'):
