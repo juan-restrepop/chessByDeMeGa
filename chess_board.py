@@ -252,6 +252,14 @@ class ChessBoard(object):
 
         return map_kind_2_lists.get(kind)
 
+    def map_piece_to_list(self, piece):
+        if piece.color == 'w':
+            return self.map_kind_to_lists(piece.kind)[0]
+        elif piece.color == 'b':
+            return self.map_kind_to_lists(piece.kind)[1]
+        else:
+            print 'Error'
+
     def capture(self, i, j, player):
         # capture once eating is valid
         if self.is_square_free(i,j): 
