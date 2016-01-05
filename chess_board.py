@@ -210,10 +210,11 @@ class ChessBoard(object):
 
     def clean_single_piece(self, piece):
         piece_list = self.map_piece_to_list(piece)
-        i, j = piece.coordinates
+        [i, j] = piece.coordinates
         for numba, temp_piece in enumerate(piece_list):
-            if [i, j] == temp_piece.coordinates:
+            if temp_piece.coordinates[0] == i and temp_piece.coordinates[1] == j:
                 del piece_list[numba]
+                self.update_board()
                 break
 
     def get_bishop_walk_color(self, some_bishop):
@@ -395,7 +396,7 @@ class MovementRules(object):
     def create_board_copy(self, board):
         return copy.copy(board)
 
-
+   
     def is_lateral_move_valid(self, board,  i_origin, j_origin, i_end, j_end):
         free_path = True
         if j_end > j_origin: # movement to the right
