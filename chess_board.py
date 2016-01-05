@@ -381,6 +381,35 @@ class MovementRules(object):
     def create_board_copy(self, board):
         return copy.copy(board)
 
+    def is_square_under_attack(self, board, i, j, attacker='white'):
+        piece = board.get_piece_in_square(i, j)
+
+        if not piece:
+            if attacker == 'white':
+                board.initialize_single_piece('p', 'b', (i, j))
+                attackers = board.get_all_white_pieces()
+
+                for predator in attackers:
+                    eating_func = getattr(board.Rules, board.map_piece_to_eating(predator.kind)[0])
+                    if eating_func(board, i, j, predator, attacker):
+                        pichon = board.get_piece_in_square(i, j)
+                        board.clean_single_piece(pichon)
+                        return True
+
+                return False
+            elif attacker == 'black':
+                board.initialize_single_piece('p', 'w', (i, j))
+                attackers = board.get_all_black_pieces()
+
+                for predator in attackers:
+                    eating_func = getattr(board.Rules, board.map_piece_to_eating(predator.kind)[0])
+                    if eating_func(board, i, j, predator, attacker):
+                        pichon = board.get_piece_in_square(i, j)
+                        board.clean_single_piece(pichon)
+                        return True
+
+                return False
+
 
     def is_lateral_move_valid(self, board,  i_origin, j_origin, i_end, j_end):
         free_path = True
