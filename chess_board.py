@@ -40,7 +40,7 @@ class ChessBoard(object):
 
     def get_piece_in_square(self, i, j):
         for piece in self.get_all_pieces():
-            if piece.coordinates == [i, j]:
+            if piece.coordinates[0] == i and piece.coordinates[1] == j:
                 return piece
         return None
 
@@ -369,8 +369,8 @@ class MovementRules(object):
 
     def create_board_copy(self, board):
         return copy.copy(board)
-    
 
+ 
     def is_lateral_move_valid(self, board,  i_origin, j_origin, i_end, j_end):
         free_path = True
         if j_end > j_origin: # movement to the right
@@ -678,6 +678,8 @@ class MovementRules(object):
     ## Castling Rules
     def is_king_castling_valid(self, board, player='white', castling='short'):
         return None
+
+
 
 
     def is_king_under_attack(self, board, kings_color = 'white'):
