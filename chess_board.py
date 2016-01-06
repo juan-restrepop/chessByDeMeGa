@@ -388,6 +388,7 @@ class MovementRules(object):
         if not piece:
             if attacker == 'white':
                 board.initialize_single_piece('p', 'b', (i, j)) # initialize pichon
+                pichon = board.get_piece_in_square(i, j)
                 attackers = board.get_all_white_pieces()
 
                 for predator in attackers:
@@ -397,9 +398,11 @@ class MovementRules(object):
                         board.clean_single_piece(pichon)
                         return True
 
+                board.clean_single_piece(pichon)
                 return False
             elif attacker == 'black':
                 board.initialize_single_piece('p', 'w', (i, j)) # initialize pichon
+                pichon = board.get_piece_in_square(i, j)
                 attackers = board.get_all_black_pieces()
 
                 for predator in attackers:
@@ -408,7 +411,7 @@ class MovementRules(object):
                         pichon = board.get_piece_in_square(i, j)
                         board.clean_single_piece(pichon)
                         return True
-
+                board.clean_single_piece(pichon)
                 return False
 
         else:
