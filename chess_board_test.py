@@ -1787,6 +1787,106 @@ class TestChessBoard(unittest.TestCase):
         actual = b.color_augmented_grid()
         self.assertEqual(expected, actual, msg= "white pawn should not be promoted, %s"%line)
 
+    def test_is_square_under_attack(self):
+        b = cb.ChessBoard()
+        b.clean_pieces()
+
+        # Test black and white attacks on empty square
+        b.initialize_single_piece('b', 'b', b.transform_board_to_grid('f', '7'))
+        b.initialize_single_piece('n', 'w', b.transform_board_to_grid('c', '3'))
+
+        ## Square actually under attack
+        square_coords = b.transform_board_to_grid('d', '5')
+
+        expected = True
+        actual_black_attack = b.Rules.is_square_under_attack(b, square_coords[0], square_coords[1], 'black')
+        actual_white_attack = b.Rules.is_square_under_attack(b, square_coords[0], square_coords[1], 'white')
+        self.assertEqual(expected, actual_black_attack, msg="'d5' is under attack by black bishop in 'f7'")
+        self.assertEqual(expected, actual_white_attack, msg="'d5' is under attack by white knight in 'c3'")
+
+        ## Square actually under attack
+        square_coords = b.transform_board_to_grid('c', '5')
+
+        expected = False
+        actual_black_attack = b.Rules.is_square_under_attack(b, square_coords[0], square_coords[1], 'black')
+        actual_white_attack = b.Rules.is_square_under_attack(b, square_coords[0], square_coords[1], 'white')
+        self.assertEqual(expected, actual_black_attack, msg="'c5' is not under attack by any black piece")
+        self.assertEqual(expected, actual_white_attack, msg="'c5' is not under attack by any white piece")
+
+        # Test black and white attacks on occupied square
+
+        ## Attacked square occupied by white piece
+        b.clean_pieces()
+
+        b.initialize_single_piece('b', 'b', b.transform_board_to_grid('f', '7'))
+        b.initialize_single_piece('n', 'w', b.transform_board_to_grid('c', '3'))
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('d', '5'))
+        square_coords = b.transform_board_to_grid('d', '5')
+
+        expected_black_attack = True
+        actual_black_attack = b.Rules.is_square_under_attack(b, square_coords[0], square_coords[1], 'black')
+
+        expected_white_attack = False
+        actual_white_attack = b.Rules.is_square_under_attack(b, square_coords[0], square_coords[1], 'white')
+
+        self.assertEqual(expected_black_attack, actual_black_attack, msg="white pawn in 'd5' is under attack by black bishop in 'f7'")
+        self.assertEqual(expected_white_attack, actual_white_attack, msg="white pawn in 'd5' is not under attack by white knight in 'c3'")
+
+        ## Attacked square occupied by black piece
+        b.clean_pieces()
+
+        b.initialize_single_piece('b', 'b', b.transform_board_to_grid('f', '7'))
+        b.initialize_single_piece('n', 'w', b.transform_board_to_grid('c', '3'))
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('d', '5'))
+        square_coords = b.transform_board_to_grid('d', '5')
+
+        expected_black_attack = False
+        actual_black_attack = b.Rules.is_square_under_attack(b, square_coords[0], square_coords[1], 'black')
+
+        expected_white_attack = True
+        actual_white_attack = b.Rules.is_square_under_attack(b, square_coords[0], square_coords[1], 'white')
+
+        self.assertEqual(expected_black_attack, actual_black_attack, msg="black pawn in 'd5' is not under attack by black bishop in 'f7'")
+        self.assertEqual(expected_white_attack, actual_white_attack, msg="black pawn in 'd5' is under attack by white knight in 'c3'")
+
+        ## Not attacked square occupied by white piece
+        b.clean_pieces()
+
+        b.initialize_single_piece('b', 'b', b.transform_board_to_grid('f', '7'))
+        b.initialize_single_piece('n', 'w', b.transform_board_to_grid('c', '3'))
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('c', '5'))
+        square_coords = b.transform_board_to_grid('c', '5')
+
+        expected_black_attack = False
+        actual_black_attack = b.Rules.is_square_under_attack(b, square_coords[0], square_coords[1], 'black')
+
+        expected_white_attack = False
+        actual_white_attack = b.Rules.is_square_under_attack(b, square_coords[0], square_coords[1], 'white')
+
+        self.assertEqual(expected_black_attack, actual_black_attack, msg="white pawn in 'd5' is not under attack by black bishop in 'f7'")
+        self.assertEqual(expected_white_attack, actual_white_attack, msg="white pawn in 'd5' is not under attack by white knight in 'c3'")
+
+        ## Not attacked square occupied by black piece
+        b.clean_pieces()
+
+        b.initialize_single_piece('b', 'b', b.transform_board_to_grid('f', '7'))
+        b.initialize_single_piece('n', 'w', b.transform_board_to_grid('c', '3'))
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('c', '5'))
+        square_coords = b.transform_board_to_grid('c', '5')
+
+        expected_black_attack = False
+        actual_black_attack = b.Rules.is_square_under_attack(b, square_coords[0], square_coords[1], 'black')
+
+        expected_white_attack = False
+        actual_white_attack = b.Rules.is_square_under_attack(b, square_coords[0], square_coords[1], 'white')
+
+        self.assertEqual(expected_black_attack, actual_black_attack, msg="black pawn in 'd5' is not under attack by black bishop in 'f7'")
+        self.assertEqual(expected_white_attack, actual_white_attack, msg="black pawn in 'd5' is not under attack by white knight in 'c3'")
+
+
+
+
+
 
 
 
