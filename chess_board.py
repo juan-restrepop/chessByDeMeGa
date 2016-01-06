@@ -386,7 +386,7 @@ class MovementRules(object):
 
         if not piece:
             if attacker == 'white':
-                board.initialize_single_piece('p', 'b', (i, j))
+                board.initialize_single_piece('p', 'b', (i, j)) # initialize pichon
                 attackers = board.get_all_white_pieces()
 
                 for predator in attackers:
@@ -398,7 +398,7 @@ class MovementRules(object):
 
                 return False
             elif attacker == 'black':
-                board.initialize_single_piece('p', 'w', (i, j))
+                board.initialize_single_piece('p', 'w', (i, j)) # initialize pichon
                 attackers = board.get_all_black_pieces()
 
                 for predator in attackers:
@@ -409,6 +409,8 @@ class MovementRules(object):
                         return True
 
                 return False
+
+        return False
 
 
     def is_lateral_move_valid(self, board,  i_origin, j_origin, i_end, j_end):
