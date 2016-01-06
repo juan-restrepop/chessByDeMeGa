@@ -2219,6 +2219,131 @@ class TestChessBoard(unittest.TestCase):
         actual = b.Rules.is_king_castling_valid(b, 'black', 'short')
         self.assertEqual(expected, actual, msg="Path is protected by loyal pawns, castling should be valid")
 
+    def test_black_king_long_castling_rules(self):
+        b = cb.ChessBoard()
+        b.clean_pieces()
+
+        ## Test castling with no opposing pieces
+        # No one has moved
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('e', '8'))
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('a', '8'))
+
+        expected = True
+        actual = b.Rules.is_king_castling_valid(b, 'black', 'long')
+        self.assertEqual(expected, actual, msg="Long castling should be valid")
+
+        # The king moved
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('e', '8'))
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('a', '8'))
+
+        b.piece_mover('k', 'f', '8', 'black')
+        b.piece_mover('k', 'e', '8', 'black')
+
+        expected = False
+        actual = b.Rules.is_king_castling_valid(b, 'black', 'long')
+        self.assertEqual(expected, actual, msg="the king has already moved")
+
+        # The rook moved
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('e', '8'))
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('a', '8'))
+
+        b.piece_mover('r', 'a', '6', 'black')
+        b.piece_mover('k', 'a', '8', 'black')
+
+        expected = False
+        actual = b.Rules.is_king_castling_valid(b, 'black', 'long')
+        self.assertEqual(expected, actual, msg="the rook has already moved")
+
+        # No one has moved but there is a blocking piece
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('e', '8'))
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('a', '8'))
+        b.initialize_single_piece('b', 'b', b.transform_board_to_grid('c', '8'))
+
+        expected = False
+        actual = b.Rules.is_king_castling_valid(b, 'black', 'long')
+        self.assertEqual(expected, actual, msg="Castling is blocked by bishop in 'c8'")
+
+        ## Test castling with opposing pieces
+        # king under attack
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('e', '8'))
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('a', '8'))
+
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('e', '6'))
+
+        expected = False
+        actual = b.Rules.is_king_castling_valid(b, 'black', 'long')
+        self.assertEqual(expected, actual, msg="Black king under attack by black rook in 'e6'")
+
+        # 'd8' under attack
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('e', '8'))
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('a', '8'))
+
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('d', '6'))
+
+        expected = False
+        actual = b.Rules.is_king_castling_valid(b, 'black', 'long')
+        self.assertEqual(expected, actual, msg="'d8' under attack by white rook in 'd6'")
+
+        # 'c8' under attack
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('e', '8'))
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('a', '8'))
+
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('c', '6'))
+
+        expected = False
+        actual = b.Rules.is_king_castling_valid(b, 'black', 'long')
+        self.assertEqual(expected, actual, msg="'c8' under attack by white rook in 'c6'")
+
+        # 'b8' under attack
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('e', '8'))
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('a', '8'))
+
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('b', '6'))
+
+        expected = False
+        actual = b.Rules.is_king_castling_valid(b, 'black', 'long')
+        self.assertEqual(expected, actual, msg="'b8' under attack by white rook in 'b6'")
+
+        # 'a8' under attack
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('e', '8'))
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('a', '8'))
+
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('a', '6'))
+
+        expected = False
+        actual = b.Rules.is_king_castling_valid(b, 'black', 'long')
+        self.assertEqual(expected, actual, msg="'a8' under attack by white rook in 'a6'")
+
+        # opposing pieces but path protected by loyal pawns
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('e', '8'))
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('a', '8'))
+
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('a', '6'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('b', '6'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('c', '6'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('d', '6'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('e', '6'))
+
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('a', '7'))
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('b', '7'))
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('c', '7'))
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('d', '7'))
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '7'))
+
+        expected = True
+        actual = b.Rules.is_king_castling_valid(b, 'black', 'long')
+        self.assertEqual(expected, actual, msg="Castling should be valid, path protected by pawns")
+
 
 
 
