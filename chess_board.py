@@ -310,6 +310,7 @@ class ChessBoard(object):
                 if capture:
                     self.capture(i, j, player)
                 pieces_to_move[k].coordinates = [i, j]
+                pieces_to_move[k].has_moved = True
                 accepted_move = True
                 self.update_board()
                 break
