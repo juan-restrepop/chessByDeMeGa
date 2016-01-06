@@ -736,8 +736,62 @@ class MovementRules(object):
 
     ## Castling Rules
     def is_king_castling_valid(self, board, player='white', castling='short'):
-        return None
+        ##TODO: raise error when needed, for the time being we return `None`.
 
+        ## Get King and corresponding rook
+        if player == 'white':
+            king = board.king_w[0]
+            rook = None
+            attacker = 'black'
+
+            if castling == 'short':
+                step = 1
+                for ruko in board.rooks_w:
+                    if ruko.coordinates == [7, 7]:
+                        rook = ruko
+
+            elif castling == 'long':
+                step = -1
+                for ruko in board.rooks_w:
+                    if ruko.coordinates == [7, 0]:
+                        rook = ruko
+            else:
+                return None
+
+        elif player == 'black':
+            king = board.king_b[0]
+            rook = None
+            attacker = 'white'
+
+            if castling == 'short':
+                step = 1
+                for ruko in board.rooks_b:
+                    if ruko.coordinates == [0, 7]:
+                        rook = ruko
+
+            elif castling == 'long':
+                step = -1
+                for ruko in board.rooks_b:
+                    if ruko.coordinates == [0, 0]:
+                        rook = ruko
+            else:
+                return None
+        else:
+            return None
+
+        ## Test castling validity
+        if not rook:
+            return False
+        else:
+            if king.has_moved or rook.has_moved:
+                return False
+            else:
+                i_king, j_king = king.coordinates
+            i_rook, j_rook = rook.coordinates
+            valid = True
+            for j in range(j_king, j_rook + step, step):
+                valid = valid and (not board.Rules.is_square_under_attack(board, i_king, j, attacker))
+            return valid
 
 
 
