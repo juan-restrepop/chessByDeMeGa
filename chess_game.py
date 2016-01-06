@@ -295,7 +295,13 @@ class ChessGame(object):
     def print_move(self, input_move, move_to_col, move_to_line):
         out_str  = ""
 
-        if self.is_pawn(input_move):
+        if self.is_short_castling(input_move):
+            out_str = "Short castling for %s" % self.player
+        
+        elif self.is_long_castling(input_move):
+            out_str = "long castling for %s" % self.player
+
+        elif self.is_pawn(input_move):
             out_str = "Move %s pawn" % self.player
 
         elif self.is_bishop(input_move):
@@ -315,9 +321,10 @@ class ChessGame(object):
         else:
             out_str = "not supported move. Merry Xmas"
 
-        if self.piece_eats(input_move):
-            out_str = out_str + " and capture piece at (%s,%s)" % (move_to_col,move_to_line)
-        else: 
-            out_str = out_str + " to (%s,%s)" % (move_to_col, move_to_line)
+        if not self.is_castling(input_move):
+            if self.piece_eats(input_move):
+                out_str = out_str + " and capture piece at (%s,%s)" % (move_to_col,move_to_line)
+            else: 
+                out_str = out_str + " to (%s,%s)" % (move_to_col, move_to_line)
 
         return  out_str
