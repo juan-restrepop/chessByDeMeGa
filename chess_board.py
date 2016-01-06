@@ -824,12 +824,10 @@ class MovementRules(object):
             if piece.kind != 'p':
                 if eating_func(board, i_king, j_king, piece):
                     col, line = board.get_piece_coords(piece)
-                    print "%s king under attack by %s  %s at (%s,%s)" % (kings_color, opponent, piece.kind,col,line)
                     checked = True
             else:
                 if eating_func(board, i_king, j_king, piece, opponent):
                     col, line = board.get_piece_coords(piece)
-                    print "%s king under attack by %s %s at (%s,%s)" % (kings_color, opponent, piece.kind,col,line)
                     checked = True
 
         return checked
