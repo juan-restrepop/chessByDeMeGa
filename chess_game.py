@@ -26,7 +26,7 @@ class ChessGame(object):
 
 
     def is_special_case(self, input_move):
-        return self.is_castling(input_move) or self.is_end_of_game(input_move)
+        return self.is_end_of_game(input_move)
 
     def is_castling(self, input_move):
         res = input_move in ['O-O','O-O-O']
@@ -134,8 +134,11 @@ class ChessGame(object):
             print 'wrong input try again'
             return False
 
+        if self.is_castling(input_move):
+            return True
+
         if self.is_special_case(input_move):
-            print 'special cases are not supported yet'
+            print 'end of game not supported yet'
             return False
 
         if not self.is_pawn(input_move) and not self.is_main_piece(input_move):
