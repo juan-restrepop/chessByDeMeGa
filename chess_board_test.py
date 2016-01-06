@@ -1896,7 +1896,6 @@ class TestChessBoard(unittest.TestCase):
         b.initialize_single_piece('r', 'w', b.transform_board_to_grid('h', '1'))
         expected = True
         actual = b.Rules.is_king_castling_valid(b, 'white', 'short')
-
         self.assertEqual(expected, actual, msg="Short castling should be valid")
 
         # The king moved
@@ -1909,7 +1908,6 @@ class TestChessBoard(unittest.TestCase):
 
         expected = False
         actual = b.Rules.is_king_castling_valid(b, 'white', 'short')
-
         self.assertEqual(expected, actual, msg="The king has already moved")
 
         # The rook moved
@@ -1922,7 +1920,6 @@ class TestChessBoard(unittest.TestCase):
 
         expected = False
         actual = b.Rules.is_king_castling_valid(b, 'white', 'short')
-
         self.assertEqual(expected, actual, msg="The rook has already moved")
 
         # No one has moved but there's a blocking piece
@@ -1933,8 +1930,65 @@ class TestChessBoard(unittest.TestCase):
 
         expected = False
         actual = b.Rules.is_king_castling_valid(b, 'white', 'short')
-
         self.assertEqual(expected, actual, msg="The castling is blocked by knight in 'g1'")
+
+        ## Test castling with opposing pieces
+        # King under attack
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('e', '1'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('h', '1'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('g', '3'))
+
+        expected = False
+        actual = b.Rules.is_king_castling_valid(b, 'white', 'short')
+        self.assertEqual(expected, actual, msg="White king under attack by black queen in 'g3'")
+
+        # 'f1' under attack
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('e', '1'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('h', '1'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('h', '3'))
+
+        expected = False
+        actual = b.Rules.is_king_castling_valid(b, 'white', 'short')
+        self.assertEqual(expected, actual, msg="'f1' under attack by black queen in 'h3'")
+
+        # 'g1' under attack
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('e', '1'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('h', '1'))
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('g', '3'))
+
+        expected = False
+        actual = b.Rules.is_king_castling_valid(b, 'white', 'short')
+        self.assertEqual(expected, actual, msg="'g1' under attack by black rook in 'g3'")
+
+        # 'h1' under attack
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('e', '1'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('h', '1'))
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('h', '3'))
+
+        expected = False
+        actual = b.Rules.is_king_castling_valid(b, 'white', 'short')
+        self.assertEqual(expected, actual, msg="'h1' under attack by black rook in 'h3'")
+
+        # Opposing pieces but path protected by white pawns
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('e', '1'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('h', '1'))
+
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('f', '2'))
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('g', '2'))
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('h', '2'))
+
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('f', '3'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('g', '3'))
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('h', '3'))
+
+        expected = True
+        actual = b.Rules.is_king_castling_valid(b, 'white', 'short')
+        self.assertEqual(expected, actual, msg="Path is protected by loyal pawns, castling should be valid")
 
 
 
