@@ -325,22 +325,24 @@ class ChessBoard(object):
         return self.piece_manager(kind, col, line, player, True, orig_col_filter, orig_line_filter)
 
     def castler(self, player = 'white', castling = 'short'):
+        accepted_move = True
         if self.Rules.is_king_castling_valid(self, player, castling):
             if player == 'white':
                 theking = self.king_w[0]
 
                 if castling == 'short':
                     theking.coordinates == [7,7]
+                    theking.has_moved = True
                     for rook in self.rooks_w:
                         if rook.coordinates == [7,7]:
                             rook.coordinates == [7,4]
-
+                            rook.has_moved = True
                 if castling == 'long':
                     theking.coordinates == [7,0]
                     for rook in self.rooks_w:
                         if rook.coordinates == [7,0]:
                             rook.coordinates == [7,4]
-
+                            rook.has_moved = True
             else:
                 theking = self.king_b[0]
 
@@ -349,14 +351,21 @@ class ChessBoard(object):
                     for rook in self.rooks_w:
                         if rook.coordinates == [0,7]:
                             rook.coordinates == [0,4]
+                            rook.has_moved = True
 
                 if castling == 'long':
                     theking.coordinates == [0,0]
+                    theking.has_moved = True
                     for rook in self.rooks_w:
                         if rook.coordinates == [0,0]:
                             rook.coordinates == [0,4]
+                            rook.has_moved = True
+            self.update_board()
+
         else:
             print "clastling not valid"
+            accepted_move = False
+        return accepted_move
 
     def list_to_update(self, player, list_w, list_b):
         if player == 'white':
