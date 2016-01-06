@@ -792,6 +792,11 @@ class MovementRules(object):
             valid = True
             for j in range(j_king, j_rook + step, step):
                 valid = valid and (not board.Rules.is_square_under_attack(board, i_king, j, attacker))
+                print i_king, j, valid
+            for j in range(j_king + step, j_rook, step):
+                valid = valid and board.is_square_free(i_king, j)
+                print i_king, j, valid
+
             return valid
 
 
