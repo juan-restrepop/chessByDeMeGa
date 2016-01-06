@@ -422,6 +422,7 @@ class ChessBoard(object):
 
 class MovementRules(object):
 
+    ## Useful functions
     def create_board_copy(self, board):
         return copy.copy(board)
 
@@ -474,8 +475,6 @@ class MovementRules(object):
                         return True
 
                 return False
-
-
 
     def is_lateral_move_valid(self, board,  i_origin, j_origin, i_end, j_end):
         free_path = True
@@ -845,7 +844,7 @@ class MovementRules(object):
             return valid
 
 
-
+    ## Endangered king?
     def is_king_under_attack(self, board, kings_color = 'white'):
 
         if kings_color == 'white':
