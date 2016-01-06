@@ -30,9 +30,7 @@ class ChessGame(object):
 
     def is_castling(self, input_move):
         res = input_move in ['O-O','O-O-O']
-        if res:
-            print "Castling"
-        return res
+        return res 
 
     def is_short_castling(self,input_move):
         return input_move == 'O-O'
@@ -261,7 +259,7 @@ class ChessGame(object):
 
     def move_piece_to(self, input_move, move_to_col, move_to_line, col_filter = None, line_filter = None):
         if self.is_castling(input_move):
-            if self.is_short_castling:
+            if self.is_short_castling(input_move):
                 return self.board.castler(self.player,'short')
             else:
                 return self.board.castler(self.plater,'long')
