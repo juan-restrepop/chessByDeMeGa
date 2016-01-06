@@ -324,6 +324,40 @@ class ChessBoard(object):
     def piece_eater(self, kind, col, line, player, orig_col_filter = None, orig_line_filter = None):
         return self.piece_manager(kind, col, line, player, True, orig_col_filter, orig_line_filter)
 
+    def castler(self, player = 'white', castling = 'short'):
+        if self.Rules.is_king_castling_valid(self, player, castling):
+            if player == 'white':
+                theking = self.king_w[0]
+
+                if castling == 'short':
+                    theking.coordinates == [7,7]
+                    for rook in self.rooks_w:
+                        if rook.coordinates == [7,7]:
+                            rook.coordinates == [7,4]
+
+                if castling == 'long':
+                    theking.coordinates == [7,0]
+                    for rook in self.rooks_w:
+                        if rook.coordinates == [7,0]:
+                            rook.coordinates == [7,4]
+
+            else:
+                theking = self.king_b[0]
+
+                if castling == 'short':
+                    theking.coordinates == [0,7]
+                    for rook in self.rooks_w:
+                        if rook.coordinates == [0,7]:
+                            rook.coordinates == [0,4]
+
+                if castling == 'long':
+                    theking.coordinates == [0,0]
+                    for rook in self.rooks_w:
+                        if rook.coordinates == [0,0]:
+                            rook.coordinates == [0,4]
+        else:
+            print "clastling not valid"
+
     def list_to_update(self, player, list_w, list_b):
         if player == 'white':
             return list_w
