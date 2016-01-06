@@ -324,13 +324,12 @@ class ChessBoard(object):
     def piece_eater(self, kind, col, line, player, orig_col_filter = None, orig_line_filter = None):
         return self.piece_manager(kind, col, line, player, True, orig_col_filter, orig_line_filter)
 
-    def castler(self, player = 'white', castling = 'short'):
-        print "move the king & rooks"
+    def castler(self, player = 'white', castling = 'short'):      
         accepted_move = True
-        if self.Rules.is_king_castling_valid(self, player, castling):
+
+        if self.Rules.is_king_castling_valid(self, player, castling):            
             if player == 'white':
                 theking = self.king_w[0]
-
                 if castling == 'short':
                     theking.coordinates = [7,6]
                     theking.has_moved = True
@@ -348,15 +347,12 @@ class ChessBoard(object):
             else:
                 theking = self.king_b[0]
 
-                if castling == 'short':
-                    print "here i am mtfk"
+                if castling == 'short':                    
                     theking.coordinates = [0,6]
                     theking.has_moved = True
                     for rook in self.rooks_b:
                         if rook.coordinates == [0,7]:
-                            print "good rook"
                             rook.coordinates = [0,5]
-                            print rook.coordinates
                             rook.has_moved = True
 
                 if castling == 'long':
