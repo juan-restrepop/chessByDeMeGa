@@ -325,45 +325,51 @@ class ChessBoard(object):
         return self.piece_manager(kind, col, line, player, True, orig_col_filter, orig_line_filter)
 
     def castler(self, player = 'white', castling = 'short'):
+        print "move the king & rooks"
         accepted_move = True
         if self.Rules.is_king_castling_valid(self, player, castling):
             if player == 'white':
                 theking = self.king_w[0]
 
                 if castling == 'short':
-                    theking.coordinates == [7,7]
+                    theking.coordinates = [7,6]
                     theking.has_moved = True
                     for rook in self.rooks_w:
                         if rook.coordinates == [7,7]:
-                            rook.coordinates == [7,4]
+                            rook.coordinates = [7,5]
                             rook.has_moved = True
                 if castling == 'long':
-                    theking.coordinates == [7,0]
+                    theking.coordinates = [7,2]
+                    theking.has_moved = True
                     for rook in self.rooks_w:
                         if rook.coordinates == [7,0]:
-                            rook.coordinates == [7,4]
+                            rook.coordinates =  [7,3]
                             rook.has_moved = True
             else:
                 theking = self.king_b[0]
 
                 if castling == 'short':
-                    theking.coordinates == [0,7]
-                    for rook in self.rooks_w:
+                    print "here i am mtfk"
+                    theking.coordinates = [0,6]
+                    theking.has_moved = True
+                    for rook in self.rooks_b:
                         if rook.coordinates == [0,7]:
-                            rook.coordinates == [0,4]
+                            print "good rook"
+                            rook.coordinates = [0,5]
+                            print rook.coordinates
                             rook.has_moved = True
 
                 if castling == 'long':
-                    theking.coordinates == [0,0]
+                    theking.coordinates = [0,2]
                     theking.has_moved = True
-                    for rook in self.rooks_w:
+                    for rook in self.rooks_b:
                         if rook.coordinates == [0,0]:
-                            rook.coordinates == [0,4]
+                            rook.coordinates = [0,3]
                             rook.has_moved = True
             self.update_board()
 
         else:
-            print "clastling not valid"
+            print "castling not valid"
             accepted_move = False
         return accepted_move
 
