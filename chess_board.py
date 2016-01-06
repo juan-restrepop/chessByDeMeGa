@@ -410,7 +410,24 @@ class MovementRules(object):
 
                 return False
 
-        return False
+        else:
+            if piece.color == attacker[0]:
+                return False
+            else:
+                i, j = piece.coordinates
+
+                if attacker == 'white':
+                    attackers = board.get_all_white_pieces()
+                else:
+                    attackers = board.get_all_black_pieces()
+
+                for predator in attackers:
+                    eating_func = getattr(board.Rules, board.map_piece_to_eating(predator.kind)[0])
+                    if eating_func(board, i, j, predator, attacker):
+                        return True
+
+                return False
+
 
 
     def is_lateral_move_valid(self, board,  i_origin, j_origin, i_end, j_end):
