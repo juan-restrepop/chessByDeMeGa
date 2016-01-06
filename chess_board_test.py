@@ -1884,6 +1884,59 @@ class TestChessBoard(unittest.TestCase):
         self.assertEqual(expected_white_attack, actual_white_attack, msg="black pawn in 'd5' is not under attack by white knight in 'c3'")
 
 
+# Test castling
+
+    def test_white_king_short_castling_rules(self):
+        b = cb.ChessBoard()
+        ## Test castling with no opposing pieces
+
+        # No one has moved
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('e', '1'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('h', '1'))
+        expected = True
+        actual = b.Rules.is_king_castling_valid(b, 'white', 'short')
+
+        self.assertEqual(expected, actual, msg="Short castling should be valid")
+
+        # The king moved
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('e', '1'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('h', '1'))
+
+        b.piece_mover('k', 'f', '1', 'white')
+        b.piece_mover('k', 'e', '1', 'white')
+
+        expected = False
+        actual = b.Rules.is_king_castling_valid(b, 'white', 'short')
+
+        self.assertEqual(expected, actual, msg="The king has already moved")
+
+        # The rook moved
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('e', '1'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('h', '1'))
+
+        b.piece_mover('r', 'h', '2', 'white')
+        b.piece_mover('r', 'h', '1', 'white')
+
+        expected = False
+        actual = b.Rules.is_king_castling_valid(b, 'white', 'short')
+
+        self.assertEqual(expected, actual, msg="The rook has already moved")
+
+        # No one has moved but there's a blocking piece
+        b.clean_pieces()
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('e', '1'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('h', '1'))
+        b.initialize_single_piece('n', 'w', b.transform_board_to_grid('g', '1'))
+
+        expected = False
+        actual = b.Rules.is_king_castling_valid(b, 'white', 'short')
+
+        self.assertEqual(expected, actual, msg="The castling is blocked by knight in 'g1'")
+
+
 
 
 
