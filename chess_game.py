@@ -260,7 +260,12 @@ class ChessGame(object):
         return self.validate_eat_case(input_move)
 
     def move_piece_to(self, input_move, move_to_col, move_to_line, col_filter = None, line_filter = None):
-        
+        if self.is_castling(input_move):
+            if self.is_short_castling:
+                return self.board.castler(self.player,'short')
+            else:
+                return self.board.castler(self.plater,'long')
+
         if self.is_pawn(input_move):
             kind = 'p'
 
