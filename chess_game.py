@@ -34,6 +34,12 @@ class ChessGame(object):
             print "Castling"
         return res
 
+    def is_short_castling(self,input_move):
+        return input_move == 'O-O'
+
+    def is_long_castling(self,input_move):
+        return input_move == 'O-O-O'
+
     def is_end_of_game(self, input_move):
         res = input_move in ['1-0','0-1', '1/2-1/2']
         if res:
