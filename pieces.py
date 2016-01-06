@@ -2,6 +2,7 @@ class Piece(object):
     kind = str()
     color = str()
     coordinates = list()
+    has_moved = False
 
     def __init__(self, kind, color, coordinate):
         self.initialize_piece(kind, color, coordinate)
@@ -18,7 +19,6 @@ class Pawn(Piece):
 class Rook(Piece):
     def __init__(self, color, coordinates):
         Piece.__init__(self, 'r', color, coordinates)
-        self.has_moved = False
 
 class Bishop(Piece):
     def __init__(self, color, coordinates):
@@ -35,4 +35,4 @@ class Queen(Piece):
 class King(Piece):
     def __init__(self, color, coordinates):
         Piece.__init__(self, 'k', color, coordinates)
-        self.has_moved = False
+
