@@ -874,15 +874,4 @@ class MovementRules(object):
 
         return checked
 
-    def is_move_suicidal(self, board, i, j, piece, player, capture=False):
-        board_copy = self.create_board_copy(board)
-        col, line = board_copy.transform_grid_to_board(i, j)
-
-        if capture:
-            board_copy.piece_eater(piece.kind, col, line, player)
-        else:
-            board_copy.piece_mover(piece.kind, col, line, player)
-
-        return board_copy.Rules.is_king_under_attack(board_copy, player)
-
 
