@@ -505,6 +505,111 @@ class TestChessBoard(unittest.TestCase):
         actual = b.Rules.is_bishop_eating_valid(b, i, j, b.bishops_w[0])
         self.assertEqual(expected, actual, msg = "bishop shouldn't  eat at (h,7), someone in the same path" )
 
+    def test_white_pawn_enpassant_eating_rules(self):
+        # from wikipedia
+        # the capturing pawn must be on its fifth rank.
+        # the captured pawn must be on an adjacent file and must have just moved two squares in a single move.
+        # the capture can only be made on the move immediately after the opposing pawn makes the double-step move.
+        b = cb.ChessBoard()
+        b.clean_pieces()
+
+        #test accepted enpassant: black d7-d5 > white cxd6
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('d', '7'))
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('c', '5'))
+        b.piece_mover('p','d','5', 'black')
+        i,j = b.transform_board_to_grid('d', '6')
+        expected = True
+        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_w[0])
+        self.assertEqual(expected,actual, msg= "cxd6 capture should be allowed")
+
+        #test forbidden enpassant: black d7-d5 > white c6xd7  (not 5th file)
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('c', '6'))
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('d', '7'))
+        b.piece_mover('p','d','5', 'black')
+        i,j = b.transform_board_to_grid('d', '7')
+        expected = False
+        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_w[0])
+        self.assertEqual(expected,actual, msg= "cxd7 capture shouldn't be allowed")
+
+        #test forbidden enpassant: black e7-e5 > white c5xe6 (not adjacent)
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('c', '6'))
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '7'))
+        b.piece_mover('p','e','5', 'black')
+        i,j = b.transform_board_to_grid('e', '6')
+        expected = False
+        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_w[0])
+        self.assertEqual(expected,actual, msg = "cxe5 capture shouldn't be allowed")
+
+    def test_white_pawn_enpassant_eating_complex(self):
+        # test forbidden enpassant:
+        # black d7-d5 > white Rh1-Rh3
+        # black Ra8-Ra6 > white c5xd6 (not immediately after)
+        b = cb.ChessBoard()
+        b.clean_pieces()
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('a', '8'))
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('d', '7'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('h', '1'))
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('c', '5'))
+
+        b.piece_mover('p','d','5', 'black')
+        b.piece_mover('r','h','3', 'white')
+        b.piece_mover('r','a','6', 'black')
+        i,j = b.transform_board_to_grid('d', '6')
+        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_w[0])
+        expected = False
+        self.assertEqual(expected,actual, msg= "cxd6 capture should be forbidden (late capture)")
+
+    def test_black_pawn_enpassant_eating_rules(self):
+        b = cb.ChessBoard()
+        b.clean_pieces()
+
+        # test accepted en passant: white b2 -> b4 > black cxb3
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('b', '2'))
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('c', '4'))
+        b.piece_mover('p','b','4', 'white')
+        i,j = b.transform_board_to_grid('b', '3')
+        expected = True
+        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_b[0], 'black')
+        self.assertEqual(expected,actual, msg= "cxb3 capture should be allowed")
+
+        #test forbidden enpassant: white f2-f4 > black g3xf2  (not 5th file)
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('g', '3'))
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('f', '2'))
+        b.piece_mover('p','f','4', 'white')
+        i,j = b.transform_board_to_grid('f', '2')
+        expected = False
+        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_b[0], 'black')
+        self.assertEqual(expected,actual, msg= "gxf2 capture shouldn't be allowed")
+
+        #test forbidden enpassant: white e2-e4 > black c4xe3 (not adjacent)
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('c', '4'))
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('e', '2'))
+        b.piece_mover('p','e','4', 'white')
+        i,j = b.transform_board_to_grid('e', '3')
+        expected = False
+        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_b[0], 'black')
+        self.assertEqual(expected,actual, msg = "cxe3 capture shouldn't be allowed")
+
+    def test_black_pawn_enpassant_eating_complex(self):
+        b = cb.ChessBoard()
+        b.clean_pieces()
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('c', '5'))
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('c', '4'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('d', '6'))
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('b', '2'))
+
+        b.piece_mover('p','b','4', 'white')
+        b.piece_mover('r','a','5', 'black')
+        b.piece_mover('r','d','8', 'white')
+        i,j = b.transform_board_to_grid('b', '3')
+        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_b[0], 'black')
+        expected = False
+        self.assertEqual(expected,actual, msg= "cxb3 capture should be forbidden (late capture)")
+
     # Test movement rules
     def test_black_pawn_movement_rules(self):
         # forbidden
@@ -1302,110 +1407,7 @@ class TestChessBoard(unittest.TestCase):
         actual = b.color_augmented_grid()
         self.assertEqual(expected, actual)
 
-    def test_white_pawn_enpassant_eating_rules(self):
-        # from wikipedia
-        # the capturing pawn must be on its fifth rank.
-        # the captured pawn must be on an adjacent file and must have just moved two squares in a single move.
-        # the capture can only be made on the move immediately after the opposing pawn makes the double-step move.
-        b = cb.ChessBoard()
-        b.clean_pieces()
-
-        #test accepted enpassant: black d7-d5 > white cxd6 
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('d', '7'))
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('c', '5'))
-        b.piece_mover('p','d','5', 'black')
-        i,j = b.transform_board_to_grid('d', '6')
-        expected = True
-        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_w[0])
-        self.assertEqual(expected,actual, msg= "cxd6 capture should be allowed")
-
-        #test forbidden enpassant: black d7-d5 > white c6xd7  (not 5th file)
-        b.clean_pieces()
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('c', '6'))
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('d', '7'))
-        b.piece_mover('p','d','5', 'black')
-        i,j = b.transform_board_to_grid('d', '7')
-        expected = False
-        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_w[0])
-        self.assertEqual(expected,actual, msg= "cxd7 capture shouldn't be allowed")
-
-        #test forbidden enpassant: black e7-e5 > white c5xe6 (not adjacent)
-        b.clean_pieces()
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('c', '6'))
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '7'))
-        b.piece_mover('p','e','5', 'black')
-        i,j = b.transform_board_to_grid('e', '6')
-        expected = False
-        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_w[0])
-        self.assertEqual(expected,actual, msg = "cxe5 capture shouldn't be allowed")
-
-    def test_white_pawn_enpassant_eating_complex(self):
-        # test forbidden enpassant:  
-        # black d7-d5 > white Rh1-Rh3
-        # black Ra8-Ra6 > white c5xd6 (not immediately after)
-        b = cb.ChessBoard()
-        b.clean_pieces()
-        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('a', '8'))
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('d', '7'))
-        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('h', '1'))
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('c', '5'))
-        
-        b.piece_mover('p','d','5', 'black')
-        b.piece_mover('r','h','3', 'white')
-        b.piece_mover('r','a','6', 'black')
-        i,j = b.transform_board_to_grid('d', '6')
-        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_w[0])
-        expected = False
-        self.assertEqual(expected,actual, msg= "cxd6 capture should be forbidden (late capture)")
-
-    def test_black_pawn_enpassant_eating_rules(self):
-        b = cb.ChessBoard()
-        b.clean_pieces()
-
-        # test accepted en passant: white b2 -> b4 > black cxb3
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('b', '2'))
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('c', '4'))
-        b.piece_mover('p','b','4', 'white')
-        i,j = b.transform_board_to_grid('b', '3')
-        expected = True
-        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_b[0], 'black')
-        self.assertEqual(expected,actual, msg= "cxb3 capture should be allowed")
-
-        #test forbidden enpassant: white f2-f4 > black g3xf2  (not 5th file)
-        b.clean_pieces()
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('g', '3'))
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('f', '2'))
-        b.piece_mover('p','f','4', 'white')
-        i,j = b.transform_board_to_grid('f', '2')
-        expected = False
-        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_b[0], 'black')
-        self.assertEqual(expected,actual, msg= "gxf2 capture shouldn't be allowed")
-
-        #test forbidden enpassant: white e2-e4 > black c4xe3 (not adjacent)
-        b.clean_pieces()
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('c', '4'))
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('e', '2'))
-        b.piece_mover('p','e','4', 'white')
-        i,j = b.transform_board_to_grid('e', '3')
-        expected = False
-        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_b[0], 'black')
-        self.assertEqual(expected,actual, msg = "cxe3 capture shouldn't be allowed")
-
-    def test_black_pawn_enpassant_eating_complex(self):
-        b = cb.ChessBoard()
-        b.clean_pieces()
-        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('c', '5'))
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('c', '4'))
-        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('d', '6'))
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('b', '2'))
-
-        b.piece_mover('p','b','4', 'white')
-        b.piece_mover('r','a','5', 'black')
-        b.piece_mover('r','d','8', 'white')
-        i,j = b.transform_board_to_grid('b', '3')
-        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_b[0], 'black')
-        expected = False
-        self.assertEqual(expected,actual, msg= "cxb3 capture should be forbidden (late capture)")
+    # Test if captures are correctly done
 
     def test_white_knight_capture(self):
         b = cb.ChessBoard()
