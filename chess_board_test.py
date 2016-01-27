@@ -1886,6 +1886,42 @@ class TestChessBoard(unittest.TestCase):
         self.assertEqual(expected_white_attack, actual_white_attack, msg="black pawn in 'd5' is not under attack by white knight in 'c3'")
 
 
+# Test if suicidal movement or capture are blocked
+
+    def test_blocked_white_king_suicidal_movement(self):
+        b = cb.ChessBoard()
+        b_ref = cb.ChessBoard()
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        # Test approved movement
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('e', '6'))
+
+        b.piece_mover('k', 'c', '4', 'white')
+        b_ref.initialize_single_piece('k', 'w', b_ref.transform_board_to_grid('c', '4'))
+        b_ref.initialize_single_piece('q', 'b', b_ref.transform_board_to_grid('e', '6'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+
+        self.assertEqual(expected, actual, msg = "The king should be allowed to go to 'c4'")
+
+        # Test non approved movement
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('e', '6'))
+
+        b.piece_mover('k', 'e', '4', 'white')
+        b_ref.initialize_single_piece('k', 'w', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('q', 'b', b_ref.transform_board_to_grid('e', '6'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+
+        self.assertEqual(expected, actual, msg = "The king should not be allowed to go to 'e4'")
 # Test castling
 
     def test_white_king_short_castling_rules(self):
