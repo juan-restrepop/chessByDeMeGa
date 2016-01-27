@@ -2058,6 +2058,24 @@ class TestChessBoard(unittest.TestCase):
 
         self.assertEqual(expected, actual, msg="White king should be allowed to escape to 'd4'")
 
+        # Test valid escape plan by protecting piece
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('b', 'w', b.transform_board_to_grid('d', '7'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('g', '6'))
+
+        b.piece_mover('b', 'f', '5', 'white')
+
+        b_ref.initialize_single_piece('k', 'w', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('b', 'w', b_ref.transform_board_to_grid('f', '5'))
+        b_ref.initialize_single_piece('q', 'b', b_ref.transform_board_to_grid('g', '6'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg="The sacrifice of the white bishop to 'f5' saves the king")
+
         # Test invalid escape from single check
         b.clean_pieces()
         b_ref.clean_pieces()
@@ -2093,6 +2111,25 @@ class TestChessBoard(unittest.TestCase):
 
         self.assertEqual(expected, actual, msg="White king should not be allowed to escape to 'd4', he is under attack by a rook")
 
+        # Test invalid escape plan by protecting piece
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('b', 'w', b.transform_board_to_grid('d', '7'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('g', '6'))
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('d', '8'))
+
+        b.piece_mover('b', 'f', '5', 'white')
+
+        b_ref.initialize_single_piece('k', 'w', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('b', 'w', b_ref.transform_board_to_grid('d', '7'))
+        b_ref.initialize_single_piece('q', 'b', b_ref.transform_board_to_grid('g', '6'))
+        b_ref.initialize_single_piece('r', 'b', b_ref.transform_board_to_grid('d', '8'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg="The sacrifice of the white bishop to 'f5' is not enough")
 
 # Test castling
 
