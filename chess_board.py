@@ -298,9 +298,7 @@ class ChessBoard(object):
         accepted_move = False
 
         pieces_to_move = self.filter_list_by_col(orig_col_filter, pieces_to_move)
-
-        if (orig_line_filter is not None)  and (orig_line_filter in ['1','2','3','4','5','6','7','8'] ) : 
-            pieces_to_move = [ piece for piece in pieces_to_move if (self.get_piece_coords(piece)[1] ) == orig_line_filter ]
+        pieces_to_move = self.filter_list_by_col(orig_line_filter, pieces_to_move)
 
         for k in range(len(pieces_to_move)):
             piece = pieces_to_move[k]
@@ -318,6 +316,13 @@ class ChessBoard(object):
     def filter_list_by_col(self, col_filter,pieces_list):
         if (col_filter is not None) and (col_filter in ['a','b','c','d','e','f','g','h']) : 
             filtered_pieces = [ piece for piece in pieces_list if (self.get_piece_coords(piece)[0] ) == col_filter ]
+            return filtered_pieces
+        else:
+            return pieces_list
+
+    def filter_list_by_line(self, line_filter,pieces_list):
+        if (line_filter is not None) and (line_filter in ['a','b','c','d','e','f','g','h']) : 
+            filtered_pieces = [ piece for piece in pieces_list if (self.get_piece_coords(piece)[1] ) == line_filter ]
             return filtered_pieces
         else:
             return pieces_list
