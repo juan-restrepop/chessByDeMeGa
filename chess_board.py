@@ -296,7 +296,7 @@ class ChessBoard(object):
         i, j = self.transform_board_to_grid(col, line)
         pieces_to_move = self.list_to_update(player, white_pieces, black_pieces)
         pieces_to_move = self.filter_list_by_col(orig_col_filter, pieces_to_move)
-        pieces_to_move = self.filter_list_by_col(orig_line_filter, pieces_to_move)
+        pieces_to_move = self.filter_list_by_line(orig_line_filter, pieces_to_move)
 
         accepted_move = False
 
