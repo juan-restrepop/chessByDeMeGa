@@ -1886,7 +1886,7 @@ class TestChessBoard(unittest.TestCase):
         self.assertEqual(expected_white_attack, actual_white_attack, msg="black pawn in 'd5' is not under attack by white knight in 'c3'")
 
 
-# Test if suicidal movement or capture are blocked
+# Test if suicidal movement are blocked
 
     def test_blocked_white_king_suicidal_movement(self):
         b = cb.ChessBoard()
@@ -2038,7 +2038,7 @@ class TestChessBoard(unittest.TestCase):
 
         self.assertEqual(expected, actual, msg="Black bishop should not be allowed to go to 'h3'")
 
-    def test_white_king_out_of_check(self):
+    def test_white_king_out_of_check_movement(self):
         b = cb.ChessBoard()
         b_ref = cb.ChessBoard()
         b.clean_pieces()
@@ -2131,7 +2131,7 @@ class TestChessBoard(unittest.TestCase):
         actual = b.color_augmented_grid()
         self.assertEqual(expected, actual, msg="The sacrifice of the white bishop to 'f5' is not enough")
 
-    def test_black_king_out_of_check(self):
+    def test_black_king_out_of_check_movement(self):
         b = cb.ChessBoard()
         b_ref = cb.ChessBoard()
         b.clean_pieces()
