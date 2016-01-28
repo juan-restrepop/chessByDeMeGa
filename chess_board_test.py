@@ -2134,22 +2134,6 @@ class TestChessBoard(unittest.TestCase):
     def test_black_king_out_of_check_movement(self):
         b = cb.ChessBoard()
         b_ref = cb.ChessBoard()
-        b.clean_pieces()
-        b_ref.clean_pieces()
-
-        # Test valid escape from single check
-        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
-        b.initialize_single_piece('q', 'w', b.transform_board_to_grid('g', '6'))
-
-        b.piece_mover('k', 'd', '4', 'black')
-
-        b_ref.initialize_single_piece('k', 'b', b_ref.transform_board_to_grid('d', '4'))
-        b_ref.initialize_single_piece('q', 'w', b_ref.transform_board_to_grid('g', '6'))
-
-        expected = b_ref.color_augmented_grid()
-        actual = b.color_augmented_grid()
-
-        self.assertEqual(expected, actual, msg="Black king should be allowed to escape to 'd4'")
 
         # Test valid escape plan by protecting piece
         b.clean_pieces()

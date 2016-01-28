@@ -203,6 +203,38 @@ class TestChessGame(unittest.TestCase):
             actual = c.is_valid_promotion('a8',new_piece)
             self.assertEqual(expected,actual, msg = 'no way this is valid')
 
+    # chess rules related tests
+    
+    # checks
+    def test_black_king_out_of_check_mvt_1(self):
+        c = cg.ChessGame()
+        b = c.board
+        c_ref = cg.ChessGame()
+        b_ref = c_ref.board
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        c.player = 'black'
+        c_ref.player = 'black'
+        
+        # Test valid escape from single check
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('q', 'w', b.transform_board_to_grid('g', '6'))
+        c.parse_user_move('Kd4')
+
+        b_ref.initialize_single_piece('k', 'b', b_ref.transform_board_to_grid('d', '4'))
+        b_ref.initialize_single_piece('q', 'w', b_ref.transform_board_to_grid('g', '6'))
+        
+        # test good board 
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg="Black king should be allowed to escape to 'd4'")
+
+        # test good player
+        exp_player = 'white'
+        actual_player = c.player
+        self.assertEqual(exp_player, actual_player, msg="Once out of check, should switch player")
+
 
 if __name__ == '__main__':
     unittest.main()
