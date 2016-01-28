@@ -1,3 +1,4 @@
+import copy
 import chess_board
 
 class ChessGame(object):
@@ -187,13 +188,18 @@ class ChessGame(object):
         if self.is_main_piece(input_move):
             move_to_col, move_to_line, col_filter, line_filter = self.parse_main_pieces_coordinates(input_move)
 
+        parallel_board = copy.deepcopy(self.board)
         accepted_move = self.move_piece_to(input_move, move_to_col, move_to_line, col_filter, line_filter)
 
         if promotion:
             self.board.promote( move_to_col, move_to_line, self.player, promoted_to )
 
-        self.board.Rules.is_king_under_attack(self.board) #prints when white king is checked
-        self.board.Rules.is_king_under_attack(self.board,'black') #when black king is checked
+        if self.board.Rules.is_king_under_attack(self.board,self.player):
+            print "Cannot leave %s player in check!"%self.player
+            accepted_move = False
+            self.board = parallel_board
+        #self.board.Rules.is_king_under_attack(self.board) #prints when white king is checked
+        #self.board.Rules.is_king_under_attack(self.board,'black') #when black king is checked
         if accepted_move:
             out_str = self.print_move(input_move, move_to_col, move_to_line)
             print("Your move is : " + input_move + '. ' + out_str)
