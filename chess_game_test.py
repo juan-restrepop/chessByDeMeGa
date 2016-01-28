@@ -408,6 +408,34 @@ class TestChessGame(unittest.TestCase):
         actual_player = c.player
         self.assertEqual(exp_player, actual_player, msg="out of check ok, switch player")
 
+    def test_white_king_out_of_check_mvt_3(self):
+        c = cg.ChessGame()
+        b = c.board
+        b.clean_pieces()
+        c.player = 'white'
+
+        c_ref = cg.ChessGame()
+        b_ref = c_ref.board
+        b_ref.clean_pieces()
+        c_ref.player = 'white'
+         # Test invalid escape from single check
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('g', '6'))
+        c.parse_user_move('Kc2')
+
+        b_ref.initialize_single_piece('k', 'w', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('q', 'b', b_ref.transform_board_to_grid('g', '6'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = c.board.color_augmented_grid()
+        self.assertEqual(expected, actual, msg="White king should not be allowed to escape to 'c2'")
+
+        # test good player
+        exp_player = c_ref.player
+        actual_player = c.player
+        self.assertEqual(exp_player, actual_player, msg="still in check, don't switch player")
        
 
 if __name__ == '__main__':
