@@ -1998,46 +1998,6 @@ class TestChessBoard(unittest.TestCase):
 
         self.assertEqual(expected, actual, msg="White bishop should not be allowed to go to 'h3'")
 
-    def test_blocked_black_treason_movement(self):
-        b = cb.ChessBoard()
-        b_ref = cb.ChessBoard()
-        b.clean_pieces()
-        b_ref.clean_pieces()
-
-        # Test valid protecting piece movement
-        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
-        b.initialize_single_piece('b', 'b', b.transform_board_to_grid('f', '5'))
-        b.initialize_single_piece('q', 'w', b.transform_board_to_grid('h', '7'))
-
-        b.piece_mover('b', 'g', '6', 'black')
-
-        b_ref.initialize_single_piece('k', 'b', b_ref.transform_board_to_grid('d', '3'))
-        b_ref.initialize_single_piece('b', 'b', b_ref.transform_board_to_grid('g', '6'))
-        b_ref.initialize_single_piece('q', 'w', b_ref.transform_board_to_grid('h', '7'))
-
-        expected = b_ref.color_augmented_grid()
-        actual = b.color_augmented_grid()
-
-        self.assertEqual(expected, actual, msg="Black bishop should be allowed to go to 'g6'")
-
-        # Test invalid protecting piece treason
-        b.clean_pieces()
-        b_ref.clean_pieces()
-        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
-        b.initialize_single_piece('b', 'b', b.transform_board_to_grid('f', '5'))
-        b.initialize_single_piece('q', 'w', b.transform_board_to_grid('h', '7'))
-
-        b.piece_mover('b', 'h', '3', 'black')
-
-        b_ref.initialize_single_piece('k', 'b', b_ref.transform_board_to_grid('d', '3'))
-        b_ref.initialize_single_piece('b', 'b', b_ref.transform_board_to_grid('f', '5'))
-        b_ref.initialize_single_piece('q', 'w', b_ref.transform_board_to_grid('h', '7'))
-
-        expected = b_ref.color_augmented_grid()
-        actual = b.color_augmented_grid()
-
-        self.assertEqual(expected, actual, msg="Black bishop should not be allowed to go to 'h3'")
-
 # Test castling
 
     def test_white_king_short_castling_rules(self):
