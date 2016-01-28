@@ -537,7 +537,7 @@ class TestChessGame(unittest.TestCase):
         b_ref = c_ref.board
         b_ref.clean_pieces()
         c_ref.player = 'black'
-        
+
         # Test invalid protecting piece treason
         b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
         b.initialize_single_piece('b', 'b', b.transform_board_to_grid('f', '5'))
@@ -555,6 +555,66 @@ class TestChessGame(unittest.TestCase):
         exp_player = c_ref.player
         actual_player = c.player
         self.assertEqual(exp_player, actual_player, msg="not in check, switch player")
+
+    def test_blocked_white_pinned_bishop(self):
+        c = cg.ChessGame()
+        b = c.board
+        b.clean_pieces()
+        c.player = 'white'
+
+        c_ref = cg.ChessGame()
+        b_ref = c_ref.board
+        b_ref.clean_pieces()
+        c_ref.player = 'black'
+
+        # Test valid protecting piece movement
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('b', 'w', b.transform_board_to_grid('f', '5'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('h', '7'))
+        c.parse_user_move('Bg6')
+        
+        b_ref.initialize_single_piece('k', 'w', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('b', 'w', b_ref.transform_board_to_grid('g', '6'))
+        b_ref.initialize_single_piece('q', 'b', b_ref.transform_board_to_grid('h', '7'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = c.board.color_augmented_grid()
+        self.assertEqual(expected, actual, msg="White bishop should be allowed to go to 'g6'")
+        # test good player
+        exp_player = c_ref.player
+        actual_player = c.player
+        self.assertEqual(exp_player, actual_player, msg="not in check, switch player")
+
+    def test_blocked_white_pinned_bishop_2(self):
+        c = cg.ChessGame()
+        b = c.board
+        b.clean_pieces()
+        c.player = 'white'
+
+        c_ref = cg.ChessGame()
+        b_ref = c_ref.board
+        b_ref.clean_pieces()
+        c_ref.player = 'white'
+
+       # Test invalid protecting piece treason
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('b', 'w', b.transform_board_to_grid('f', '5'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('h', '7'))
+        c.parse_user_move('Bh3')
+
+        b_ref.initialize_single_piece('k', 'w', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('b', 'w', b_ref.transform_board_to_grid('f', '5'))
+        b_ref.initialize_single_piece('q', 'b', b_ref.transform_board_to_grid('h', '7'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = c.board.color_augmented_grid()
+        self.assertEqual(expected, actual, msg="White bishop should not be allowed to go to 'h3'")
+        # test good player
+        exp_player = c_ref.player
+        actual_player = c.player
+        self.assertEqual(exp_player, actual_player, msg="check, still same player")
 
 
 if __name__ == '__main__':
