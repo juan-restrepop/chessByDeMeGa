@@ -204,7 +204,6 @@ class TestChessGame(unittest.TestCase):
             self.assertEqual(expected,actual, msg = 'no way this is valid')
 
     # chess rules related tests
-    
     # checks
     def test_black_king_out_of_check_mvt_1(self):
         c = cg.ChessGame()
@@ -235,6 +234,35 @@ class TestChessGame(unittest.TestCase):
         actual_player = c.player
         self.assertEqual(exp_player, actual_player, msg="Once out of check, should switch player")
 
+    def test_black_king_out_of_check_mvt_2(self):
+        c = cg.ChessGame()
+        b = c.board
+        b.clean_pieces()
+        c.player = 'black'
+
+        c_ref = cg.ChessGame()
+        b_ref = c_ref.board
+        b_ref.clean_pieces()
+        c_ref.player = 'black'
+
+        # Test valid escape plan by protecting piece
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('b', 'b', b.transform_board_to_grid('d', '7'))
+        b.initialize_single_piece('q', 'w', b.transform_board_to_grid('g', '6'))
+        c.parse_user_move('Bf5')
+
+        b_ref.initialize_single_piece('k', 'b', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('b', 'b', b_ref.transform_board_to_grid('f', '5'))
+        b_ref.initialize_single_piece('q', 'w', b_ref.transform_board_to_grid('g', '6'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg="The sacrifice of the black bishop to 'f5' saves the king")
+
+        # test good player
+        exp_player = 'white'
+        actual_player = c.player
+        self.assertEqual(exp_player, actual_player, msg="Once out of check, should switch player")
 
 if __name__ == '__main__':
     unittest.main()
