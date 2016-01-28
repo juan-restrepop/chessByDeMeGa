@@ -2131,30 +2131,6 @@ class TestChessBoard(unittest.TestCase):
         actual = b.color_augmented_grid()
         self.assertEqual(expected, actual, msg="The sacrifice of the white bishop to 'f5' is not enough")
 
-    def test_black_king_out_of_check_movement(self):
-        b = cb.ChessBoard()
-        b_ref = cb.ChessBoard()
-
-        # Test invalid escape plan by protecting piece
-        b.clean_pieces()
-        b_ref.clean_pieces()
-
-        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
-        b.initialize_single_piece('b', 'b', b.transform_board_to_grid('d', '7'))
-        b.initialize_single_piece('q', 'w', b.transform_board_to_grid('g', '6'))
-        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('d', '8'))
-
-        b.piece_mover('b', 'f', '5', 'black')
-
-        b_ref.initialize_single_piece('k', 'b', b_ref.transform_board_to_grid('d', '3'))
-        b_ref.initialize_single_piece('b', 'b', b_ref.transform_board_to_grid('d', '7'))
-        b_ref.initialize_single_piece('q', 'w', b_ref.transform_board_to_grid('g', '6'))
-        b_ref.initialize_single_piece('r', 'w', b_ref.transform_board_to_grid('d', '8'))
-
-        expected = b_ref.color_augmented_grid()
-        actual = b.color_augmented_grid()
-        self.assertEqual(expected, actual, msg="The sacrifice of the black bishop to 'f5' is not enough")
-
 # Test castling
 
     def test_white_king_short_castling_rules(self):

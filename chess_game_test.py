@@ -319,6 +319,38 @@ class TestChessGame(unittest.TestCase):
         actual = c.board.color_augmented_grid() 
         self.assertEqual(expected, actual, msg="Black king should not be allowed to escape to 'd4', he is under attack by a rook ")
 
+    def test_black_king_out_of_check_mvt_5(self):
+        c = cg.ChessGame()
+        b = c.board
+        b.clean_pieces()
+        c.player = 'black'
+
+        c_ref = cg.ChessGame()
+        b_ref = c_ref.board
+        b_ref.clean_pieces()
+        c_ref.player = 'black'
+
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('b', 'b', b.transform_board_to_grid('d', '7'))
+        b.initialize_single_piece('q', 'w', b.transform_board_to_grid('g', '6'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('d', '8'))
+        c.parse_user_move('Bf5')
+
+        b_ref.initialize_single_piece('k', 'b', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('b', 'b', b_ref.transform_board_to_grid('d', '7'))
+        b_ref.initialize_single_piece('q', 'w', b_ref.transform_board_to_grid('g', '6'))
+        b_ref.initialize_single_piece('r', 'w', b_ref.transform_board_to_grid('d', '8'))
+
+        # test good player
+        exp_player = 'black'
+        actual_player = c.player
+        self.assertEqual(exp_player, actual_player, msg="Still in check, still same player")
+        # test board
+        expected = b_ref.color_augmented_grid()
+        actual = c.board.color_augmented_grid() 
+        self.assertEqual(expected, actual, msg="The sacrifice of the black bishop to 'f5' is not enough, still in check")
+
+
        
 
 if __name__ == '__main__':
