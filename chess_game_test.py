@@ -400,13 +400,13 @@ class TestChessGame(unittest.TestCase):
         b_ref.initialize_single_piece('q', 'b', b_ref.transform_board_to_grid('g', '6'))
 
         expected = b_ref.color_augmented_grid()
-        actual = b.color_augmented_grid()
+        actual = c.board.color_augmented_grid()
         self.assertEqual(expected, actual, msg="The sacrifice of the white bishop to 'f5' saves the king, no longer in check")
 
         # test good player
         exp_player = c_ref.player
         actual_player = c.player
-        self.assertEqual(exp_player, actual_player, msg="out-of check ok, switch player")
+        self.assertEqual(exp_player, actual_player, msg="out of check ok, switch player")
 
        
 
