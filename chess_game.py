@@ -268,7 +268,7 @@ class ChessGame(object):
             if self.is_short_castling(input_move):
                 return self.board.castler(self.player,'short')
             else:
-                return self.board.castler(self.plater,'long')
+                return self.board.castler(self.player,'long')
 
         if self.is_pawn(input_move):
             kind = 'p'

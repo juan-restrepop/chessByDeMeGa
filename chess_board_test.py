@@ -505,6 +505,111 @@ class TestChessBoard(unittest.TestCase):
         actual = b.Rules.is_bishop_eating_valid(b, i, j, b.bishops_w[0])
         self.assertEqual(expected, actual, msg = "bishop shouldn't  eat at (h,7), someone in the same path" )
 
+    def test_white_pawn_enpassant_eating_rules(self):
+        # from wikipedia
+        # the capturing pawn must be on its fifth rank.
+        # the captured pawn must be on an adjacent file and must have just moved two squares in a single move.
+        # the capture can only be made on the move immediately after the opposing pawn makes the double-step move.
+        b = cb.ChessBoard()
+        b.clean_pieces()
+
+        #test accepted enpassant: black d7-d5 > white cxd6
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('d', '7'))
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('c', '5'))
+        b.piece_mover('p','d','5', 'black')
+        i,j = b.transform_board_to_grid('d', '6')
+        expected = True
+        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_w[0])
+        self.assertEqual(expected,actual, msg= "cxd6 capture should be allowed")
+
+        #test forbidden enpassant: black d7-d5 > white c6xd7  (not 5th file)
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('c', '6'))
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('d', '7'))
+        b.piece_mover('p','d','5', 'black')
+        i,j = b.transform_board_to_grid('d', '7')
+        expected = False
+        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_w[0])
+        self.assertEqual(expected,actual, msg= "cxd7 capture shouldn't be allowed")
+
+        #test forbidden enpassant: black e7-e5 > white c5xe6 (not adjacent)
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('c', '6'))
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '7'))
+        b.piece_mover('p','e','5', 'black')
+        i,j = b.transform_board_to_grid('e', '6')
+        expected = False
+        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_w[0])
+        self.assertEqual(expected,actual, msg = "cxe5 capture shouldn't be allowed")
+
+    def test_white_pawn_enpassant_eating_complex(self):
+        # test forbidden enpassant:
+        # black d7-d5 > white Rh1-Rh3
+        # black Ra8-Ra6 > white c5xd6 (not immediately after)
+        b = cb.ChessBoard()
+        b.clean_pieces()
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('a', '8'))
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('d', '7'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('h', '1'))
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('c', '5'))
+
+        b.piece_mover('p','d','5', 'black')
+        b.piece_mover('r','h','3', 'white')
+        b.piece_mover('r','a','6', 'black')
+        i,j = b.transform_board_to_grid('d', '6')
+        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_w[0])
+        expected = False
+        self.assertEqual(expected,actual, msg= "cxd6 capture should be forbidden (late capture)")
+
+    def test_black_pawn_enpassant_eating_rules(self):
+        b = cb.ChessBoard()
+        b.clean_pieces()
+
+        # test accepted en passant: white b2 -> b4 > black cxb3
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('b', '2'))
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('c', '4'))
+        b.piece_mover('p','b','4', 'white')
+        i,j = b.transform_board_to_grid('b', '3')
+        expected = True
+        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_b[0], 'black')
+        self.assertEqual(expected,actual, msg= "cxb3 capture should be allowed")
+
+        #test forbidden enpassant: white f2-f4 > black g3xf2  (not 5th file)
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('g', '3'))
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('f', '2'))
+        b.piece_mover('p','f','4', 'white')
+        i,j = b.transform_board_to_grid('f', '2')
+        expected = False
+        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_b[0], 'black')
+        self.assertEqual(expected,actual, msg= "gxf2 capture shouldn't be allowed")
+
+        #test forbidden enpassant: white e2-e4 > black c4xe3 (not adjacent)
+        b.clean_pieces()
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('c', '4'))
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('e', '2'))
+        b.piece_mover('p','e','4', 'white')
+        i,j = b.transform_board_to_grid('e', '3')
+        expected = False
+        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_b[0], 'black')
+        self.assertEqual(expected,actual, msg = "cxe3 capture shouldn't be allowed")
+
+    def test_black_pawn_enpassant_eating_complex(self):
+        b = cb.ChessBoard()
+        b.clean_pieces()
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('c', '5'))
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('c', '4'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('d', '6'))
+        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('b', '2'))
+
+        b.piece_mover('p','b','4', 'white')
+        b.piece_mover('r','a','5', 'black')
+        b.piece_mover('r','d','8', 'white')
+        i,j = b.transform_board_to_grid('b', '3')
+        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_b[0], 'black')
+        expected = False
+        self.assertEqual(expected,actual, msg= "cxb3 capture should be forbidden (late capture)")
+
     # Test movement rules
     def test_black_pawn_movement_rules(self):
         # forbidden
@@ -1302,110 +1407,7 @@ class TestChessBoard(unittest.TestCase):
         actual = b.color_augmented_grid()
         self.assertEqual(expected, actual)
 
-    def test_white_pawn_enpassant_eating_rules(self):
-        # from wikipedia
-        # the capturing pawn must be on its fifth rank.
-        # the captured pawn must be on an adjacent file and must have just moved two squares in a single move.
-        # the capture can only be made on the move immediately after the opposing pawn makes the double-step move.
-        b = cb.ChessBoard()
-        b.clean_pieces()
-
-        #test accepted enpassant: black d7-d5 > white cxd6 
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('d', '7'))
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('c', '5'))
-        b.piece_mover('p','d','5', 'black')
-        i,j = b.transform_board_to_grid('d', '6')
-        expected = True
-        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_w[0])
-        self.assertEqual(expected,actual, msg= "cxd6 capture should be allowed")
-
-        #test forbidden enpassant: black d7-d5 > white c6xd7  (not 5th file)
-        b.clean_pieces()
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('c', '6'))
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('d', '7'))
-        b.piece_mover('p','d','5', 'black')
-        i,j = b.transform_board_to_grid('d', '7')
-        expected = False
-        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_w[0])
-        self.assertEqual(expected,actual, msg= "cxd7 capture shouldn't be allowed")
-
-        #test forbidden enpassant: black e7-e5 > white c5xe6 (not adjacent)
-        b.clean_pieces()
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('c', '6'))
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('e', '7'))
-        b.piece_mover('p','e','5', 'black')
-        i,j = b.transform_board_to_grid('e', '6')
-        expected = False
-        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_w[0])
-        self.assertEqual(expected,actual, msg = "cxe5 capture shouldn't be allowed")
-
-    def test_white_pawn_enpassant_eating_complex(self):
-        # test forbidden enpassant:  
-        # black d7-d5 > white Rh1-Rh3
-        # black Ra8-Ra6 > white c5xd6 (not immediately after)
-        b = cb.ChessBoard()
-        b.clean_pieces()
-        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('a', '8'))
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('d', '7'))
-        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('h', '1'))
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('c', '5'))
-        
-        b.piece_mover('p','d','5', 'black')
-        b.piece_mover('r','h','3', 'white')
-        b.piece_mover('r','a','6', 'black')
-        i,j = b.transform_board_to_grid('d', '6')
-        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_w[0])
-        expected = False
-        self.assertEqual(expected,actual, msg= "cxd6 capture should be forbidden (late capture)")
-
-    def test_black_pawn_enpassant_eating_rules(self):
-        b = cb.ChessBoard()
-        b.clean_pieces()
-
-        # test accepted en passant: white b2 -> b4 > black cxb3
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('b', '2'))
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('c', '4'))
-        b.piece_mover('p','b','4', 'white')
-        i,j = b.transform_board_to_grid('b', '3')
-        expected = True
-        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_b[0], 'black')
-        self.assertEqual(expected,actual, msg= "cxb3 capture should be allowed")
-
-        #test forbidden enpassant: white f2-f4 > black g3xf2  (not 5th file)
-        b.clean_pieces()
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('g', '3'))
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('f', '2'))
-        b.piece_mover('p','f','4', 'white')
-        i,j = b.transform_board_to_grid('f', '2')
-        expected = False
-        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_b[0], 'black')
-        self.assertEqual(expected,actual, msg= "gxf2 capture shouldn't be allowed")
-
-        #test forbidden enpassant: white e2-e4 > black c4xe3 (not adjacent)
-        b.clean_pieces()
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('c', '4'))
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('e', '2'))
-        b.piece_mover('p','e','4', 'white')
-        i,j = b.transform_board_to_grid('e', '3')
-        expected = False
-        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_b[0], 'black')
-        self.assertEqual(expected,actual, msg = "cxe3 capture shouldn't be allowed")
-
-    def test_black_pawn_enpassant_eating_complex(self):
-        b = cb.ChessBoard()
-        b.clean_pieces()
-        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('c', '5'))
-        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('c', '4'))
-        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('d', '6'))
-        b.initialize_single_piece('p', 'w', b.transform_board_to_grid('b', '2'))
-
-        b.piece_mover('p','b','4', 'white')
-        b.piece_mover('r','a','5', 'black')
-        b.piece_mover('r','d','8', 'white')
-        i,j = b.transform_board_to_grid('b', '3')
-        actual = b.Rules.is_pawn_eating_valid(b, i, j, b.pawns_b[0], 'black')
-        expected = False
-        self.assertEqual(expected,actual, msg= "cxb3 capture should be forbidden (late capture)")
+    # Test if captures are correctly done
 
     def test_white_knight_capture(self):
         b = cb.ChessBoard()
@@ -1883,6 +1885,344 @@ class TestChessBoard(unittest.TestCase):
         self.assertEqual(expected_black_attack, actual_black_attack, msg="black pawn in 'd5' is not under attack by black bishop in 'f7'")
         self.assertEqual(expected_white_attack, actual_white_attack, msg="black pawn in 'd5' is not under attack by white knight in 'c3'")
 
+
+# Test if suicidal movement are blocked
+
+    def test_blocked_white_king_suicidal_movement(self):
+        b = cb.ChessBoard()
+        b_ref = cb.ChessBoard()
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        # Test approved movement
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('e', '6'))
+
+        b.piece_mover('k', 'c', '4', 'white')
+        b_ref.initialize_single_piece('k', 'w', b_ref.transform_board_to_grid('c', '4'))
+        b_ref.initialize_single_piece('q', 'b', b_ref.transform_board_to_grid('e', '6'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+
+        self.assertEqual(expected, actual, msg = "The white king should be allowed to go to 'c4'")
+
+        # Test non approved movement
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('e', '6'))
+
+        b.piece_mover('k', 'e', '4', 'white')
+        b_ref.initialize_single_piece('k', 'w', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('q', 'b', b_ref.transform_board_to_grid('e', '6'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+
+        self.assertEqual(expected, actual, msg = "The white king should not be allowed to go to 'e4'")
+
+    def test_blocked_black_king_suicidal_movement(self):
+        b = cb.ChessBoard()
+        b_ref = cb.ChessBoard()
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        # Test approved movement
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('q', 'w', b.transform_board_to_grid('e', '6'))
+
+        b.piece_mover('k', 'c', '4', 'black')
+        b_ref.initialize_single_piece('k', 'b', b_ref.transform_board_to_grid('c', '4'))
+        b_ref.initialize_single_piece('q', 'w', b_ref.transform_board_to_grid('e', '6'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+
+        self.assertEqual(expected, actual, msg = "The black king should be allowed to go to 'c4'")
+
+        # Test non approved movement
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('q', 'w', b.transform_board_to_grid('e', '6'))
+
+        b.piece_mover('k', 'e', '4', 'black')
+        b_ref.initialize_single_piece('k', 'b', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('q', 'w', b_ref.transform_board_to_grid('e', '6'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+
+        self.assertEqual(expected, actual, msg = "The black king should not be allowed to go to 'e4'")
+
+    def test_blocked_white_treason_movement(self):
+        b = cb.ChessBoard()
+        b_ref = cb.ChessBoard()
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        # Test valid protecting piece movement
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('b', 'w', b.transform_board_to_grid('f', '5'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('h', '7'))
+
+        b.piece_mover('b', 'g', '6', 'white')
+
+        b_ref.initialize_single_piece('k', 'w', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('b', 'w', b_ref.transform_board_to_grid('g', '6'))
+        b_ref.initialize_single_piece('q', 'b', b_ref.transform_board_to_grid('h', '7'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+
+        self.assertEqual(expected, actual, msg="White bishop should be allowed to go to 'g6'")
+
+        # Test invalid protecting piece treason
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('b', 'w', b.transform_board_to_grid('f', '5'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('h', '7'))
+
+        b.piece_mover('b', 'h', '3', 'white')
+
+        b_ref.initialize_single_piece('k', 'w', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('b', 'w', b_ref.transform_board_to_grid('f', '5'))
+        b_ref.initialize_single_piece('q', 'b', b_ref.transform_board_to_grid('h', '7'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+
+        self.assertEqual(expected, actual, msg="White bishop should not be allowed to go to 'h3'")
+
+    def test_blocked_black_treason_movement(self):
+        b = cb.ChessBoard()
+        b_ref = cb.ChessBoard()
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        # Test valid protecting piece movement
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('b', 'b', b.transform_board_to_grid('f', '5'))
+        b.initialize_single_piece('q', 'w', b.transform_board_to_grid('h', '7'))
+
+        b.piece_mover('b', 'g', '6', 'black')
+
+        b_ref.initialize_single_piece('k', 'b', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('b', 'b', b_ref.transform_board_to_grid('g', '6'))
+        b_ref.initialize_single_piece('q', 'w', b_ref.transform_board_to_grid('h', '7'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+
+        self.assertEqual(expected, actual, msg="Black bishop should be allowed to go to 'g6'")
+
+        # Test invalid protecting piece treason
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('b', 'b', b.transform_board_to_grid('f', '5'))
+        b.initialize_single_piece('q', 'w', b.transform_board_to_grid('h', '7'))
+
+        b.piece_mover('b', 'h', '3', 'black')
+
+        b_ref.initialize_single_piece('k', 'b', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('b', 'b', b_ref.transform_board_to_grid('f', '5'))
+        b_ref.initialize_single_piece('q', 'w', b_ref.transform_board_to_grid('h', '7'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+
+        self.assertEqual(expected, actual, msg="Black bishop should not be allowed to go to 'h3'")
+
+    def test_white_king_out_of_check_movement(self):
+        b = cb.ChessBoard()
+        b_ref = cb.ChessBoard()
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        # Test valid escape from single check
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('g', '6'))
+
+        b.piece_mover('k', 'd', '4', 'white')
+
+        b_ref.initialize_single_piece('k', 'w', b_ref.transform_board_to_grid('d', '4'))
+        b_ref.initialize_single_piece('q', 'b', b_ref.transform_board_to_grid('g', '6'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+
+        self.assertEqual(expected, actual, msg="White king should be allowed to escape to 'd4'")
+
+        # Test valid escape plan by protecting piece
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('b', 'w', b.transform_board_to_grid('d', '7'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('g', '6'))
+
+        b.piece_mover('b', 'f', '5', 'white')
+
+        b_ref.initialize_single_piece('k', 'w', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('b', 'w', b_ref.transform_board_to_grid('f', '5'))
+        b_ref.initialize_single_piece('q', 'b', b_ref.transform_board_to_grid('g', '6'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg="The sacrifice of the white bishop to 'f5' saves the king")
+
+        # Test invalid escape from single check
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('g', '6'))
+
+        b.piece_mover('k', 'c', '2', 'white')
+
+        b_ref.initialize_single_piece('k', 'w', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('q', 'b', b_ref.transform_board_to_grid('g', '6'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+
+        self.assertEqual(expected, actual, msg="White king should not be allowed to escape to 'c2'")
+
+        # Test invalid from one check to another
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('g', '6'))
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('a', '4'))
+
+        b.piece_mover('k', 'd', '4', 'white')
+
+        b_ref.initialize_single_piece('k', 'w', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('q', 'b', b_ref.transform_board_to_grid('g', '6'))
+        b_ref.initialize_single_piece('r', 'b', b_ref.transform_board_to_grid('a', '4'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+
+        self.assertEqual(expected, actual, msg="White king should not be allowed to escape to 'd4', he is under attack by a rook")
+
+        # Test invalid escape plan by protecting piece
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('b', 'w', b.transform_board_to_grid('d', '7'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('g', '6'))
+        b.initialize_single_piece('r', 'b', b.transform_board_to_grid('d', '8'))
+
+        b.piece_mover('b', 'f', '5', 'white')
+
+        b_ref.initialize_single_piece('k', 'w', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('b', 'w', b_ref.transform_board_to_grid('d', '7'))
+        b_ref.initialize_single_piece('q', 'b', b_ref.transform_board_to_grid('g', '6'))
+        b_ref.initialize_single_piece('r', 'b', b_ref.transform_board_to_grid('d', '8'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg="The sacrifice of the white bishop to 'f5' is not enough")
+
+    def test_black_king_out_of_check_movement(self):
+        b = cb.ChessBoard()
+        b_ref = cb.ChessBoard()
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        # Test valid escape from single check
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('q', 'w', b.transform_board_to_grid('g', '6'))
+
+        b.piece_mover('k', 'd', '4', 'black')
+
+        b_ref.initialize_single_piece('k', 'b', b_ref.transform_board_to_grid('d', '4'))
+        b_ref.initialize_single_piece('q', 'w', b_ref.transform_board_to_grid('g', '6'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+
+        self.assertEqual(expected, actual, msg="Black king should be allowed to escape to 'd4'")
+
+        # Test valid escape plan by protecting piece
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('b', 'b', b.transform_board_to_grid('d', '7'))
+        b.initialize_single_piece('q', 'w', b.transform_board_to_grid('g', '6'))
+
+        b.piece_mover('b', 'f', '5', 'black')
+
+        b_ref.initialize_single_piece('k', 'b', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('b', 'b', b_ref.transform_board_to_grid('f', '5'))
+        b_ref.initialize_single_piece('q', 'w', b_ref.transform_board_to_grid('g', '6'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg="The sacrifice of the black bishop to 'f5' saves the king")
+
+        # Test invalid escape from single check
+        b.clean_pieces()
+        b_ref.clean_pieces()
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('q', 'w', b.transform_board_to_grid('g', '6'))
+
+        b.piece_mover('k', 'c', '2', 'black')
+
+        b_ref.initialize_single_piece('k', 'b', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('q', 'w', b_ref.transform_board_to_grid('g', '6'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+
+        self.assertEqual(expected, actual, msg="Black king should not be allowed to escape to 'c2'")
+
+        # Test invalid from one check to another
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('q', 'w', b.transform_board_to_grid('g', '6'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('a', '4'))
+
+        b.piece_mover('k', 'd', '4', 'black')
+
+        b_ref.initialize_single_piece('k', 'b', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('q', 'w', b_ref.transform_board_to_grid('g', '6'))
+        b_ref.initialize_single_piece('r', 'w', b_ref.transform_board_to_grid('a', '4'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+
+        self.assertEqual(expected, actual, msg="Black king should not be allowed to escape to 'd4', he is under attack by a rook")
+
+        # Test invalid escape plan by protecting piece
+        b.clean_pieces()
+        b_ref.clean_pieces()
+
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('b', 'b', b.transform_board_to_grid('d', '7'))
+        b.initialize_single_piece('q', 'w', b.transform_board_to_grid('g', '6'))
+        b.initialize_single_piece('r', 'w', b.transform_board_to_grid('d', '8'))
+
+        b.piece_mover('b', 'f', '5', 'black')
+
+        b_ref.initialize_single_piece('k', 'b', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('b', 'b', b_ref.transform_board_to_grid('d', '7'))
+        b_ref.initialize_single_piece('q', 'w', b_ref.transform_board_to_grid('g', '6'))
+        b_ref.initialize_single_piece('r', 'w', b_ref.transform_board_to_grid('d', '8'))
+
+        expected = b_ref.color_augmented_grid()
+        actual = b.color_augmented_grid()
+        self.assertEqual(expected, actual, msg="The sacrifice of the black bishop to 'f5' is not enough")
 
 # Test castling
 

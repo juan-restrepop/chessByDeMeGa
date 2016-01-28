@@ -880,10 +880,13 @@ class MovementRules(object):
                 if eating_func(board, i_king, j_king, piece):
                     col, line = board.get_piece_coords(piece)
                     checked = True
+                    return checked
+
             else:
                 if eating_func(board, i_king, j_king, piece, opponent):
                     col, line = board.get_piece_coords(piece)
                     checked = True
+                    return checked
 
         return checked
 
