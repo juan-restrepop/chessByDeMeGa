@@ -198,8 +198,7 @@ class ChessGame(object):
             print "Cannot leave %s player in check!"%self.player
             accepted_move = False
             self.board = parallel_board
-        #self.board.Rules.is_king_under_attack(self.board) #prints when white king is checked
-        #self.board.Rules.is_king_under_attack(self.board,'black') #when black king is checked
+
         if accepted_move:
             out_str = self.print_move(input_move, move_to_col, move_to_line)
             print("Your move is : " + input_move + '. ' + out_str)
