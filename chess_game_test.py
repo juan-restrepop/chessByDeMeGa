@@ -513,13 +513,11 @@ class TestChessGame(unittest.TestCase):
         b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
         b.initialize_single_piece('b', 'b', b.transform_board_to_grid('f', '5'))
         b.initialize_single_piece('q', 'w', b.transform_board_to_grid('h', '7'))
-        b.print_board()
         c.parse_user_move('Bg6')
 
         b_ref.initialize_single_piece('k', 'b', b_ref.transform_board_to_grid('d', '3'))
         b_ref.initialize_single_piece('b', 'b', b_ref.transform_board_to_grid('g', '6'))
         b_ref.initialize_single_piece('q', 'w', b_ref.transform_board_to_grid('h', '7'))
-        b_ref.print_board()
 
         expected = b_ref.color_augmented_grid()
         actual = c.board.color_augmented_grid()
@@ -539,9 +537,8 @@ class TestChessGame(unittest.TestCase):
         b_ref = c_ref.board
         b_ref.clean_pieces()
         c_ref.player = 'black'
+        
         # Test invalid protecting piece treason
-        b.clean_pieces()
-        b_ref.clean_pieces()
         b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
         b.initialize_single_piece('b', 'b', b.transform_board_to_grid('f', '5'))
         b.initialize_single_piece('q', 'w', b.transform_board_to_grid('h', '7'))
