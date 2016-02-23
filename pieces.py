@@ -57,13 +57,20 @@ class Knight(Piece):
     def __init__(self, color, coordinates):
         Piece.__init__(self, 'n', color, coordinates)
 
+    def get_natural_moves(self):
+        line,row = self.coordinates
+        nat_moves = []
+        nat_moves = [ [line+k,row+j] for [k,j] in [ [2,1], [2,-1], [1,2], [1,-2], [-1,2], [-1,-2], [-2,1], [-2,-1] ] \
+                        if ( (line+k) in range(8) and (row+j) in range(8) ) ]
+        return nat_moves
+
 class Queen(Piece):
     def __init__(self, color, coordinates):
         Piece.__init__(self, 'q', color, coordinates)
 
     def get_natural_moves(self):
         return self.get_diagonal_moves() + self.get_straight_moves()
-        
+
 class King(Piece):
     def __init__(self, color, coordinates):
         Piece.__init__(self, 'k', color, coordinates)
