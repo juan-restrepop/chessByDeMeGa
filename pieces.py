@@ -39,6 +39,25 @@ class Pawn(Piece):
     def __init__(self, color, coordinates):
         Piece.__init__(self, 'p', color, coordinates)
 
+    def get_natural_moves(self):
+        line,row = self.coordinates
+        nat_moves = []
+
+        if self.color == 'w':
+            nat_moves = [ [line+1,row+k] for k in [-1,0,1] if (line<7) and (row+k) not in [0,7]  ]
+            # +possible initial white jump
+            if line == 1:
+                nat_moves = nat_moves + [line,3]
+
+        elif self.color == 'b':
+            nat_moves = [ [line-1,row+k] for k in [-1,0,1] if (line>0) and (row+k) not in [0,7]  ]
+            # + possible initial black jump
+            if line == 6:
+                nat_moves = nat_moves + [line,4]
+        else:
+            raise Exception
+        return nat_moves
+
 class Rook(Piece):
     def __init__(self, color, coordinates):
         Piece.__init__(self, 'r', color, coordinates)
