@@ -50,6 +50,9 @@ class Bishop(Piece):
     def __init__(self, color, coordinates):
         Piece.__init__(self, 'b', color, coordinates)
 
+    def get_natural_moves(self):
+        return self.get_diagonal_moves()
+
 class Knight(Piece):
     def __init__(self, color, coordinates):
         Piece.__init__(self, 'n', color, coordinates)
@@ -58,6 +61,9 @@ class Queen(Piece):
     def __init__(self, color, coordinates):
         Piece.__init__(self, 'q', color, coordinates)
 
+    def get_natural_moves(self):
+        return self.get_diagonal_moves() + self.get_straight_moves()
+        
 class King(Piece):
     def __init__(self, color, coordinates):
         Piece.__init__(self, 'k', color, coordinates)
