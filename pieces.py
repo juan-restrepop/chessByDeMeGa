@@ -15,6 +15,14 @@ class Piece(object):
     def get_natural_moves(self):
         pass
 
+
+    def get_straight_moves(self):
+        line,row = self.coordinates
+        nat_moves = []
+        nat_moves = [k,row] for k in range(8) if k!=line ]
+        nat_moves = nat_moves + [[line,j] for j in range(8) if j!=row ]
+        return nat_moves
+
 class Pawn(Piece):
     def __init__(self, color, coordinates):
         Piece.__init__(self, 'p', color, coordinates)
@@ -23,6 +31,8 @@ class Rook(Piece):
     def __init__(self, color, coordinates):
         Piece.__init__(self, 'r', color, coordinates)
 
+    def get_natural_moves(self):
+        return self.get_straight_moves()
 
 class Bishop(Piece):
     def __init__(self, color, coordinates):
