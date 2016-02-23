@@ -15,11 +15,23 @@ class Piece(object):
     def get_natural_moves(self):
         pass
 
+    def get_diagonal_moves(self):
+        line,row = self.coordinates
+        nat_moves = []
+        # down right
+        nat_moves = [ [line+k,row+k] for k in range(1,8) if (line+k)<8 and (row+k<8)]
+        # down left
+        nat_moves = nat_moves + [ [line+k,row-k] for k in range(1,8) if (line+k)<8 and (row-k)>=0]
+        # up right
+        nat_moves = nat_moves + [ [line-k,row+k] for k in range(1,8) if (line-k)>=0 and (row+k)<8]
+        # up left
+        nat_moves = nat_moves + [ [line-k,row-k] for k in range(1,8) if (line-k)>=0 and (row-k)>=0]
+        return nat_moves   
 
     def get_straight_moves(self):
         line,row = self.coordinates
         nat_moves = []
-        nat_moves = [k,row] for k in range(8) if k!=line ]
+        nat_moves = [[k,row] for k in range(8) if k!=line ]
         nat_moves = nat_moves + [[line,j] for j in range(8) if j!=row ]
         return nat_moves
 
