@@ -890,4 +890,44 @@ class MovementRules(object):
 
         return checked
 
+    def can_opponent_keep_playing(self,board,player = 'white'):
+        # to do: get all natural moves by kind first  
+        # to do: check if castling is possible
+        # possible issue: do we have to check for checks after opponents move/capture? 
+        keep_playing = False
+
+        if player == 'white':
+            opponent = 'black'
+            opponent_pieces = board.get_all_black_pieces()
+
+        else:
+            opponent = 'white'
+            opponent_pieces = board.get_all_white_pieces()
+
+        piece_natural_moves = []
+
+        while (not keep_playing) and opponent_pieces:
+            piece = opponent_pieces.pop()
+            piece_natural_moves = piece.get_natural_moves()
+
+            while (not keep_playing) and piece_natural_moves: 
+                
+                [move_i,move_j] = piece_natural_moves.pop()
+                
+                # test move and capture for opponent piece
+                move_function_str,white_pieces_str,black_pieces_str = board.map_piece_to_moving(piece.kind)
+                capture_function_str,_,_= board.map_piece_to_eating(piece.kind)
+
+                move_rule_function = getattr(self, move_function_str)
+                capture_rule_function = getattr(self, capture_function_str)
+                
+                white_pieces = getattr(board, white_pieces_str)
+                black_pieces = getattr(board, black_pieces_str)
+
+                if move_rule_function(board, move_i, move_j, piece, opponent) or move_rule_function(board, move_i, move_j, piece, opponent):
+                    # possible issue:check allowed capture here? 
+                    keep_playing = True
+                    
+        # either we found a move and keep_playing is True or we didn't and keep_playing is False 
+        return keep_playing
 
