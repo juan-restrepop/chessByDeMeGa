@@ -628,8 +628,19 @@ class TestChessGame(unittest.TestCase):
         actual = (c.player,c.board.Rules.can_opponent_keep_playing(c.board,c.player), c.board.Rules.is_king_under_attack(c.board,"white"))
         self.assertEqual(actual ,expected)
         
+    def test_stalemate(self):
+        c= cg.ChessGame()
+        b = c.board
+        b.clean_pieces()
+        b.initialize_single_piece('k','w',b.transform_board_to_grid('a','1'))
+        b.initialize_single_piece('k','b',b.transform_board_to_grid('a','3'))
+        b.initialize_single_piece('q','b',b.transform_board_to_grid('e','4'))
+        c.player = "black"
+        c.parse_user_move('Qd3')
 
-
+        expected = ("black", False, False)
+        actual = (c.player,c.board.Rules.can_opponent_keep_playing(c.board,c.player), c.board.Rules.is_king_under_attack(c.board,"white"))
+        self.assertEqual(actual ,expected)
 
 if __name__ == '__main__':
     unittest.main()
