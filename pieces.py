@@ -44,13 +44,13 @@ class Pawn(Piece):
         nat_moves = []
 
         if self.color == 'w':
-            nat_moves = [ [line+1,col+k] for k in [-1,0,1] if (line<7) and (col+k) not in [0,7]  ]
+            nat_moves = [ [line-1,col+k] for k in [-1,0,1] if (line>0) and (col+k) in range(0,7) ]
             # +possible initial white jump
             if line == 1:
                 nat_moves = nat_moves + [line,3]
 
         elif self.color == 'b':
-            nat_moves = [ [line-1,col+k] for k in [-1,0,1] if (line>0) and (col+k) not in [0,7]  ]
+            nat_moves = [ [line+1,col+k] for k in [-1,0,1] if (line<7) and (col+k) in range(0,7) ]
             # + possible initial black jump
             if line == 6:
                 nat_moves = nat_moves + [line,4]
