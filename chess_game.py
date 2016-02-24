@@ -204,7 +204,7 @@ class ChessGame(object):
             print("Your move is : " + input_move + '. ' + out_str)
 
             # avoid interference with tests
-            if not ( len(self.board.king_w)>0 or len(self.board.king_b)>0 ): 
+            if ( len(self.board.king_w)>0 and  len(self.board.king_b)>0 ): 
 
                 if not self.board.Rules.can_opponent_keep_playing(self.board,self.player):
                     print "game over!"
@@ -218,6 +218,9 @@ class ChessGame(object):
                     else:
                         print "FATALITY, no one wins!!"
                     return False
+                else:
+                    self.switch_player()
+
             else:                   
                 self.switch_player()
 
