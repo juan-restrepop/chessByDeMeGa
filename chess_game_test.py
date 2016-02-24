@@ -616,6 +616,20 @@ class TestChessGame(unittest.TestCase):
         actual_player = c.player
         self.assertEqual(exp_player, actual_player, msg="check, still same player")
 
+    def test_fastest_checkmate(self):
+        c= cg.ChessGame()
+
+        c.player = 'white'
+        c.parse_user_move('f4')
+        c.parse_user_move('e6')
+        c.parse_user_move('g4')
+        c.parse_user_move('Qh4')
+        expected = ("black", False, True)
+        actual = (c.player,c.board.Rules.can_opponent_keep_playing(c.board,c.player), c.board.Rules.is_king_under_attack(c.board,"white"))
+        self.assertEqual(actual ,expected)
+        
+
+
 
 if __name__ == '__main__':
     unittest.main()
