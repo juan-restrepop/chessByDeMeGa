@@ -912,7 +912,7 @@ class MovementRules(object):
                 [move_i,move_j] = piece_natural_moves.pop()
                 
                 # test move and capture for opponent's piece
-                move_function_str,white_pieces_str,black_pieces_str = board.map_piece_to_moving(piece.kind)
+                move_function_str,_,_= board.map_piece_to_moving(piece.kind)
                 capture_function_str,_,_= board.map_piece_to_eating(piece.kind)
 
                 move_rule_function = getattr(self, move_function_str)
@@ -924,9 +924,9 @@ class MovementRules(object):
                 if move_rule_function(board, move_i, move_j, piece, opponent):
                     valid_action = True
 
-                elif move_rule_function(board, move_i, move_j, piece, opponent):
+                elif capture_rule_function(board, move_i, move_j, piece, opponent):
                     valid_action = True
-                    capture = False
+                    capture = True
                 else:
                     # exit this iteration: no valid action found
                     continue
