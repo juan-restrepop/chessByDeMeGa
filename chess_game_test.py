@@ -627,7 +627,7 @@ class TestChessGame(unittest.TestCase):
         b_ref.clean_pieces()
         c_ref.player = 'white'
 
-        # Test approved movement
+        # Test forbidden movement
         b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
         b.initialize_single_piece('q', 'b', b.transform_board_to_grid('e', '6'))
         c.parse_user_move('Kc4')
@@ -661,6 +661,50 @@ class TestChessGame(unittest.TestCase):
         actual = (c.board.color_augmented_grid(), c_ref.player)
         self.assertEqual(expected, actual, msg = "The white king should not be allowed to go to 'e4'")
 
+    def test_blocked_black_king_selfdestroy(self):
+        c = cg.ChessGame()
+        b = c.board
+        b.clean_pieces()
+        c.player = 'black'
+
+        c_ref = cg.ChessGame()
+        b_ref = c_ref.board
+        b_ref.clean_pieces()
+        c_ref.player = 'black'
+
+        # Test not approved movement
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('q', 'w', b.transform_board_to_grid('e', '6'))
+        c.parse_user_move('Kc4')
+        
+        b_ref.initialize_single_piece('k', 'b', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('q', 'w', b_ref.transform_board_to_grid('e', '6'))
+        expected = (b_ref.color_augmented_grid(), c.player)
+        actual = (c.board.color_augmented_grid(), c_ref.player)
+        self.assertEqual(expected, actual, msg = "The black king should not be allowed to go to 'c4'")
+
+    def test_blocked_black_king_selfdestroy(self):
+        c = cg.ChessGame()
+        b = c.board
+        b.clean_pieces()
+        c.player = 'black'
+
+        c_ref = cg.ChessGame()
+        b_ref = c_ref.board
+        b_ref.clean_pieces()
+        c_ref.player = 'black'
+
+        # Test non approved movement
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('q', 'w', b.transform_board_to_grid('e', '6'))
+        c.parse_user_move('Ke4')
+
+        b_ref.initialize_single_piece('k', 'b', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('q', 'w', b_ref.transform_board_to_grid('e', '6'))
+
+        expected = (b_ref.color_augmented_grid(), c.player)
+        actual = (c.board.color_augmented_grid(), c_ref.player)
+        self.assertEqual(expected, actual, msg = "The black king should not be allowed to go to 'e4'")
 
     # End-of-game tests
     def test_fastest_checkmate(self):
