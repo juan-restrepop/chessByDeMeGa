@@ -202,12 +202,27 @@ class ChessGame(object):
         if accepted_move:
             out_str = self.print_move(input_move, move_to_col, move_to_line)
             print("Your move is : " + input_move + '. ' + out_str)
-            self.switch_player()
+
+            # avoid interference with tests
+            if not ( len(self.board.king_w)>0 or len(self.board.king_b)>0 ): 
+
+                if not self.board.Rules.can_opponent_keep_playing(self.board,self.player):
+                    print "game over!"
+                    if self.player == "white":
+                        opponent = "black"
+                    else:
+                        opponent ="white"
+
+                    if self.board.Rules.is_king_under_attack(self.board,opponent):
+                        print "FATALITY %s wins!"%self.player
+                    else:
+                        print "FATALITY, no one wins!!"
+                    return False
+            else:                   
+                self.switch_player()
 
         else:
             print "Move not accepted"
-
-
 
         return True
 
