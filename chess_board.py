@@ -892,14 +892,11 @@ class MovementRules(object):
 
     def can_opponent_keep_playing(self,board,player = 'white'):
         # to do: get all natural moves by kind first  
-        # to do: check if castling is possible
-        # possible issue: do we have to check for checks after opponents move/capture? 
         keep_playing = False
 
         if player == 'white':
             opponent = 'black'
             opponent_pieces = board.get_all_black_pieces()
-
         else:
             opponent = 'white'
             opponent_pieces = board.get_all_white_pieces()
@@ -914,20 +911,44 @@ class MovementRules(object):
                 
                 [move_i,move_j] = piece_natural_moves.pop()
                 
-                # test move and capture for opponent piece
+                # test move and capture for opponent's piece
                 move_function_str,white_pieces_str,black_pieces_str = board.map_piece_to_moving(piece.kind)
                 capture_function_str,_,_= board.map_piece_to_eating(piece.kind)
 
                 move_rule_function = getattr(self, move_function_str)
                 capture_rule_function = getattr(self, capture_function_str)
-                
-                white_pieces = getattr(board, white_pieces_str)
-                black_pieces = getattr(board, black_pieces_str)
 
-                if move_rule_function(board, move_i, move_j, piece, opponent) or move_rule_function(board, move_i, move_j, piece, opponent):
-                    # possible issue:check allowed capture here? 
-                    keep_playing = True
+                valid_action = False
+                capture = False
+
+                if move_rule_function(board, move_i, move_j, piece, opponent):
+                    valid_action = True
+
+                elif move_rule_function(board, move_i, move_j, piece, opponent):
+                    valid_action = True
+                    capture = False
+                else:
+                    # exit this iteration: no valid action found
+                    continue
+
+                if valid_action:
+                    # make move/capture in a parallel_board then look if leads to check
+                    # we reuse the parallel_board's piece_manager
+                    parallel_board = copy.deepcopy(board)
+
+                    col,line = parallel_board.transform_grid_to_board(move_i, move_j)
+                    [i,j] = piece.coordinates
+                    col_filter,line_filter = parallel_board.transform_grid_to_board(i, j)
+
+                    valid_parallel_action = parallel_board.piece_manager(piece.kind, col, line, opponent, capture, col_filter, line_filter)
                     
+                if valid_action != valid_parallel_action:
+                    print "Something went wrong"
+                    raise Exception
+                else:
+                    # actual check checking
+                    keep_playing = not self.is_king_under_attack(parallel_board,opponent)        
+
         # either we found a move and keep_playing is True or we didn't and keep_playing is False 
         return keep_playing
 
