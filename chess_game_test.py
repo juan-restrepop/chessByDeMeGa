@@ -620,10 +620,12 @@ class TestChessGame(unittest.TestCase):
         c = cg.ChessGame()
         b = c.board
         b.clean_pieces()
+        c.player = 'white'
 
         c_ref = cg.ChessGame()
         b_ref = c_ref.board
         b_ref.clean_pieces()
+        c_ref.player = 'white'
 
         # Test approved movement
         b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
@@ -633,9 +635,31 @@ class TestChessGame(unittest.TestCase):
         b_ref.initialize_single_piece('k', 'w', b_ref.transform_board_to_grid('d', '3'))
         b_ref.initialize_single_piece('q', 'b', b_ref.transform_board_to_grid('e', '6'))
 
-        expected = b_ref.color_augmented_grid()
-        actual = c.board.color_augmented_grid()
+        expected = (b_ref.color_augmented_grid(), c.player)
+        actual = (c.board.color_augmented_grid(), c_ref.player)
         self.assertEqual(expected, actual, msg = "The white king should not be allowed to go to 'c4'")
+
+    def test_blocked_white_king_selfdestroy_2(self):
+        c = cg.ChessGame()
+        b = c.board
+        b.clean_pieces()
+        c.player = 'white'
+
+        c_ref = cg.ChessGame()
+        b_ref = c_ref.board
+        b_ref.clean_pieces()
+        c_ref.player = 'white'
+
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('e', '6'))
+        c.parse_user_move('Ke4')
+
+        b_ref.initialize_single_piece('k', 'w', b_ref.transform_board_to_grid('d', '3'))
+        b_ref.initialize_single_piece('q', 'b', b_ref.transform_board_to_grid('e', '6'))
+
+        expected = (b_ref.color_augmented_grid(), c.player)
+        actual = (c.board.color_augmented_grid(), c_ref.player)
+        self.assertEqual(expected, actual, msg = "The white king should not be allowed to go to 'e4'")
 
 
     # End-of-game tests
