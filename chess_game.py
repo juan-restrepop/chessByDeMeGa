@@ -125,10 +125,9 @@ class ChessGame(object):
         return False
 
     def is_valid_promotion(self, input_move, promoted_to):
-        return input_move[1] in [ '1','8' ] and promoted_to in ['B','N','R','Q']
+        return (input_move[-1] in [ '1','8' ]) and (promoted_to in ['B','N','R','Q']) and (self.validate_move_case(input_move) or self.validate_eat_case(input_move))
 
     def is_user_move_valid(self, input_move):
-
         if len(input_move) <= 1:
             print 'wrong input try again'
             return False
@@ -151,6 +150,14 @@ class ChessGame(object):
         if self.validate_move_case(input_move):
             print 'valid move input'
             return True
+
+        promotion,input_move,promoted_to = self.is_promotion(input_move)
+
+        if promotion:
+            if not self.is_valid_promotion(input_move,promoted_to):
+                return False
+            else:
+                return True
 
         print 'wrong input, try again'
         return False
@@ -175,9 +182,6 @@ class ChessGame(object):
             input_move = input_move[:-1]
 
         promotion,input_move,promoted_to = self.is_promotion(input_move)
-
-        if promotion and not self.is_valid_promotion(input_move, promoted_to):
-            return True
 
         move_to_col, move_to_line = None, None
         col_filter, line_filter = None, None
