@@ -718,6 +718,23 @@ class TestChessGame(unittest.TestCase):
         expected = ("black", False, True)
         actual = (c.player,c.board.Rules.can_opponent_keep_playing(c.board,c.player), c.board.Rules.is_king_under_attack(c.board,"white"))
         self.assertEqual(actual ,expected)
+
+    def test_fools_checkmate_white(self):
+        c= cg.ChessGame()
+
+        c.player = 'white'
+        c.parse_user_move('d4') #w
+        c.parse_user_move('g5') #b
+        c.parse_user_move('Bxg5') #w
+        c.parse_user_move('f6') #b
+        c.parse_user_move('e4') #w
+        c.parse_user_move('fxg5') #b
+        c.parse_user_move('Qh5') #w
+        expected = ("white", False, True)
+        actual = (c.player, \
+                  c.board.Rules.can_opponent_keep_playing(c.board, c.player), \
+                  c.board.Rules.is_king_under_attack(c.board, "black"))
+        self.assertEqual(actual, expected)
     
     def test_checkmate_promote(self):
         print "TEST CHECK"
