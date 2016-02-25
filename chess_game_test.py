@@ -650,6 +650,7 @@ class TestChessGame(unittest.TestCase):
         b_ref.clean_pieces()
         c_ref.player = 'white'
 
+        # Test not approved movement
         b.initialize_single_piece('k', 'w', b.transform_board_to_grid('d', '3'))
         b.initialize_single_piece('q', 'b', b.transform_board_to_grid('e', '6'))
         c.parse_user_move('Ke4')
@@ -715,9 +716,12 @@ class TestChessGame(unittest.TestCase):
         c.parse_user_move('e6')
         c.parse_user_move('g4')
         c.parse_user_move('Qh4')
+
         expected = ("black", False, True)
-        actual = (c.player,c.board.Rules.can_opponent_keep_playing(c.board,c.player), c.board.Rules.is_king_under_attack(c.board,"white"))
-        self.assertEqual(actual ,expected)
+        actual = (c.player, \
+                  c.board.Rules.can_opponent_keep_playing(c.board, c.player), \
+                  c.board.Rules.is_king_under_attack(c.board, "white"))
+        self.assertEqual(actual, expected)
 
     def test_fools_checkmate_white(self):
         c= cg.ChessGame()
@@ -730,6 +734,7 @@ class TestChessGame(unittest.TestCase):
         c.parse_user_move('e4') #w
         c.parse_user_move('fxg5') #b
         c.parse_user_move('Qh5') #w
+
         expected = ("white", False, True)
         actual = (c.player, \
                   c.board.Rules.can_opponent_keep_playing(c.board, c.player), \
@@ -737,36 +742,39 @@ class TestChessGame(unittest.TestCase):
         self.assertEqual(actual, expected)
     
     def test_checkmate_promote(self):
-        print "TEST CHECK"
         c= cg.ChessGame()
         b = c.board
         b.clean_pieces()
 
-        b.initialize_single_piece('k','w',b.transform_board_to_grid('b','1'))
-        b.initialize_single_piece('k','b',b.transform_board_to_grid('b','3'))
-        b.initialize_single_piece('p','b',b.transform_board_to_grid('g','2'))
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('b', '1'))
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('b', '3'))
+        b.initialize_single_piece('p', 'b', b.transform_board_to_grid('g', '2'))
 
         c.player = 'black'
-        input_move = 'g1=Q'
-        c.parse_user_move(input_move)
+        c.parse_user_move('g1=Q')
 
-        expected = ('black',False,True)
-        actual = (c.player,c.board.Rules.can_opponent_keep_playing(c.board,c.player), c.board.Rules.is_king_under_attack(c.board,"white"))
+        expected = ('black', False, True)
+        actual = (c.player, \
+                  c.board.Rules.can_opponent_keep_playing(c.board,c.player), \
+                  c.board.Rules.is_king_under_attack(c.board,"white"))
         self.assertEqual(actual ,expected)
 
     def test_stalemate(self):
         c= cg.ChessGame()
         b = c.board
         b.clean_pieces()
-        b.initialize_single_piece('k','w',b.transform_board_to_grid('a','1'))
-        b.initialize_single_piece('k','b',b.transform_board_to_grid('a','3'))
-        b.initialize_single_piece('q','b',b.transform_board_to_grid('e','4'))
+
+        b.initialize_single_piece('k', 'w', b.transform_board_to_grid('a', '1'))
+        b.initialize_single_piece('k', 'b', b.transform_board_to_grid('a', '3'))
+        b.initialize_single_piece('q', 'b', b.transform_board_to_grid('e', '4'))
         c.player = "black"
         c.parse_user_move('Qd3')
 
         expected = ("black", False, False)
-        actual = (c.player,c.board.Rules.can_opponent_keep_playing(c.board,c.player), c.board.Rules.is_king_under_attack(c.board,"white"))
-        self.assertEqual(actual ,expected)
+        actual = (c.player, \
+                  c.board.Rules.can_opponent_keep_playing(c.board, c.player), \
+                  c.board.Rules.is_king_under_attack(c.board, "white"))
+        self.assertEqual(actual, expected)
 
 if __name__ == '__main__':
     unittest.main()
