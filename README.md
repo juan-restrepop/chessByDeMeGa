@@ -27,3 +27,5 @@ To get the test coverage do:
 #### Launch basic game:
 
 To launch a basic game do : `python launch.py`
+
+To go through toy game do: `python launch.py dataBase/Kasparov_game0001.pgn`

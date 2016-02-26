@@ -16,7 +16,7 @@ class ChessGame(object):
             self.board.print_board()
             stay_in_game = self.read_user_move(play_generator)
             if play_generator is not None:      
-                interaction = raw_input("Press ENTER to continue\n")
+                interaction = raw_input("Press ENTER to continue, 'q' to quit\n")
                 if interaction == 'q':
                     stay_in_game = False
     def read_user_move(self, play_generator = None):
