@@ -25,11 +25,27 @@ class pgnBasicReader(object):
 	def basic_fileobject_reader(self, file_object):
 		out = ""
 		for line in file_object.readlines():
-			if line.strip() == "" or line.strip()[0] =='[':
+
+			if self.pgn_meta_info(line):
 				pass
 			else:
 				out = out + line.strip() + " "
+
+				if self.hit_game_end(line):
+					break
 		return out
+
+	def pgn_meta_info(self, line):
+		return line.strip() == "" or line.strip()[0] =='['
+
+	def hit_game_end(self,line):
+		if len(line.strip())>=3 and len(line.strip())<7:
+			return line[-3:] in ['1-0','0-1']
+		elif len(line.strip())>= 7:
+			return line[-7:] in ['1-0','0-1','1/2-1/2']
+		else:
+			return False
+
 
 	def read_single_pgn_game(self,filename):
 		f = None
