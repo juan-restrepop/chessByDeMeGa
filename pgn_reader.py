@@ -51,7 +51,7 @@ class pgnBasicReader(object):
 			while nextk<len(bare_game_str)-1 and bare_game_str[nextk] not in [" ", '\n']:
 				nextk+=1
 
-			chunk_play = bare_game_str[k:nextk+1]
+			chunk_play = bare_game_str[k:nextk]
 
 			# from here on: bare_game_str[nextk] == " "
 			if '.' in chunk_play:
