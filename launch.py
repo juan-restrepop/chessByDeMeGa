@@ -15,6 +15,9 @@ if __name__ == '__main__':
 			print "Error #%s, "%e.errno,
 			print e.strerror
 
+		except EOFError as e:
+			print "Ctrl-d: User quit"
+
 		except:
 			print "Unknown Error"
 

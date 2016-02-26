@@ -12,22 +12,30 @@ class ChessGame(object):
 
     def run(self, play_generator = None):
         stay_in_game = True
+
         while(stay_in_game):
             self.board.print_board()
             stay_in_game = self.read_user_move(play_generator)
-            if play_generator is not None:      
+
+            if play_generator is not None:
                 interaction = raw_input("Press ENTER to continue, 'q' to quit\n")
+
                 if interaction == 'q':
                     stay_in_game = False
+
     def read_user_move(self, play_generator = None):
         print "%s player's turn." % self.player
 
+
         if play_generator is None:
-            new_move_str = raw_input("Please enter a new move: (type 'q' to quit the game) \n")
+            try:
+                new_move_str = raw_input("Please enter a new move: (type 'q' to quit the game) \n")
+            except EOFError:
+                print "Quitting"
+                return False
         else: 
             try:
                 new_move_str = play_generator.next()
-
             except StopIteration:
                 new_move_str = 'q'
 
