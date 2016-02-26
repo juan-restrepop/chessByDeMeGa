@@ -9,6 +9,7 @@ class ChessGame(object):
 
     def __init__(self):
         self.board = chess_board.ChessBoard()
+        self.player = 'white'
 
     def run(self, play_generator = None):
         stay_in_game = True
@@ -17,16 +18,8 @@ class ChessGame(object):
             self.board.print_board()
             stay_in_game = self.read_user_move(play_generator)
 
-            if play_generator is not None:
-                interaction = raw_input("Press ENTER to continue, 'q' to quit\n")
-
-                if interaction == 'q':
-                    stay_in_game = False
-
     def read_user_move(self, play_generator = None):
         print "%s player's turn." % self.player
-
-
         if play_generator is None:
             try:
                 new_move_str = raw_input("Please enter a new move: (type 'q' to quit the game) \n")
@@ -159,8 +152,7 @@ class ChessGame(object):
             return True
 
         if self.is_special_case(input_move):
-            print 'end of game not supported yet'
-            return False
+            return True
 
         if not self.is_pawn(input_move) and not self.is_main_piece(input_move):
             print 'case not valid, not a chess piece'
@@ -252,7 +244,11 @@ class ChessGame(object):
                 self.switch_player()
 
         else:
-            print "Move not accepted"
+            if self.is_special_case(input_move):
+                print "we should reinitialize the board, let's try it"
+                self.__init__()
+                print "New Game!"
+            #print "Move not accepted"
 
         return True
 
