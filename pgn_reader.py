@@ -37,7 +37,7 @@ class pgnBasicReader(object):
 			f.close()
 		except IOError as e:
 
-			print "io error reading %s"%filename
+			print "IOError reading %s"%filename
 			raise e
 		return bare_game
 		
