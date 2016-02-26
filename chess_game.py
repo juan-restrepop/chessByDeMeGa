@@ -14,10 +14,11 @@ class ChessGame(object):
         stay_in_game = True
         while(stay_in_game):
             self.board.print_board()
-            stay_in_game = self.read_user_move(play_generator)        
-            interaction = raw_input("Press ENTER to continue\n")
-            if interaction == 'q':
-                stay_in_game = False
+            stay_in_game = self.read_user_move(play_generator)
+            if play_generator is not None:      
+                interaction = raw_input("Press ENTER to continue\n")
+                if interaction == 'q':
+                    stay_in_game = False
     def read_user_move(self, play_generator = None):
         print "%s player's turn." % self.player
 
@@ -142,6 +143,10 @@ class ChessGame(object):
             print 'wrong input try again'
             return False
 
+        if self.is_check(input_move):
+            print "CHECK"
+            input_move = input_move[:-1]
+
         if self.is_castling(input_move):
             return True
 
@@ -185,8 +190,7 @@ class ChessGame(object):
         if self.has_quit(input_move):
             return False
 
-        if self.is_check(input_move):
-            print "CHECK"
+        if len(input_move)>1 and self.is_check(input_move):
             input_move = input_move[:-1]
 
         if not self.is_user_move_valid(input_move):
