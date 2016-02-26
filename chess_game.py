@@ -10,16 +10,26 @@ class ChessGame(object):
     def __init__(self):
         self.board = chess_board.ChessBoard()
 
-    def run(self):
+    def run(self, play_generator = None):
         stay_in_game = True
         while(stay_in_game):
             self.board.print_board()
-            stay_in_game = self.read_user_move()        
-
-    def read_user_move(self):
+            stay_in_game = self.read_user_move(play_generator)        
+            interaction = raw_input("Press ENTER to continue\n")
+            if interaction == 'q':
+                stay_in_game = False
+    def read_user_move(self, play_generator = None):
         print "%s player's turn." % self.player
-        new_move_str = raw_input("Please enter a new move: (type 'q' to quit the game) \n")
-        
+
+        if play_generator is None:
+            new_move_str = raw_input("Please enter a new move: (type 'q' to quit the game) \n")
+        else: 
+            try:
+                new_move_str = play_generator.next()
+
+            except StopIteration:
+                new_move_str = 'q'
+
         return(self.parse_user_move(new_move_str))
 
     def has_quit(self, input_move):
@@ -42,7 +52,7 @@ class ChessGame(object):
     def is_end_of_game(self, input_move):
         res = input_move in ['1-0','0-1', '1/2-1/2']
         if res:
-            print "End of game"
+            print "End of game: " + input_move
         return res
 
     def is_promotion(self,input_move):
@@ -170,16 +180,17 @@ class ChessGame(object):
         # TODO: Handle ambiguities
         # TODO: Handle check, check-mate
 
-        input_move = input_move.lstrip()
+        input_move = input_move.strip()
 
         if self.has_quit(input_move):
             return False
 
+        if self.is_check(input_move):
+            print "CHECK"
+            input_move = input_move[:-1]
+
         if not self.is_user_move_valid(input_move):
             return True
-
-        if self.is_check(input_move):
-            input_move = input_move[:-1]
 
         promotion,input_move,promoted_to = self.is_promotion(input_move)
 
