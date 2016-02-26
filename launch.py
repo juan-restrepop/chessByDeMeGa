@@ -17,9 +17,9 @@ if __name__ == '__main__':
 
 		except EOFError as e:
 			print "Ctrl-d: User quit"
-
-		except:
-			print "Unknown Error"
+			
+		except Exception:
+			raise
 
 	else:
 		c.run()

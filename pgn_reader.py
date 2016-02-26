@@ -22,21 +22,25 @@ class pgnBasicReader(object):
 		bare_game = self.read_single_pgn_game(filename)
 		return self.pgn_generator(bare_game)
 
+	def basic_fileobject_reader(self, file_object):
+		out = ""
+		for line in file_object.readlines():
+			if line.strip() == "" or line.strip()[0] =='[':
+				pass
+			else:
+				out = out + line.strip() + " "
+		return out
+
 	def read_single_pgn_game(self,filename):
 		f = None
+		bare_game = ""
 		try:
 			f = open(filename,'r') 
 			bare_game = ""
-
-			for line in f.readlines():	
-				if line.strip() == "" or line.strip()[0] =='[':
-					pass 
-				else:
-					bare_game = bare_game + line.strip() + " "
-
+			bare_game = self.basic_fileobject_reader(f)
 			f.close()
-		except IOError as e:
 
+		except IOError as e:
 			print "IOError reading %s"%filename
 			raise e
 		return bare_game
