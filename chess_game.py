@@ -22,17 +22,17 @@ class ChessGame(object):
         print "%s player's turn." % self.player
         if play_generator is None:
             try:
-                new_move_str = raw_input("Please enter a new move: (type 'q' to quit the game) \n")
+                new_move = raw_input("Please enter a new move: (type 'q' to quit the game) \n")
             except EOFError:
                 print "Quitting"
                 return False
         else: 
             try:
-                new_move_str = play_generator.next()
+                new_move = play_generator.next()
             except StopIteration:
-                new_move_str = 'q'
+                new_move = 'q'
 
-        return(self.parse_user_move(new_move_str))
+        return self.parse_user_move(new_move)
 
     def has_quit(self, input_move):
         return input_move == "q"
@@ -90,27 +90,26 @@ class ChessGame(object):
     def is_main_piece(self, input_move):
         return input_move[0] in ['K','Q','N','B','R']
 
-
     def validate_eat_case(self, input_move):
-        if len(input_move) >= 4:
-            if input_move[-3] == 'x':
-                if self.are_coordinates_valid(input_move[-2], input_move[-1]):
-                    return (  ( len(input_move) == 4 
-                                and (self.is_pawn(input_move) or self.is_main_piece(input_move)) 
-                                ) 
-                            or 
-                              ( len(input_move) == 5 
-                                and ( self.is_main_piece(input_move))
-                                and ( input_move[1] in self.column_names + self.line_names )
-                                )
-                            or
-                              ( len(input_move) == 6 
-                                and ( self.is_main_piece(input_move))
-                                and ( self.are_coordinates_valid(input_move[1], input_move[2]) )
-                                )
-                            )
+        if len(input_move) < 4 or \
+            input_move[-3] != 'x' or \
+            (not self.are_coordinates_valid(input_move[-2], input_move[-1])):
+            return False
 
-        return False
+        return (  ( len(input_move) == 4 
+                    and (self.is_pawn(input_move) or self.is_main_piece(input_move)) 
+                    ) 
+                or 
+                  ( len(input_move) == 5 
+                    and ( self.is_main_piece(input_move))
+                    and ( input_move[1] in self.column_names + self.line_names )
+                    )
+                or
+                  ( len(input_move) == 6 
+                    and ( self.is_main_piece(input_move))
+                    and ( self.are_coordinates_valid(input_move[1], input_move[2]) )
+                    )
+                )
 
     def validate_move_case(self, input_move):
 
