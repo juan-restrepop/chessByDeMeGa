@@ -252,11 +252,7 @@ class ChessGame(object):
         return True
 
     def switch_player(self):
-        print self.player
-        if self.player == 'white':
-            self.player = 'black'
-            return
-        self.player = 'white'
+        self.player = 'black' if (self.player == 'white') else 'white'
         return
 
 
