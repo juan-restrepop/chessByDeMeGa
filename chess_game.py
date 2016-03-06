@@ -18,6 +18,9 @@ class ChessGame(object):
             self.board.print_board()
             stay_in_game = self.read_user_move(play_generator)
 
+    def is_match(self):
+        return len(self.board.king_w)>0 and len(self.board.king_b)>0
+
     def read_user_move(self, play_generator = None):
         print "%s player's turn." % self.player
         if play_generator is None:
@@ -211,7 +214,7 @@ class ChessGame(object):
             print("Your move is : " + input_move + '. ' + out_str)
 
             # avoid interference with tests
-            if ( len(self.board.king_w)>0 and  len(self.board.king_b)>0 ): 
+            if self.is_match():
 
                 if not self.board.Rules.can_opponent_keep_playing(self.board,self.player):
                     print "game over!"
