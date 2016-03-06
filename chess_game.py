@@ -193,15 +193,8 @@ class ChessGame(object):
 
         promotion,input_move,promoted_to = self.is_promotion(input_move)
 
-        move_to_col, move_to_line = None, None
-        col_filter, line_filter = None, None
-
-        if self.is_pawn(input_move):
-            move_to_col, move_to_line, col_filter, line_filter = self.parse_pawn_coordinates(input_move)
-
-        if self.is_main_piece(input_move):
-            move_to_col, move_to_line, col_filter, line_filter = self.parse_main_pieces_coordinates(input_move)
-
+        move_to_col,move_to_line,col_filter,line_filter = self.parse_coordinates(input_move)
+        
         parallel_board = copy.deepcopy(self.board)
         accepted_move = self.move_piece_to(input_move, move_to_col, move_to_line, col_filter, line_filter)
 
@@ -251,7 +244,18 @@ class ChessGame(object):
         self.player = 'black' if (self.player == 'white') else 'white'
         return
 
+    def parse_coordinates(self,input_move):
+        if self.is_pawn(input_move):
+            move_to_col, move_to_line, col_filter, line_filter = self.parse_pawn_coordinates(input_move)
 
+        elif self.is_main_piece(input_move):
+            move_to_col, move_to_line, col_filter, line_filter = self.parse_main_pieces_coordinates(input_move)
+
+        else:
+            move_to_col, move_to_line = None, None
+            col_filter, line_filter = None, None
+
+        return move_to_col, move_to_line, col_filter, line_filter
 
     def parse_pawn_coordinates(self, input_move):
         col_filter, line_filter = None, None
