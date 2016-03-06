@@ -21,6 +21,18 @@ class ChessGame(object):
     def is_match(self):
         return len(self.board.king_w)>0 and len(self.board.king_b)>0
 
+    def hit_endgame(self):
+        if not self.board.Rules.can_opponent_keep_playing(self.board,self.player):
+            opponent = 'black' if (self.player == 'white') else 'white'
+
+            if self.board.Rules.is_king_under_attack(self.board,opponent):
+                print "Game over\n FATALITY (check-mate), %s wins! "%self.player
+            else:
+                print "Game over\n FATALITY (stalemate), no one wins!!  "
+            return True
+
+        return False
+
     def read_user_move(self, play_generator = None):
         print "%s player's turn." % self.player
         if play_generator is None:
@@ -216,17 +228,7 @@ class ChessGame(object):
             # avoid interference with tests
             if self.is_match():
 
-                if not self.board.Rules.can_opponent_keep_playing(self.board,self.player):
-                    print "game over!"
-                    if self.player == "white":
-                        opponent = "black"
-                    else:
-                        opponent ="white"
-
-                    if self.board.Rules.is_king_under_attack(self.board,opponent):
-                        print "FATALITY %s wins!"%self.player
-                    else:
-                        print "FATALITY, no one wins!!"
+                if self.hit_endgame():
                     return False
                 else:
                     self.switch_player()
