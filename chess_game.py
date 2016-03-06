@@ -21,6 +21,10 @@ class ChessGame(object):
     def is_match(self):
         return len(self.board.king_w)>0 and len(self.board.king_b)>0
 
+    def restart(self):
+        self.__init__()
+        print "New Game!"
+
     def hit_endgame(self):
         if not self.board.Rules.can_opponent_keep_playing(self.board,self.player):
             opponent = 'black' if (self.player == 'white') else 'white'
@@ -238,9 +242,8 @@ class ChessGame(object):
 
         else:
             if self.is_special_case(input_move):
-                print "we should reinitialize the board, let's try it"
-                self.__init__()
-                print "New Game!"
+                self.restart()
+
             #print "Move not accepted"
 
         return True
