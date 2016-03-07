@@ -167,26 +167,6 @@ class TestChessGame(unittest.TestCase):
             actual = c.parse_main_pieces_coordinates(input_move)
             self.assertEqual(expected[k], actual)
 
-    def test_is_check(self):
-        c = cg.ChessGame()
-
-        expected = True
-        test_cases = ['Bf5+','a6#']
-        for input_move in test_cases:
-            actual = c.is_check(input_move)
-            self.assertEqual(actual,expected)
-
-    def test_is_promotion(self):
-        c  = cg.ChessGame()
-
-        expected = (True,'a8','Q')
-        actual =  c.is_promotion('a8=Q')
-        self.assertEqual(expected,actual)
-
-        expected = (False,'a8','')
-        actual =  c.is_promotion('a8')
-        self.assertEqual(expected,actual)
-
     def test_is_valid_promotion(self):
         c = cg.ChessGame()
 

@@ -1,5 +1,6 @@
 import copy
 import chess_board
+import chess_moves as cm
 
 class ChessGame(object):
 
@@ -55,37 +56,6 @@ class ChessGame(object):
 
     def has_quit(self, input_move):
         return input_move == "q"
-
-
-    def is_special_case(self, input_move):
-        return self.is_end_of_game(input_move)
-
-    def is_castling(self, input_move):
-        res = input_move in ['O-O','O-O-O']
-        return res 
-
-    def is_short_castling(self,input_move):
-        return input_move == 'O-O'
-
-    def is_long_castling(self,input_move):
-        return input_move == 'O-O-O'
-
-    def is_end_of_game(self, input_move):
-        res = input_move in ['1-0','0-1', '1/2-1/2']
-        if res:
-            print "End of game: " + input_move
-        return res
-
-    def is_promotion(self,input_move):
-        if not '=' in input_move:
-            return (False, input_move,'')
-        else:
-            idx = input_move.index('=')
-            return (True,input_move[:idx],input_move[idx+1:]) 
-
-    def is_check(self,input_move):
-        return input_move[-1] in ['+','#']
-
 
     def is_pawn(self, input_move):
         return input_move[0] in self.column_names
@@ -158,14 +128,14 @@ class ChessGame(object):
             print 'wrong input try again'
             return False
 
-        if self.is_check(input_move):
+        if cm.is_check(input_move):
             print "CHECK"
             input_move = input_move[:-1]
 
-        if self.is_castling(input_move):
+        if cm.is_castling(input_move):
             return True
 
-        if self.is_special_case(input_move):
+        if cm.is_special_case(input_move):
             return True
 
         if not self.is_pawn(input_move) and not self.is_main_piece(input_move):
@@ -180,7 +150,7 @@ class ChessGame(object):
             print 'valid move input'
             return True
 
-        promotion,input_move,promoted_to = self.is_promotion(input_move)
+        promotion,input_move,promoted_to = cm.is_promotion(input_move)
 
         if promotion:
             if not self.is_valid_promotion(input_move,promoted_to):
@@ -203,13 +173,13 @@ class ChessGame(object):
         if self.has_quit(input_move):
             return False
 
-        if len(input_move)>1 and self.is_check(input_move):
+        if len(input_move)>1 and cm.is_check(input_move):
             input_move = input_move[:-1]
 
         if not self.is_user_move_valid(input_move):
             return True
 
-        promotion,input_move,promoted_to = self.is_promotion(input_move)
+        promotion,input_move,promoted_to = cm.is_promotion(input_move)
 
         move_to_col,move_to_line,col_filter,line_filter = self.parse_coordinates(input_move)
         
@@ -232,7 +202,7 @@ class ChessGame(object):
             else:
                 self.switch_player()
         
-        if self.is_special_case(input_move):
+        if cm.is_special_case(input_move):
                 self.restart()
         return True
 
@@ -295,8 +265,8 @@ class ChessGame(object):
         return self.validate_eat_case(input_move)
 
     def move_piece_to(self, input_move, move_to_col, move_to_line, col_filter = None, line_filter = None):
-        if self.is_castling(input_move):
-            if self.is_short_castling(input_move):
+        if cm.is_castling(input_move):
+            if cm.is_short_castling(input_move):
                 return self.board.castler(self.player,'short')
             else:
                 return self.board.castler(self.player,'long')
@@ -330,10 +300,10 @@ class ChessGame(object):
     def print_move(self, input_move, move_to_col, move_to_line):
         out_str  = ""
 
-        if self.is_short_castling(input_move):
+        if cm.is_short_castling(input_move):
             out_str = "Short castling for %s" % self.player
         
-        elif self.is_long_castling(input_move):
+        elif cm.is_long_castling(input_move):
             out_str = "long castling for %s" % self.player
 
         elif self.is_pawn(input_move):
@@ -356,7 +326,7 @@ class ChessGame(object):
         else:
             out_str = "not supported move. Merry Xmas"
 
-        if not self.is_castling(input_move):
+        if not cm.is_castling(input_move):
             if self.piece_eats(input_move):
                 out_str = out_str + " and capture piece at (%s,%s)" % (move_to_col,move_to_line)
             else: 
