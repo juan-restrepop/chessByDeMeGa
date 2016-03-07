@@ -226,10 +226,8 @@ class ChessGame(object):
             self.board = parallel_board
 
         if accepted_move:
-            out_str = self.print_move(input_move, move_to_col, move_to_line)
-            print("Your move is : " + input_move + '. ' + out_str)
+            self.print_move(input_move, move_to_col, move_to_line)
 
-            # avoid interference with tests
             if self.is_match():
 
                 if self.hit_endgame():
@@ -374,4 +372,4 @@ class ChessGame(object):
             else: 
                 out_str = out_str + " to (%s,%s)" % (move_to_col, move_to_line)
 
-        return  out_str
+        print("Your move is : " + input_move + '. ' + out_str)
