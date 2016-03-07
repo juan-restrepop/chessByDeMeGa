@@ -196,8 +196,7 @@ class ChessGame(object):
         return (line in self.line_names) and (col in self.column_names)
         
     def parse_user_move(self, input_move):
-        # TODO: Handle ambiguities
-        # TODO: Handle check, check-mate
+        # TODO: Handle draws (50+ moves without exchange, or same state repeated 3 times)
 
         input_move = input_move.strip()
 
@@ -228,22 +227,13 @@ class ChessGame(object):
         if accepted_move:
             self.print_move(input_move, move_to_col, move_to_line)
 
-            if self.is_match():
-
-                if self.hit_endgame():
-                    return False
-                else:
-                    self.switch_player()
-
-            else:                   
+            if self.is_match() and self.hit_endgame():
+                return False
+            else:
                 self.switch_player()
-
-        else:
-            if self.is_special_case(input_move):
+        
+        if self.is_special_case(input_move):
                 self.restart()
-
-            #print "Move not accepted"
-
         return True
 
     def switch_player(self):
