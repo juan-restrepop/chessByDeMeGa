@@ -60,9 +60,6 @@ class ChessGame(object):
     def has_quit(self, input_move):
         return input_move == "q"
 
-    def is_valid_promotion(self, input_move, promoted_to):
-        return (input_move[-1] in [ '1','8' ]) and (promoted_to in ['B','N','R','Q']) and (validator.validate_move_case(input_move) or validator.validate_eat_case(input_move))
-
     def is_user_move_valid(self, input_move):
         if len(input_move) <= 1:
             print 'wrong input try again'
@@ -93,7 +90,7 @@ class ChessGame(object):
         promotion,input_move,promoted_to = cm.is_promotion(input_move)
 
         if promotion:
-            if not self.is_valid_promotion(input_move,promoted_to):
+            if not validator.is_valid_promotion(input_move,promoted_to):
                 return False
             else:
                 return True

@@ -50,5 +50,19 @@ class TestValidator(unittest.TestCase):
             actual = validator.validate_eat_case(input_move)
             self.assertEqual(expected, actual)
 
+    def test_is_valid_promotion(self):
+        expected = True
+        actual = validator.is_valid_promotion('a8', 'Q')
+        self.assertEqual(expected,actual, msg = 'should be valid here')
+
+        expected = True
+        actual = validator.is_valid_promotion('b1', 'N')
+        self.assertEqual(expected,actual, msg = 'should be valid here too')
+
+        expected = False
+        for new_piece in ['a','b','c','d','e','f','g','h','K']:
+            actual = validator.is_valid_promotion('a8',new_piece)
+            self.assertEqual(expected,actual, msg = 'no way this is valid')
+
 if __name__ == '__main__':
     unittest.main()

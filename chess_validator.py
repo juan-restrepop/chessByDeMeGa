@@ -47,3 +47,9 @@ def validate_eat_case(input_move):
                 and ( are_coordinates_valid(input_move[1], input_move[2]) )
                 )
             )
+
+def is_valid_promotion(input_move, promoted_to):
+    return input_move[-1] in [ '1','8' ] and \
+           promoted_to in ['B','N','R','Q'] and \
+           (validate_move_case(input_move) or validate_eat_case(input_move))
+

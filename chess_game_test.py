@@ -78,22 +78,6 @@ class TestChessGame(unittest.TestCase):
             actual = c.parse_main_pieces_coordinates(input_move)
             self.assertEqual(expected[k], actual)
 
-    def test_is_valid_promotion(self):
-        c = cg.ChessGame()
-
-        expected = True
-        actual = c.is_valid_promotion('a8', 'Q')
-        self.assertEqual(expected,actual, msg = 'should be valid here')
-
-        expected = True
-        actual = c.is_valid_promotion('b1', 'N')
-        self.assertEqual(expected,actual, msg = 'should be valid here too')
-
-        expected = False
-        for new_piece in ['a','b','c','d','e','f','g','h','K']:
-            actual = c.is_valid_promotion('a8',new_piece)
-            self.assertEqual(expected,actual, msg = 'no way this is valid')
-
     # chess rules related tests
     # checks
     def test_black_king_out_of_check_mvt_1(self):
