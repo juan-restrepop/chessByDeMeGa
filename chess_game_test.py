@@ -14,20 +14,6 @@ class TestChessGame(unittest.TestCase):
         actual = c.has_quit('bla')
         self.assertEqual(expected, actual)
 
-    def test_parse_pawn_coordinates(self):
-        c = cg.ChessGame()
-
-        expected = [('a','2', None, None),
-                    ('b','2', None, None)]
-
-        test_cases = ['a2','axb2']
-
-        for k in range(len(test_cases)):
-            input_move = test_cases[k]
-            actual = c.parse_pawn_coordinates(input_move)
-            self.assertEqual(expected[k], actual)
-
-
     def test_parse_main_pieces_coordinates(self):
         c = cg.ChessGame()
 

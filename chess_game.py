@@ -107,7 +107,7 @@ class ChessGame(object):
 
     def parse_coordinates(self,input_move):
         if cm.is_pawn(input_move):
-            move_to_col, move_to_line, col_filter, line_filter = self.parse_pawn_coordinates(input_move)
+            move_to_col, move_to_line, col_filter, line_filter = input_parser.parse_pawn_coordinates(input_move)
 
         elif cm.is_main_piece(input_move):
             move_to_col, move_to_line, col_filter, line_filter = self.parse_main_pieces_coordinates(input_move)
@@ -117,21 +117,6 @@ class ChessGame(object):
             col_filter, line_filter = None, None
 
         return move_to_col, move_to_line, col_filter, line_filter
-
-    def parse_pawn_coordinates(self, input_move):
-        col_filter, line_filter = None, None
-        col,line = input_move[-2],input_move[-1]
-        # ambiguities only if eating
-        if input_parser.piece_eats(input_move):
-            if len(input_move)== 4:
-                if input_move[1]in self.column_names:
-                    col_filter = input_move[1]
-                elif input_move[1]in self.line_names:
-                    line_filter = input_move[1]
-            elif len(input_move)== 5:
-                    col_filter, line_filter = input_move[1],input_move[2]
-
-        return col,line, col_filter, line_filter
 
     def parse_main_pieces_coordinates(self, input_move):
         col_filter, line_filter = None, None

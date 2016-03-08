@@ -18,5 +18,16 @@ class TestInputParser(unittest.TestCase):
             actual = input_parser.piece_eats(input_move)
             self.assertEqual(expected, actual)
 
+    def test_parse_pawn_coordinates(self):
+        expected = [('a','2', None, None),
+                    ('b','2', None, None)]
+
+        test_cases = ['a2','axb2']
+
+        for k in range(len(test_cases)):
+            input_move = test_cases[k]
+            actual = input_parser.parse_pawn_coordinates(input_move)
+            self.assertEqual(expected[k], actual)
+
 if __name__ == '__main__':
     unittest.main()
