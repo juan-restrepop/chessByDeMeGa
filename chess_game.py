@@ -1,9 +1,9 @@
 import copy
 import utils
+import input_parser
 import chess_board
 import chess_moves as cm
 import chess_validator as validator
-
 
 class ChessGame(object):
 
@@ -122,7 +122,7 @@ class ChessGame(object):
         col_filter, line_filter = None, None
         col,line = input_move[-2],input_move[-1]
         # ambiguities only if eating
-        if self.piece_eats(input_move):
+        if input_parser.piece_eats(input_move):
             if len(input_move)== 4:
                 if input_move[1]in self.column_names:
                     col_filter = input_move[1]
@@ -138,7 +138,7 @@ class ChessGame(object):
         col,line = input_move[-2],input_move[-1]
 
         # if eating
-        if self.piece_eats(input_move):
+        if input_parser.piece_eats(input_move):
             if len(input_move)== 5:
                 if input_move[1]in self.column_names:
                     col_filter = input_move[1]
@@ -155,9 +155,6 @@ class ChessGame(object):
             elif len(input_move)== 5:
                     col_filter, line_filter = input_move[1],input_move[2]
         return col,line, col_filter, line_filter
-
-    def piece_eats(self, input_move):
-        return validator.validate_eat_case(input_move)
 
     def move_piece_to(self, input_move, move_to_col, move_to_line, col_filter = None, line_filter = None):
         if cm.is_castling(input_move):
@@ -186,7 +183,7 @@ class ChessGame(object):
 
         else:
             return False
-        if self.piece_eats(input_move):
+        if input_parser.piece_eats(input_move):
             return self.board.piece_eater(kind, move_to_col,move_to_line,self.player, orig_col_filter = col_filter, orig_line_filter = line_filter)
         else:
             return self.board.piece_mover(kind, move_to_col,move_to_line,self.player, orig_col_filter = col_filter, orig_line_filter = line_filter)
@@ -222,7 +219,7 @@ class ChessGame(object):
             out_str = "not supported move. Merry Xmas"
 
         if not cm.is_castling(input_move):
-            if self.piece_eats(input_move):
+            if input_parser.piece_eats(input_move):
                 out_str = out_str + " and capture piece at (%s,%s)" % (move_to_col,move_to_line)
             else: 
                 out_str = out_str + " to (%s,%s)" % (move_to_col, move_to_line)
