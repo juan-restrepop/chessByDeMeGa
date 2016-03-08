@@ -1,11 +1,13 @@
 import copy
+import utils
 import chess_board
 import chess_moves as cm
 
+
 class ChessGame(object):
 
-    column_names = ['a','b','c','d','e','f','g','h']
-    line_names = ['1','2','3','4','5','6','7','8']
+    column_names = utils.COLUMN_NAMES
+    line_names = utils.LINE_NAMES
     player = 'white'
 
     def __init__(self):
