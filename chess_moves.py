@@ -23,6 +23,14 @@ def is_king(input_move):
 def is_main_piece(input_move):
     return input_move[0] in ['K','Q','N','B','R']
 
+def is_any_piece(input_move):
+    return is_pawn(input_move) or \
+            is_bishop(input_move) or \
+            is_rook(input_move) or \
+            is_knight(input_move) or \
+            is_queen(input_move) or \
+            is_king (input_move)
+
 def is_check(input_move):
     return input_move[-1] in ['+','#']
 
