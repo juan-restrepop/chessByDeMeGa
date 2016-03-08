@@ -59,47 +59,6 @@ class ChessGame(object):
 
     def has_quit(self, input_move):
         return input_move == "q"
-
-    def is_user_move_valid(self, input_move):
-        if len(input_move) <= 1:
-            print 'wrong input try again'
-            return False
-
-        if cm.is_check(input_move):
-            print "CHECK"
-            input_move = input_move[:-1]
-
-        if cm.is_castling(input_move):
-            return True
-
-        if cm.is_special_case(input_move):
-            return True
-
-        if not cm.is_pawn(input_move) and not cm.is_main_piece(input_move):
-            print 'case not valid, not a chess piece'
-            return False
-
-        if validator.validate_eat_case(input_move):
-            print 'valid eat input'
-            return True
-
-        if validator.validate_move_case(input_move):
-            print 'valid move input'
-            return True
-
-        promotion,input_move,promoted_to = cm.is_promotion(input_move)
-
-        if promotion:
-            if not validator.is_valid_promotion(input_move,promoted_to):
-                return False
-            else:
-                return True
-
-        print 'wrong input, try again'
-        return False
-
-
-
         
     def parse_user_move(self, input_move):
         # TODO: Handle draws (50+ moves without exchange, or same state repeated 3 times)
@@ -112,7 +71,7 @@ class ChessGame(object):
         if len(input_move)>1 and cm.is_check(input_move):
             input_move = input_move[:-1]
 
-        if not self.is_user_move_valid(input_move):
+        if not validator.is_user_move_valid(input_move):
             return True
 
         promotion,input_move,promoted_to = cm.is_promotion(input_move)

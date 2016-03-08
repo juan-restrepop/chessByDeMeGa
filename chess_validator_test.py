@@ -64,5 +64,21 @@ class TestValidator(unittest.TestCase):
             actual = validator.is_valid_promotion('a8',new_piece)
             self.assertEqual(expected,actual, msg = 'no way this is valid')
 
+    def test_is_user_move_valid(self):
+        expected = True
+        k = 1
+        for input_move in ['a2','axb2','Bf3','Bxa2']:
+            actual = validator.is_user_move_valid(input_move)
+            self.assertEqual(expected, actual, msg='Error on test # %i: %s' % (k, input_move))
+            k += 1
+
+        expected = False
+        k = 1
+        for input_move  in ['ax2','B3','Abcd']:
+            #print input_move, actual
+            actual = validator.is_user_move_valid(input_move)
+            self.assertEqual(expected, actual, msg='Error on test # %i: %s'  %(k,input_move) )
+            k += 1
+
 if __name__ == '__main__':
     unittest.main()

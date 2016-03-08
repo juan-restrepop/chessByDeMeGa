@@ -28,24 +28,6 @@ class TestChessGame(unittest.TestCase):
             actual = c.piece_eats(input_move)
             self.assertEqual(expected, actual)
 
-    def test_is_user_move_valid(self):
-        c  = cg.ChessGame()
-
-        expected = True
-        k = 1
-        for input_move in ['a2','axb2','Bf3','Bxa2']:
-            actual = c.is_user_move_valid(input_move)
-            self.assertEqual(expected, actual, msg='Error on test # %i: %s' % (k, input_move))
-            k += 1
-
-        expected = False
-        k = 1
-        for input_move  in ['ax2','B3','Abcd']:
-            #print input_move, actual
-            actual = c.is_user_move_valid(input_move)
-            self.assertEqual(expected, actual, msg='Error on test # %i: %s'  %(k,input_move) )
-            k += 1
-
     def test_parse_pawn_coordinates(self):
         c = cg.ChessGame()
 
