@@ -1,7 +1,22 @@
 """ input_parser: parses chess game inputs """
 
 import utils
+import chess_moves as cm
 import chess_validator as validator
+
+def parse_coordinates(input_move):
+    if cm.is_pawn(input_move):
+        move_to_col, move_to_line, col_filter, line_filter = parse_pawn_coordinates(input_move)
+
+    elif cm.is_main_piece(input_move):
+        move_to_col, move_to_line, col_filter, line_filter = parse_main_pieces_coordinates(input_move)
+
+    else:
+        move_to_col, move_to_line = None, None
+        col_filter, line_filter = None, None
+
+    return move_to_col, move_to_line, col_filter, line_filter
+
 
 def piece_eats(input_move):
     return validator.validate_eat_case(input_move)

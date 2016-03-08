@@ -76,7 +76,7 @@ class ChessGame(object):
 
         promotion,input_move,promoted_to = cm.is_promotion(input_move)
 
-        move_to_col,move_to_line,col_filter,line_filter = self.parse_coordinates(input_move)
+        move_to_col,move_to_line,col_filter,line_filter = input_parser.parse_coordinates(input_move)
         
         parallel_board = copy.deepcopy(self.board)
         accepted_move = self.move_piece_to(input_move, move_to_col, move_to_line, col_filter, line_filter)
@@ -104,19 +104,6 @@ class ChessGame(object):
     def switch_player(self):
         self.player = 'black' if (self.player == 'white') else 'white'
         return
-
-    def parse_coordinates(self,input_move):
-        if cm.is_pawn(input_move):
-            move_to_col, move_to_line, col_filter, line_filter = input_parser.parse_pawn_coordinates(input_move)
-
-        elif cm.is_main_piece(input_move):
-            move_to_col, move_to_line, col_filter, line_filter = input_parser.parse_main_pieces_coordinates(input_move)
-
-        else:
-            move_to_col, move_to_line = None, None
-            col_filter, line_filter = None, None
-
-        return move_to_col, move_to_line, col_filter, line_filter
 
     def move_piece_to(self, input_move, move_to_col, move_to_line, col_filter = None, line_filter = None):
         if cm.is_castling(input_move):
