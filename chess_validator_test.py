@@ -37,5 +37,18 @@ class TestValidator(unittest.TestCase):
             actual = validator.validate_move_case(col)
             self.assertEqual(expected, actual)
 
+    def test_validate_eat_case(self):
+        expected = True
+        for input_move in ['Kxf3', 'axb2', 'Rxd2']:
+
+            actual = validator.validate_eat_case(input_move)
+            self.assertEqual(expected, actual)
+
+        expected = False
+        for input_move in ['Kf3', 'a2', 'Rxd']:
+
+            actual = validator.validate_eat_case(input_move)
+            self.assertEqual(expected, actual)
+
 if __name__ == '__main__':
     unittest.main()

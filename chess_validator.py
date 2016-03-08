@@ -26,3 +26,24 @@ def validate_move_case(input_move):
                 and
                 len(input_move) == 5 )
             )
+
+def validate_eat_case(input_move):
+    if len(input_move) < 4 or \
+        input_move[-3] != 'x' or \
+        (not are_coordinates_valid(input_move[-2], input_move[-1])):
+        return False
+
+    return (  ( len(input_move) == 4 
+                and (cm.is_pawn(input_move) or cm.is_main_piece(input_move)) 
+                ) 
+            or 
+              ( len(input_move) == 5 
+                and ( cm.is_main_piece(input_move))
+                and ( input_move[1] in utils.COLUMN_NAMES + utils.LINE_NAMES )
+                )
+            or
+              ( len(input_move) == 6 
+                and ( cm.is_main_piece(input_move))
+                and ( are_coordinates_valid(input_move[1], input_move[2]) )
+                )
+            )
