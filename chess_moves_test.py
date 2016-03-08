@@ -39,5 +39,24 @@ class TestMoves(unittest.TestCase):
         actual = cm.is_pawn('Kx1')
         self.assertEqual(expected, actual)
 
+    def test_is_main_piece(self):
+        # basic case
+        expected = True
+        for piece in ['K','Q','N','B','R']:
+
+            actual = cm.is_main_piece(piece +'1')
+            self.assertEqual(expected, actual)
+        # real moves
+        expected = True
+        for input_move in ['Kf3','Bxa2','Rxd2']:
+
+            actual = cm.is_main_piece(input_move)
+            self.assertEqual(expected, actual)
+        # wrong moves
+        expected = False
+        for input_move in ['q','axc1','b3']:
+            actual = cm.is_main_piece(input_move)
+            self.assertEqual(expected, actual)
+
 if __name__ == '__main__':
     unittest.main()

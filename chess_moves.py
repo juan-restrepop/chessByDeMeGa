@@ -20,8 +20,11 @@ def is_queen(input_move):
 def is_king(input_move):
     return input_move[0] == 'K'
 
+def is_main_piece(input_move):
+    return input_move[0] in ['K','Q','N','B','R']
+
 def is_check(input_move):
-        return input_move[-1] in ['+','#']
+    return input_move[-1] in ['+','#']
 
 def is_castling(input_move):
     res = input_move in ['O-O','O-O-O']

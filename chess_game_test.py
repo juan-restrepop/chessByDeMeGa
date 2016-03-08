@@ -14,26 +14,6 @@ class TestChessGame(unittest.TestCase):
         actual = c.has_quit('bla')
         self.assertEqual(expected, actual)
 
-    def test_is_main_piece(self):
-        c  = cg.ChessGame()
-        # basic case
-        expected = True
-        for piece in ['K','Q','N','B','R']:
-
-            actual = c.is_main_piece(piece +'1')
-            self.assertEqual(expected, actual)
-        # real moves
-        expected = True
-        for input_move in ['Kf3','Bxa2','Rxd2']:
-
-            actual = c.is_main_piece(input_move)
-            self.assertEqual(expected, actual)
-        # wrong moves
-        expected = False
-        for input_move in ['q','axc1','b3']:
-            actual = c.is_main_piece(input_move)
-            self.assertEqual(expected, actual)
-
     def test_piece_eats(self):
         c  = cg.ChessGame()
         expected = True

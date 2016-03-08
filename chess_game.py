@@ -59,9 +59,6 @@ class ChessGame(object):
     def has_quit(self, input_move):
         return input_move == "q"
 
-    def is_main_piece(self, input_move):
-        return input_move[0] in ['K','Q','N','B','R']
-
     def validate_eat_case(self, input_move):
         if len(input_move) < 4 or \
             input_move[-3] != 'x' or \
@@ -69,16 +66,16 @@ class ChessGame(object):
             return False
 
         return (  ( len(input_move) == 4 
-                    and (cm.is_pawn(input_move) or self.is_main_piece(input_move)) 
+                    and (cm.is_pawn(input_move) or cm.is_main_piece(input_move)) 
                     ) 
                 or 
                   ( len(input_move) == 5 
-                    and ( self.is_main_piece(input_move))
+                    and ( cm.is_main_piece(input_move))
                     and ( input_move[1] in self.column_names + self.line_names )
                     )
                 or
                   ( len(input_move) == 6 
-                    and ( self.is_main_piece(input_move))
+                    and ( cm.is_main_piece(input_move))
                     and ( self.are_coordinates_valid(input_move[1], input_move[2]) )
                     )
                 )
@@ -88,7 +85,7 @@ class ChessGame(object):
         if cm.is_pawn(input_move):
             return len(input_move) == 2 and input_move[1] in self.line_names
 
-        if (not self.is_main_piece(input_move) )or \
+        if (not cm.is_main_piece(input_move) )or \
             not self.are_coordinates_valid(input_move[-2], input_move[-1]):
             return False
 
@@ -121,7 +118,7 @@ class ChessGame(object):
         if cm.is_special_case(input_move):
             return True
 
-        if not cm.is_pawn(input_move) and not self.is_main_piece(input_move):
+        if not cm.is_pawn(input_move) and not cm.is_main_piece(input_move):
             print 'case not valid, not a chess piece'
             return False
 
@@ -197,7 +194,7 @@ class ChessGame(object):
         if cm.is_pawn(input_move):
             move_to_col, move_to_line, col_filter, line_filter = self.parse_pawn_coordinates(input_move)
 
-        elif self.is_main_piece(input_move):
+        elif cm.is_main_piece(input_move):
             move_to_col, move_to_line, col_filter, line_filter = self.parse_main_pieces_coordinates(input_move)
 
         else:
