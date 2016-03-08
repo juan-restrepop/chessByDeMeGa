@@ -4,6 +4,30 @@ import utils
 import chess_moves as cm
 import chess_validator as validator
 
+def input_to_kind(input_move):
+    kind = None
+    
+    if cm.is_any_piece(input_move):
+        if cm.is_pawn(input_move):
+            kind = 'p'
+
+        elif cm.is_bishop(input_move):
+            kind = 'b'
+
+        elif cm.is_knight(input_move):
+            kind = 'n'
+
+        elif cm.is_rook(input_move):
+            kind = 'r'
+
+        elif cm.is_king(input_move):
+            kind = 'k'
+
+        elif cm.is_queen(input_move):
+            kind = 'q'
+
+    return kind
+
 def parse_coordinates(input_move):
     if cm.is_pawn(input_move):
         move_to_col, move_to_line, col_filter, line_filter = parse_pawn_coordinates(input_move)
@@ -16,7 +40,6 @@ def parse_coordinates(input_move):
         col_filter, line_filter = None, None
 
     return move_to_col, move_to_line, col_filter, line_filter
-
 
 def piece_eats(input_move):
     return validator.validate_eat_case(input_move)
