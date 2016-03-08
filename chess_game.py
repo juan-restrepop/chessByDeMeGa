@@ -2,6 +2,7 @@ import copy
 import utils
 import chess_board
 import chess_moves as cm
+import chess_validator as validator
 
 
 class ChessGame(object):
@@ -62,7 +63,7 @@ class ChessGame(object):
     def validate_eat_case(self, input_move):
         if len(input_move) < 4 or \
             input_move[-3] != 'x' or \
-            (not self.are_coordinates_valid(input_move[-2], input_move[-1])):
+            (not validator.are_coordinates_valid(input_move[-2], input_move[-1])):
             return False
 
         return (  ( len(input_move) == 4 
@@ -76,7 +77,7 @@ class ChessGame(object):
                 or
                   ( len(input_move) == 6 
                     and ( cm.is_main_piece(input_move))
-                    and ( self.are_coordinates_valid(input_move[1], input_move[2]) )
+                    and ( validator.are_coordinates_valid(input_move[1], input_move[2]) )
                     )
                 )
 
@@ -86,7 +87,7 @@ class ChessGame(object):
             return len(input_move) == 2 and input_move[1] in self.line_names
 
         if (not cm.is_main_piece(input_move) )or \
-            not self.are_coordinates_valid(input_move[-2], input_move[-1]):
+            not validator.are_coordinates_valid(input_move[-2], input_move[-1]):
             return False
 
         return ( len(input_move) == 3
@@ -95,7 +96,7 @@ class ChessGame(object):
                     and
                     len(input_move) == 4 )
                     or
-                    ( self.are_coordinates_valid(input_move[1], input_move[2]) 
+                    ( validator.are_coordinates_valid(input_move[1], input_move[2]) 
                     and
                     len(input_move) == 5 )
                 )
@@ -142,8 +143,7 @@ class ChessGame(object):
         return False
 
 
-    def are_coordinates_valid(self, col, line):
-        return (line in self.line_names) and (col in self.column_names)
+
         
     def parse_user_move(self, input_move):
         # TODO: Handle draws (50+ moves without exchange, or same state repeated 3 times)
