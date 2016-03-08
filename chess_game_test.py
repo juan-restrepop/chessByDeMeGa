@@ -14,24 +14,6 @@ class TestChessGame(unittest.TestCase):
         actual = c.has_quit('bla')
         self.assertEqual(expected, actual)
 
-    def test_parse_main_pieces_coordinates(self):
-        c = cg.ChessGame()
-
-        expected = [('f','2', None, None),
-                    ('b','3', None, None),
-                    ('f','2', None, '3'),
-                    ('g','4', 'a', None),
-                    ('h','3', 'c', '3') ,
-                    ('f','4', 'd', None), 
-                    ('h','8', 'a', '1')]
-
-        test_cases = ['Bf2','Qxb3', 'B3f2', 'Bag4', 'Rc3h3','Qdxf4', 'Qa1xh8' ]
-
-        for k in range(len(test_cases)):
-            input_move = test_cases[k]
-            actual = c.parse_main_pieces_coordinates(input_move)
-            self.assertEqual(expected[k], actual)
-
     # chess rules related tests
     # checks
     def test_black_king_out_of_check_mvt_1(self):

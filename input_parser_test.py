@@ -29,5 +29,21 @@ class TestInputParser(unittest.TestCase):
             actual = input_parser.parse_pawn_coordinates(input_move)
             self.assertEqual(expected[k], actual)
 
+    def test_parse_main_pieces_coordinates(self):
+        expected = [('f','2', None, None),
+                    ('b','3', None, None),
+                    ('f','2', None, '3'),
+                    ('g','4', 'a', None),
+                    ('h','3', 'c', '3') ,
+                    ('f','4', 'd', None), 
+                    ('h','8', 'a', '1')]
+
+        test_cases = ['Bf2','Qxb3', 'B3f2', 'Bag4', 'Rc3h3','Qdxf4', 'Qa1xh8' ]
+
+        for k in range(len(test_cases)):
+            input_move = test_cases[k]
+            actual = input_parser.parse_main_pieces_coordinates(input_move)
+            self.assertEqual(expected[k], actual)
+
 if __name__ == '__main__':
     unittest.main()
