@@ -1,5 +1,10 @@
 """ Useful functions for parsing user input moves """
 
+import utils
+
+def is_pawn(input_move):
+    return input_move[0] in utils.COLUMN_NAMES
+
 def is_check(input_move):
         return input_move[-1] in ['+','#']
 

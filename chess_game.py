@@ -59,9 +59,6 @@ class ChessGame(object):
     def has_quit(self, input_move):
         return input_move == "q"
 
-    def is_pawn(self, input_move):
-        return input_move[0] in self.column_names
-
     def is_bishop(self, input_move):
         return input_move[0] == 'B'
 
@@ -88,7 +85,7 @@ class ChessGame(object):
             return False
 
         return (  ( len(input_move) == 4 
-                    and (self.is_pawn(input_move) or self.is_main_piece(input_move)) 
+                    and (cm.is_pawn(input_move) or self.is_main_piece(input_move)) 
                     ) 
                 or 
                   ( len(input_move) == 5 
@@ -104,7 +101,7 @@ class ChessGame(object):
 
     def validate_move_case(self, input_move):
 
-        if self.is_pawn(input_move):
+        if cm.is_pawn(input_move):
             return len(input_move) == 2 and input_move[1] in self.line_names
 
         if (not self.is_main_piece(input_move) )or \
@@ -140,7 +137,7 @@ class ChessGame(object):
         if cm.is_special_case(input_move):
             return True
 
-        if not self.is_pawn(input_move) and not self.is_main_piece(input_move):
+        if not cm.is_pawn(input_move) and not self.is_main_piece(input_move):
             print 'case not valid, not a chess piece'
             return False
 
@@ -213,7 +210,7 @@ class ChessGame(object):
         return
 
     def parse_coordinates(self,input_move):
-        if self.is_pawn(input_move):
+        if cm.is_pawn(input_move):
             move_to_col, move_to_line, col_filter, line_filter = self.parse_pawn_coordinates(input_move)
 
         elif self.is_main_piece(input_move):
@@ -273,7 +270,7 @@ class ChessGame(object):
             else:
                 return self.board.castler(self.player,'long')
 
-        if self.is_pawn(input_move):
+        if cm.is_pawn(input_move):
             kind = 'p'
 
         elif self.is_bishop(input_move):
@@ -308,7 +305,7 @@ class ChessGame(object):
         elif cm.is_long_castling(input_move):
             out_str = "long castling for %s" % self.player
 
-        elif self.is_pawn(input_move):
+        elif cm.is_pawn(input_move):
             out_str = "Move %s pawn" % self.player
 
         elif self.is_bishop(input_move):
