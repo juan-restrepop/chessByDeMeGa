@@ -81,28 +81,8 @@ class ChessGame(object):
                     )
                 )
 
-    def validate_move_case(self, input_move):
-
-        if cm.is_pawn(input_move):
-            return len(input_move) == 2 and input_move[1] in self.line_names
-
-        if (not cm.is_main_piece(input_move) )or \
-            not validator.are_coordinates_valid(input_move[-2], input_move[-1]):
-            return False
-
-        return ( len(input_move) == 3
-                    or
-                    ( input_move[1] in self.column_names + self.line_names 
-                    and
-                    len(input_move) == 4 )
-                    or
-                    ( validator.are_coordinates_valid(input_move[1], input_move[2]) 
-                    and
-                    len(input_move) == 5 )
-                )
-
     def is_valid_promotion(self, input_move, promoted_to):
-        return (input_move[-1] in [ '1','8' ]) and (promoted_to in ['B','N','R','Q']) and (self.validate_move_case(input_move) or self.validate_eat_case(input_move))
+        return (input_move[-1] in [ '1','8' ]) and (promoted_to in ['B','N','R','Q']) and (validator.validate_move_case(input_move) or self.validate_eat_case(input_move))
 
     def is_user_move_valid(self, input_move):
         if len(input_move) <= 1:
@@ -127,7 +107,7 @@ class ChessGame(object):
             print 'valid eat input'
             return True
 
-        if self.validate_move_case(input_move):
+        if validator.validate_move_case(input_move):
             print 'valid move input'
             return True
 

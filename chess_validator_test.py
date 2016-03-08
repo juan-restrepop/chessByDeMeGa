@@ -17,5 +17,25 @@ class TestValidator(unittest.TestCase):
             actual = validator.are_coordinates_valid(coords[0], coords[1])
             self.assertEqual(expected, actual)
 
+    def test_validate_move_case(self):
+        expected = True
+        for piece in ['K','Q','N','B','R']:
+            actual = validator.validate_move_case(piece +'f3')
+            self.assertEqual(expected, actual)
+
+        expected = True
+        for col in utils.COLUMN_NAMES:
+            actual = validator.validate_move_case(col +'3')
+            self.assertEqual(expected, actual)
+
+        expected = False
+        for piece in ['K','Q','N','B','R']:
+            actual = validator.validate_move_case(piece +'3')
+            self.assertEqual(expected, actual)
+
+        for col in utils.COLUMN_NAMES:
+            actual = validator.validate_move_case(col)
+            self.assertEqual(expected, actual)
+
 if __name__ == '__main__':
     unittest.main()
