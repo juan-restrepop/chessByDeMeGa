@@ -59,22 +59,6 @@ class ChessGame(object):
     def has_quit(self, input_move):
         return input_move == "q"
 
-    def is_bishop(self, input_move):
-        return input_move[0] == 'B'
-
-    def is_rook(self,input_move):
-        return input_move[0] == 'R'
-
-    def is_knight(self,input_move):
-        return input_move[0] == 'N'
-
-    def is_queen(self,input_move):
-        return input_move[0] == 'Q'
-
-    def is_king(self,input_move):
-        return input_move[0] == 'K'
-        
-
     def is_main_piece(self, input_move):
         return input_move[0] in ['K','Q','N','B','R']
 
@@ -273,19 +257,19 @@ class ChessGame(object):
         if cm.is_pawn(input_move):
             kind = 'p'
 
-        elif self.is_bishop(input_move):
+        elif cm.is_bishop(input_move):
             kind = 'b'
 
-        elif self.is_knight(input_move):
+        elif cm.is_knight(input_move):
             kind = 'n'
 
-        elif self.is_rook(input_move):
+        elif cm.is_rook(input_move):
             kind = 'r'
 
-        elif self.is_king(input_move):
+        elif cm.is_king(input_move):
             kind = 'k'
 
-        elif self.is_queen(input_move):
+        elif cm.is_queen(input_move):
             kind = 'q'
 
         else:
@@ -308,19 +292,19 @@ class ChessGame(object):
         elif cm.is_pawn(input_move):
             out_str = "Move %s pawn" % self.player
 
-        elif self.is_bishop(input_move):
+        elif cm.is_bishop(input_move):
             out_str = "Move %s bishop" % self.player
         
-        elif self.is_knight(input_move):
+        elif cm.is_knight(input_move):
             out_str = "Move %s knight" % self.player
         
-        elif self.is_rook(input_move):
+        elif cm.is_rook(input_move):
             out_str = "Move %s rook" % self.player
         
-        elif self.is_king(input_move):
+        elif cm.is_king(input_move):
             out_str = "Move %s king" % self.player
         
-        elif self.is_queen(input_move):
+        elif cm.is_queen(input_move):
             out_str = "Move %s queen" % self.player
         else:
             out_str = "not supported move. Merry Xmas"

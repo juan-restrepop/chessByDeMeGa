@@ -5,6 +5,21 @@ import utils
 def is_pawn(input_move):
     return input_move[0] in utils.COLUMN_NAMES
 
+def is_bishop(input_move):
+    return input_move[0] == 'B'
+
+def is_rook(input_move):
+    return input_move[0] == 'R'
+
+def is_knight(input_move):
+    return input_move[0] == 'N'
+
+def is_queen(input_move):
+    return input_move[0] == 'Q'
+
+def is_king(input_move):
+    return input_move[0] == 'K'
+
 def is_check(input_move):
         return input_move[-1] in ['+','#']
 
