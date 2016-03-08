@@ -112,25 +112,9 @@ class ChessGame(object):
             else:
                 return self.board.castler(self.player,'long')
 
-        if cm.is_pawn(input_move):
-            kind = 'p'
-
-        elif cm.is_bishop(input_move):
-            kind = 'b'
-
-        elif cm.is_knight(input_move):
-            kind = 'n'
-
-        elif cm.is_rook(input_move):
-            kind = 'r'
-
-        elif cm.is_king(input_move):
-            kind = 'k'
-
-        elif cm.is_queen(input_move):
-            kind = 'q'
-
-        else:
+        kind = input_parser.input_to_kind(input_move)
+        
+        if kind is None:
             return False
         if input_parser.piece_eats(input_move):
             return self.board.piece_eater(kind, move_to_col,move_to_line,self.player, orig_col_filter = col_filter, orig_line_filter = line_filter)
